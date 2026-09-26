@@ -119,6 +119,12 @@ export class PolarService {
     let customerId = '';
     let tier: SubscriberTier = 'starter';
 
+    // Ignore checkout initialization events (only fulfill completed orders/subscriptions)
+    if (event === 'checkout.created' || event === 'checkout.session.created') {
+      logger.info({ customerId: payload.data?.id }, 'Checkout session opened, awaiting payment completion');
+      return null;
+    }
+
     // 1. Stripe Checkout / Subscription events
     if (event === 'checkout.session.completed') {
       const session = payload.data?.object || {};
@@ -144,8 +150,7 @@ export class PolarService {
       event === 'subscription.updated' ||
       event === 'subscription.canceled' ||
       event === 'subscription.revoked' ||
-      event === 'order.refunded' ||
-      event === 'checkout.created'
+      event === 'order.refunded'
     ) {
       const data = payload.data || payload;
       email = data.customer?.email || data.user?.email || data.email || '';
@@ -166,8 +171,8 @@ export class PolarService {
       }
     }
 
-    if (!email && !customerId) {
-      logger.warn('No customer email or ID identified in billing payload');
+    if (!email || !email.includes('@')) {
+      logger.warn({ event, customerId }, 'No valid customer email identified in billing payload, skipping key provisioning');
       return null;
     }
 
