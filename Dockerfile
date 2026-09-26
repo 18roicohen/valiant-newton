@@ -7,10 +7,10 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy dependency specifications
-COPY package.json tsconfig.json vitest.config.ts ./
+COPY package.json tsconfig.json vitest.config.ts .npmrc ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile=false
+RUN pnpm config set enable-pre-post-scripts true && pnpm install --frozen-lockfile=false
 
 # Copy source code and tests
 COPY src ./src
@@ -36,8 +36,8 @@ ENV HOST=0.0.0.0
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy package info and install only production dependencies
-COPY package.json ./
-RUN pnpm install --prod --frozen-lockfile=false
+COPY package.json .npmrc ./
+RUN pnpm config set enable-pre-post-scripts true && pnpm install --prod --frozen-lockfile=false
 
 # Copy compiled dist
 COPY --from=builder /app/dist ./dist
