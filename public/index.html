@@ -171,7 +171,7 @@
               <div class="text-[10px] text-slate-400 mb-1">Your Personal Live API Key:</div>
               <div class="flex items-center justify-between bg-[#0b0f19] p-1.5 rounded border border-slate-800">
                 <span id="quick-key-val" class="text-emerald-400 font-bold select-all truncate text-[11px]"></span>
-                <button type="button" onclick="copyQuickKey()" class="text-[10px] text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800 shrink-0 ml-2">Copy</button>
+                <button type="button" onclick="copyQuickKey()" id="btn-copy-quick-key" class="text-[10px] text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800 shrink-0 ml-2 transition">Copy</button>
               </div>
             </div>
           </form>
@@ -296,11 +296,13 @@
           </div>
         </div>
 
-        <div class="flex gap-2 border-b border-slate-800 mb-4 pb-2">
-          <button onclick="executeApiQuery('data')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white">GET /v1/data</button>
-          <button onclick="executeApiQuery('feed-json')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white">GET /v1/feed.json</button>
-          <button onclick="executeApiQuery('feed-csv')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white">GET /v1/feed.csv</button>
-          <button onclick="executeApiQuery('metrics')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white">GET /v1/metrics</button>
+        <div class="flex flex-wrap gap-2 border-b border-slate-800 mb-4 pb-3">
+          <button onclick="executeApiQuery('spot-summary')" id="btn-query-spot" class="px-3 py-1.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-medium transition">GET /v1/spot/summary</button>
+          <button onclick="executeApiQuery('h100')" id="btn-query-h100" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white transition">GET /v1/data?search=H100</button>
+          <button onclick="executeApiQuery('data')" id="btn-query-data" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white transition">GET /v1/data</button>
+          <button onclick="executeApiQuery('feed-json')" id="btn-query-feed-json" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white transition">GET /v1/feed.json</button>
+          <button onclick="executeApiQuery('feed-csv')" id="btn-query-feed-csv" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white transition">GET /v1/feed.csv</button>
+          <button onclick="executeApiQuery('metrics')" id="btn-query-metrics" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-white transition">GET /v1/metrics</button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -321,7 +323,7 @@
                 <button onclick="showSnippet('python')" id="btn-snippet-python">Python</button>
                 <button onclick="showSnippet('node')" id="btn-snippet-node">TypeScript</button>
               </div>
-              <button onclick="copySnippet()" class="text-slate-400 hover:text-white">Copy Code</button>
+              <button onclick="copySnippet()" id="btn-copy-snippet" class="text-slate-400 hover:text-white transition">Copy Code</button>
             </div>
             <pre id="snippet-display" class="text-xs font-mono text-emerald-300/90 h-64 overflow-y-auto p-2 bg-[#090d16] rounded border border-slate-900 select-all"></pre>
           </div>
@@ -612,8 +614,37 @@
       document.getElementById('free-key-modal').classList.add('hidden');
     }
 
+    function showToast(message, type = 'success') {
+      let container = document.getElementById('toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none';
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      const isErr = type === 'error';
+      toast.className = `px-4 py-2.5 rounded-lg border shadow-2xl text-xs font-mono flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${
+        isErr ? 'border-rose-500/50 bg-rose-950/95 text-rose-200' : 'border-emerald-500/50 bg-[#0c111d] text-emerald-300'
+      }`;
+      toast.innerHTML = `<span class="${isErr ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}">${isErr ? '✕' : '✓'}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
     async function quickClaimKey() {
-      const email = document.getElementById('quick-email').value;
+      const emailInput = document.getElementById('quick-email');
+      const email = emailInput ? emailInput.value.trim() : '';
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
       const btn = document.getElementById('btn-quick-claim');
       btn.innerText = 'Issuing...';
       try {
@@ -626,26 +657,43 @@
         if (data.api_key) {
           currentApiKey = data.api_key;
           localStorage.setItem('daas_api_key', currentApiKey);
+          const activeKeyInput = document.getElementById('active-api-key');
+          if (activeKeyInput) activeKeyInput.value = currentApiKey;
           document.getElementById('quick-key-val').innerText = data.api_key;
           document.getElementById('quick-key-result').classList.remove('hidden');
           btn.innerText = '✓ Issued';
+          showToast('Evaluation key issued! 100 requests/mo active.');
+        } else {
+          showToast(data.message || 'Could not issue key', 'error');
+          btn.innerText = 'Issue Key →';
         }
       } catch (err) {
-        alert('Error: ' + err.message);
+        showToast('Error: ' + err.message, 'error');
         btn.innerText = 'Issue Key →';
       }
     }
 
     function copyQuickKey() {
       const key = document.getElementById('quick-key-val').innerText;
+      if (!key) return;
       navigator.clipboard.writeText(key);
-      alert('API Key copied to clipboard!');
+      const btn = document.getElementById('btn-copy-quick-key');
+      if (btn) {
+        btn.innerText = '✓ Copied';
+        btn.classList.add('text-emerald-400');
+        setTimeout(() => {
+          btn.innerText = 'Copy';
+          btn.classList.remove('text-emerald-400');
+        }, 2000);
+      }
+      showToast('API Key copied to clipboard!');
     }
 
     async function claimFreeApiKey() {
-      const email = document.getElementById('free-key-email').value;
+      const emailInput = document.getElementById('free-key-email');
+      const email = emailInput ? emailInput.value.trim() : '';
       if (!email || !email.includes('@')) {
-        alert('Please enter a valid email address');
+        showToast('Please enter a valid email address', 'error');
         return;
       }
       const btn = document.getElementById('btn-claim-free-key');
@@ -660,12 +708,17 @@
         if (data.api_key) {
           currentApiKey = data.api_key;
           localStorage.setItem('daas_api_key', currentApiKey);
+          const activeKeyInput = document.getElementById('active-api-key');
+          if (activeKeyInput) activeKeyInput.value = currentApiKey;
           closeFreeKeyModal();
-          alert(`API Key Generated:\n\n${data.api_key}\n\n100 Requests/month active.`);
+          showToast(`API Key Active: ${data.api_key.substring(0, 16)}... (100 reqs/mo)`);
           switchTab('playground');
+          executeApiQuery('spot-summary');
+        } else {
+          showToast(data.message || 'Could not issue key', 'error');
         }
       } catch (err) {
-        alert('Error: ' + err.message);
+        showToast('Error: ' + err.message, 'error');
       } finally {
         btn.innerText = 'Issue API Key Now →';
       }
@@ -682,9 +735,9 @@
     }
 
     async function openPolarHostedCheckout() {
-      const email = document.getElementById('subscriber-email').value;
+      const email = document.getElementById('subscriber-email').value.trim();
       if (!email || !email.includes('@')) {
-        alert('Please provide a valid email address');
+        showToast('Please provide a valid email address', 'error');
         return;
       }
       const btn = document.getElementById('btn-polar-hosted');
@@ -698,9 +751,11 @@
         const data = await res.json();
         if (data.checkoutUrl) {
           window.location.href = data.checkoutUrl;
+        } else {
+          showToast(data.message || 'Unable to create checkout session', 'error');
         }
       } catch (err) {
-        alert('Checkout error: ' + err.message);
+        showToast('Checkout error: ' + err.message, 'error');
       } finally {
         btn.innerText = 'Proceed to Polar Checkout (37% Off Pre-Applied) ↗';
       }
@@ -722,9 +777,9 @@
     }
 
     const snippets = {
-      curl: `curl -H "Authorization: Bearer YOUR_API_KEY" \\\n  "https://data.dynep.com/v1/data?limit=10&sort_by=updated_at"`,
-      python: `import requests\n\nheaders = {"Authorization": "Bearer YOUR_API_KEY"}\nres = requests.get("https://data.dynep.com/v1/data?limit=10", headers=headers)\ndata = res.json()\nprint(f"Extracted {len(data['data'])} spot instances")`,
-      node: `import fetch from 'node-fetch';\n\nconst res = await fetch('https://data.dynep.com/v1/data?limit=10', {\n  headers: { Authorization: 'Bearer YOUR_API_KEY' }\n});\nconst json = await res.json();\nconsole.log(json.data);`
+      curl: `curl -H "Authorization: Bearer YOUR_API_KEY" \\\n  "https://data.dynep.com/v1/spot/summary"`,
+      python: `import requests\n\nheaders = {"Authorization": "Bearer YOUR_API_KEY"}\nres = requests.get("https://data.dynep.com/v1/spot/summary", headers=headers)\ndata = res.json()\nprint(f"Tracking {data['count']} GPU models across 31 clouds")`,
+      node: `import fetch from 'node-fetch';\n\nconst res = await fetch('https://data.dynep.com/v1/spot/summary', {\n  headers: { Authorization: 'Bearer YOUR_API_KEY' }\n});\nconst json = await res.json();\nconsole.log(json.data);`
     };
 
     function showSnippet(lang) {
@@ -738,35 +793,73 @@
     function copySnippet() {
       const code = document.getElementById('snippet-display').innerText;
       navigator.clipboard.writeText(code);
-      alert('Code snippet copied!');
+      const btn = document.getElementById('btn-copy-snippet');
+      if (btn) {
+        const orig = btn.innerText;
+        btn.innerText = '✓ Copied!';
+        btn.classList.add('text-emerald-400');
+        setTimeout(() => {
+          btn.innerText = orig;
+          btn.classList.remove('text-emerald-400');
+        }, 2000);
+      }
+      showToast('Code snippet copied to clipboard!');
     }
 
     async function executeApiQuery(endpoint) {
-      const key = document.getElementById('active-api-key').value || currentApiKey || 'daas_admin_secret_key_2026';
+      const key = (document.getElementById('active-api-key').value || currentApiKey || 'daas_admin_secret_key_2026').trim();
       let url = '/v1/data?limit=3';
+      if (endpoint === 'spot-summary') url = '/v1/spot/summary';
+      if (endpoint === 'h100') url = '/v1/data?search=H100&limit=3';
       if (endpoint === 'feed-json') url = '/v1/feed.json?limit=3';
       if (endpoint === 'feed-csv') url = '/v1/feed.csv?limit=3';
       if (endpoint === 'metrics') url = '/v1/metrics';
 
-      document.getElementById('response-status').innerText = 'Requesting...';
+      const statusEl = document.getElementById('response-status');
+      statusEl.className = 'text-amber-400 font-mono text-xs';
+      statusEl.innerText = 'Requesting...';
       const output = document.getElementById('api-response-output');
+      output.innerText = '// Contacting edge gateway...';
 
+      const startTime = performance.now();
       try {
-        const res = await fetch(url, { headers: { 'Authorization': `Bearer ${key}` } });
-        document.getElementById('response-status').innerText = `HTTP ${res.status} OK`;
+        const headers = {};
+        if (key) headers['Authorization'] = `Bearer ${key}`;
+        const res = await fetch(url, { headers });
+        const latency = Math.round(performance.now() - startTime);
+
+        if (res.ok) {
+          statusEl.className = 'text-emerald-400 font-mono text-xs font-bold';
+          statusEl.innerText = `HTTP ${res.status} OK (${latency}ms)`;
+        } else {
+          statusEl.className = 'text-rose-400 font-mono text-xs font-bold';
+          statusEl.innerText = `HTTP ${res.status} ${res.statusText || 'Error'} (${latency}ms)`;
+        }
+
         if (endpoint === 'feed-csv') {
           output.innerText = await res.text();
         } else {
           output.innerText = JSON.stringify(await res.json(), null, 2);
         }
       } catch (err) {
+        statusEl.className = 'text-rose-400 font-mono text-xs font-bold';
+        statusEl.innerText = 'Network Error';
         output.innerText = 'Query Error: ' + err.message;
       }
+    }
+
+    // Pre-populate key in playground input if present
+    if (currentApiKey) {
+      const activeKeyInput = document.getElementById('active-api-key');
+      if (activeKeyInput) activeKeyInput.value = currentApiKey;
     }
 
     // Init
     showSnippet('curl');
     fetchLiveData();
   </script>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 </body>
 </html>
