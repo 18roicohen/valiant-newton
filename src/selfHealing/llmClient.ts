@@ -30,21 +30,42 @@ export class LLMClient {
 
     logger.info({ provider, model: env.LLM_MODEL }, 'Invoking LLM Self-Healing Service');
 
-    switch (provider) {
-      case 'openai':
-      case 'litellm':
-        return this.callOpenAICompatible(req, startTime);
-
-      case 'anthropic':
-        return this.callAnthropic(req, startTime);
-
-      case 'gemini':
-        return this.callGemini(req, startTime);
-
-      case 'mock':
-      default:
-        return this.callMockHeuristicEngine(req, startTime);
+    // 1. If explicitly mock, use heuristic engine
+    if (provider === 'mock') {
+      return this.callMockHeuristicEngine(req, startTime);
     }
+
+    // 2. Google Gemini: Try if provider is 'gemini' or GEMINI_API_KEY is configured
+    const geminiKey = env.GEMINI_API_KEY || (provider === 'gemini' ? env.LLM_API_KEY : undefined);
+    if (geminiKey) {
+      try {
+        return await this.callGemini(req, startTime);
+      } catch (geminiErr: any) {
+        logger.warn({ error: geminiErr.message }, 'Gemini self-healing failed, attempting OpenAI/Heuristic fallback');
+      }
+    }
+
+    // 3. OpenAI / LiteLLM: Try if configured
+    const openAiKey = env.OPENAI_API_KEY || (['openai', 'litellm'].includes(provider) ? env.LLM_API_KEY : undefined);
+    if (openAiKey) {
+      try {
+        return await this.callOpenAICompatible(req, startTime);
+      } catch (openAiErr: any) {
+        logger.warn({ error: openAiErr.message }, 'OpenAI self-healing failed, attempting Heuristic fallback');
+      }
+    }
+
+    // 4. Anthropic: Try if configured
+    if (provider === 'anthropic' && env.LLM_API_KEY) {
+      try {
+        return await this.callAnthropic(req, startTime);
+      } catch (anthropicErr: any) {
+        logger.warn({ error: anthropicErr.message }, 'Anthropic self-healing failed, attempting Heuristic fallback');
+      }
+    }
+
+    // 5. High-accuracy Heuristic fallback
+    return this.callMockHeuristicEngine(req, startTime);
   }
 
   /**
@@ -52,10 +73,10 @@ export class LLMClient {
    */
   private static async callOpenAICompatible(req: LLMRequest, startTime: number): Promise<LLMResponse> {
     const baseUrl = env.LLM_BASE_URL || 'https://api.openai.com/v1';
-    const apiKey = env.LLM_API_KEY;
+    const apiKey = env.OPENAI_API_KEY || env.LLM_API_KEY;
 
-    if (!apiKey && env.LLM_PROVIDER === 'openai') {
-      logger.warn('No LLM_API_KEY provided, falling back to mock healer');
+    if (!apiKey) {
+      logger.warn('No OpenAI API key provided, falling back to mock healer');
       return this.callMockHeuristicEngine(req, startTime);
     }
 
@@ -144,32 +165,44 @@ export class LLMClient {
   }
 
   /**
-   * Google Gemini provider
+   * Google Gemini provider (gemini-2.5-flash or gemini-1.5-flash)
    */
   private static async callGemini(req: LLMRequest, startTime: number): Promise<LLMResponse> {
-    const apiKey = env.LLM_API_KEY;
+    const apiKey = env.GEMINI_API_KEY || env.LLM_API_KEY;
     if (!apiKey) {
       return this.callMockHeuristicEngine(req, startTime);
     }
 
-    const model = env.LLM_MODEL || 'gemini-1.5-flash';
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const model = (env.LLM_MODEL && env.LLM_MODEL.startsWith('gemini'))
+      ? env.LLM_MODEL
+      : 'gemini-2.5-flash';
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: `${req.systemPrompt}\n\n${req.userPrompt}` }],
+    const callApi = async (targetModel: string) => {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
+      return await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: `${req.systemPrompt}\n\n${req.userPrompt}` }],
+            },
+          ],
+          generationConfig: {
+            responseMimeType: 'application/json',
+            temperature: env.LLM_TEMPERATURE,
           },
-        ],
-        generationConfig: {
-          responseMimeType: 'application/json',
-          temperature: env.LLM_TEMPERATURE,
-        },
-      }),
-    });
+        }),
+      });
+    };
+
+    let response = await callApi(model);
+
+    // Fall back to gemini-1.5-flash if 2.5 is not available in regional endpoint
+    if (!response.ok && response.status === 404 && model !== 'gemini-1.5-flash') {
+      logger.info({ attemptedModel: model }, 'Gemini model returned 404, falling back to gemini-1.5-flash');
+      response = await callApi('gemini-1.5-flash');
+    }
 
     if (!response.ok) {
       const errText = await response.text();
@@ -177,7 +210,9 @@ export class LLMClient {
     }
 
     const data = await response.json();
-    const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+    let textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+    // Strip markdown code fences if present
+    textContent = textContent.replace(/```json\s*/gi, '').replace(/```\s*$/gi, '').trim();
     const parsed = JSON.parse(textContent) as RepairOutput;
 
     return {

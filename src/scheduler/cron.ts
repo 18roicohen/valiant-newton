@@ -5,13 +5,40 @@ import { logger } from '../db/client.js';
 
 export class SchedulerService {
   private static scheduledTasks: Map<string, ScheduledTask> = new Map();
+  private static systemTasks: ScheduledTask[] = [];
   private static syncInterval: NodeJS.Timeout | null = null;
 
   /**
-   * Starts the cron scheduler and syncs active sources
+   * Starts the cron scheduler, system maintenance jobs, and syncs active sources
    */
   static async start(): Promise<void> {
     logger.info('Starting Autonomous Cron Scheduler');
+
+    // 1. Schedule hourly rotating database snapshots ('0 * * * *')
+    const backupTask = cron.schedule('0 * * * *', async () => {
+      try {
+        logger.info('Executing scheduled database snapshot backup');
+        const snapshot = await repository.createBackupSnapshot();
+        logger.info({ filename: snapshot.filename, bytes: snapshot.sizeBytes }, 'Scheduled backup completed');
+      } catch (err: any) {
+        logger.error({ err: err.message }, 'Scheduled backup snapshot failed');
+      }
+    });
+    this.systemTasks.push(backupTask);
+
+    // 2. Schedule monthly quota reset at midnight on the 1st of each month ('0 0 1 * *')
+    const quotaResetTask = cron.schedule('0 0 1 * *', async () => {
+      try {
+        logger.info('Executing automated 1st-of-month subscriber quota reset');
+        const count = await repository.resetMonthlyQuotas();
+        logger.info({ count }, 'Monthly quotas reset to 0');
+      } catch (err: any) {
+        logger.error({ err: err.message }, 'Monthly quota reset scheduler failed');
+      }
+    });
+    this.systemTasks.push(quotaResetTask);
+
+    // 3. Sync and start source scrapers
     await this.refreshTasks();
 
     // Re-check sources every 5 minutes to pick up newly added or modified sources
@@ -76,5 +103,10 @@ export class SchedulerService {
       task.stop();
     }
     this.scheduledTasks.clear();
+
+    for (const task of this.systemTasks) {
+      task.stop();
+    }
+    this.systemTasks = [];
   }
 }

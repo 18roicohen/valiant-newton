@@ -6,3 +6,5 @@ dist/
 Thumbs.db
 scratch/
 cloudflared.exe
+data/backups/
+data/*.tmp*

@@ -90,8 +90,18 @@ export class PolarService {
   /**
    * Processes a Polar or Stripe webhook payload and provisions the subscriber account
    */
-  static async handleWebhook(payload: Record<string, any>, signatureHeader?: string): Promise<ProvisionResult | null> {
-    const event = payload.type || payload.event;
+  /**
+   * Processes a Polar or Stripe webhook payload and handles full subscription lifecycles:
+   * order.created / subscription.created -> provision or reactivate
+   * subscription.updated -> upgrade/downgrade tier & quota & RPM
+   * subscription.canceled / subscription.revoked -> set inactive and revoke access
+   * order.refunded -> revoke API key access and record audit log
+   */
+  static async handleWebhook(
+    payload: Record<string, any>,
+    signatureHeader?: string
+  ): Promise<(ProvisionResult & { action?: string }) | null> {
+    const event = String(payload.type || payload.event || '').toLowerCase();
     logger.info({ eventType: event }, 'Processing billing webhook event');
 
     // If signature verification is enabled
@@ -101,6 +111,9 @@ export class PolarService {
         throw new Error('Invalid Polar webhook cryptographic signature');
       }
     }
+
+    const { repository } = await import('../../db/repository.js');
+    const { WebhookNotifier } = await import('../../alerts/webhookNotifier.js');
 
     let email = '';
     let customerId = '';
@@ -115,7 +128,7 @@ export class PolarService {
       if (metaTier && ['free', 'starter', 'pro', 'enterprise'].includes(metaTier)) {
         tier = metaTier as SubscriberTier;
       }
-    } else if (event === 'customer.subscription.created') {
+    } else if (event === 'customer.subscription.created' || event === 'customer.subscription.updated') {
       const sub = payload.data?.object || {};
       email = sub.customer_email || '';
       customerId = sub.customer || '';
@@ -125,7 +138,15 @@ export class PolarService {
       }
     }
     // 2. Polar.sh events
-    else if (event === 'order.created' || event === 'subscription.created' || event === 'checkout.created') {
+    else if (
+      event === 'order.created' ||
+      event === 'subscription.created' ||
+      event === 'subscription.updated' ||
+      event === 'subscription.canceled' ||
+      event === 'subscription.revoked' ||
+      event === 'order.refunded' ||
+      event === 'checkout.created'
+    ) {
       const data = payload.data || payload;
       email = data.customer?.email || data.user?.email || data.email || '';
       customerId = data.customer_id || data.user_id || data.id || `polar_${Date.now()}`;
@@ -145,16 +166,118 @@ export class PolarService {
       }
     }
 
-    if (!email) {
-      logger.warn('No customer email identified in billing payload');
+    if (!email && !customerId) {
+      logger.warn('No customer email or ID identified in billing payload');
       return null;
     }
 
-    return await ApiKeyProvisioner.provisionSubscriber({
+    // Locate existing subscriber by customerId or email
+    let existingSub = customerId ? await repository.getSubscriberByCustomerId(customerId) : null;
+    if (!existingSub && email) {
+      existingSub = await repository.getSubscriberByEmail(email);
+    }
+
+    // A. Handle Cancellation & Revocation
+    if (event.includes('canceled') || event.includes('revoked')) {
+      if (existingSub) {
+        const updated = await repository.updateSubscriber(existingSub.id, {
+          is_active: false,
+        });
+        logger.warn({ subscriberId: existingSub.id, email: existingSub.email }, 'Subscription canceled - API key access disabled');
+        await WebhookNotifier.sendAlert({
+          title: 'Subscription Canceled / Revoked',
+          status: 'WARNING',
+          message: `Subscriber ${existingSub.email} (${existingSub.tier}) has canceled subscription. Key deactivated.`,
+        });
+        return {
+          subscriber: updated || existingSub,
+          plaintextApiKey: '',
+          action: 'canceled',
+        };
+      }
+      return null;
+    }
+
+    // B. Handle Order Refund
+    if (event.includes('refunded')) {
+      if (existingSub) {
+        const updated = await repository.updateSubscriber(existingSub.id, {
+          is_active: false,
+        });
+        logger.warn({ subscriberId: existingSub.id, email: existingSub.email }, 'Order refunded - API key revoked');
+        await repository.createLog({
+          source_id: '00000000-0000-0000-0000-000000000000',
+          status: 'SUCCESS',
+          records_count: 0,
+          duration_ms: 0,
+          tokens_used: 0,
+          drift_detected: false,
+          error_message: null,
+          metadata: { audit_event: 'ORDER_REFUNDED', email: existingSub.email, customer_id: customerId },
+        });
+        await WebhookNotifier.sendAlert({
+          title: 'Order Refunded — Key Revoked',
+          status: 'WARNING',
+          message: `Order refunded for subscriber ${existingSub.email}. Access disabled immediately.`,
+        });
+        return {
+          subscriber: updated || existingSub,
+          plaintextApiKey: '',
+          action: 'refunded',
+        };
+      }
+      return null;
+    }
+
+    // C. Handle Subscription Update (Upgrade/Downgrade)
+    if (event.includes('updated') && existingSub) {
+      const productInfo = this.TIER_PRODUCTS[tier] || this.TIER_PRODUCTS.starter;
+      const updated = await repository.updateSubscriber(existingSub.id, {
+        tier,
+        monthly_quota: productInfo.quota,
+        rate_limit_rpm: productInfo.rpm,
+        is_active: true,
+      });
+      logger.info({ subscriberId: existingSub.id, email: existingSub.email, newTier: tier }, 'Subscription tier and quota updated');
+      await WebhookNotifier.sendAlert({
+        title: 'Subscription Tier Updated',
+        status: 'SUCCESS',
+        message: `Subscriber ${existingSub.email} updated to tier: ${tier} (Quota: ${productInfo.quota.toLocaleString()} reqs/mo, RPM: ${productInfo.rpm})`,
+      });
+      return {
+        subscriber: updated || existingSub,
+        plaintextApiKey: '',
+        action: 'updated',
+      };
+    }
+
+    // D. If existing subscriber purchases again, reactivate / upgrade
+    if (existingSub) {
+      const productInfo = this.TIER_PRODUCTS[tier] || this.TIER_PRODUCTS.starter;
+      const updated = await repository.updateSubscriber(existingSub.id, {
+        tier,
+        monthly_quota: productInfo.quota,
+        rate_limit_rpm: productInfo.rpm,
+        is_active: true,
+      });
+      return {
+        subscriber: updated || existingSub,
+        plaintextApiKey: '',
+        action: 'reactivated',
+      };
+    }
+
+    // E. Provision new subscriber account (order.created / subscription.created / checkout.session.completed)
+    const provisionResult = await ApiKeyProvisioner.provisionSubscriber({
       email,
       customerId,
       tier,
     });
+
+    return {
+      ...provisionResult,
+      action: 'provisioned',
+    };
   }
 
   /**

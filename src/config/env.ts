@@ -19,8 +19,10 @@ const envSchema = z.object({
   // LLM / Self-Healing Configuration
   LLM_PROVIDER: z.enum(['openai', 'anthropic', 'gemini', 'litellm', 'mock']).default('mock'),
   LLM_API_KEY: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional(),
+  OPENAI_API_KEY: z.string().optional(),
   LLM_BASE_URL: z.string().optional(),
-  LLM_MODEL: z.string().default('gpt-4o-mini'),
+  LLM_MODEL: z.string().default('gemini-2.5-flash'),
   LLM_MAX_TOKENS: z.coerce.number().default(2048),
   LLM_TEMPERATURE: z.coerce.number().default(0.1),
 

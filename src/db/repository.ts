@@ -42,9 +42,17 @@ export interface IRepository {
   // Subscriber operations
   getSubscriberByApiKeyHash(hash: string): Promise<ApiSubscriber | null>;
   getSubscriberByEmail(email: string): Promise<ApiSubscriber | null>;
+  getSubscriberByCustomerId(customerId: string): Promise<ApiSubscriber | null>;
   createSubscriber(subscriber: ApiSubscriber): Promise<ApiSubscriber>;
+  updateSubscriber(id: string, updates: Partial<ApiSubscriber>): Promise<ApiSubscriber | null>;
   incrementSubscriberUsage(id: string, count?: number): Promise<ApiSubscriber | null>;
+  resetMonthlyQuotas(): Promise<number>;
   getAllSubscribers(): Promise<ApiSubscriber[]>;
+
+  // Backups & Persistence
+  createBackupSnapshot(): Promise<{ filename: string; path: string; sizeBytes: number }>;
+  purgeOldBackups(retentionDays?: number): Promise<number>;
+  forceFlush(): void;
 
   // Extraction Logs
   createLog(log: Omit<ExtractionLog, 'id' | 'created_at'>): Promise<ExtractionLog>;
@@ -113,21 +121,57 @@ class PersistentFileRepository implements IRepository {
     }
   }
 
+  /**
+   * Performs an atomic write using temporary file and atomic replace to prevent corrupt disk writes
+   */
+  private writeAtomic(filePath: string, content: string): void {
+    const tmpPath = `${filePath}.tmp.${process.pid}.${Date.now()}`;
+    const maxRetries = 5;
+    fs.writeFileSync(tmpPath, content, 'utf-8');
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        fs.renameSync(tmpPath, filePath);
+        return;
+      } catch (err: any) {
+        if (attempt === maxRetries) {
+          try {
+            fs.copyFileSync(tmpPath, filePath);
+            fs.unlinkSync(tmpPath);
+            return;
+          } catch (copyErr: any) {
+            logger.error({ error: copyErr.message }, 'Failed atomic copy fallback');
+            throw copyErr;
+          }
+        }
+        const waitMs = 25 * attempt;
+        const start = Date.now();
+        while (Date.now() - start < waitMs) {
+          // busy-wait for short lock contention
+        }
+      }
+    }
+  }
+
+  public forceFlush(): void {
+    try {
+      const payload = {
+        sources: Array.from(this.sources.values()),
+        records: Array.from(this.records.values()),
+        subscribers: Array.from(this.subscribers.values()),
+        logs: this.logs.slice(0, 500),
+        updated_at: new Date().toISOString(),
+      };
+      this.writeAtomic(this.dbFilePath, JSON.stringify(payload, null, 2));
+    } catch (err: any) {
+      logger.error({ error: err.message }, 'Failed to persist local DB to disk');
+    }
+  }
+
   private scheduleSave(): void {
     if (this.saveTimeout) clearTimeout(this.saveTimeout);
     this.saveTimeout = setTimeout(() => {
-      try {
-        const payload = {
-          sources: Array.from(this.sources.values()),
-          records: Array.from(this.records.values()),
-          subscribers: Array.from(this.subscribers.values()),
-          logs: this.logs.slice(0, 500),
-          updated_at: new Date().toISOString(),
-        };
-        fs.writeFileSync(this.dbFilePath, JSON.stringify(payload, null, 2), 'utf-8');
-      } catch (err: any) {
-        logger.error({ error: err.message }, 'Failed to persist local DB to disk');
-      }
+      this.forceFlush();
     }, 100);
   }
 
@@ -291,10 +335,32 @@ class PersistentFileRepository implements IRepository {
     return null;
   }
 
+  async getSubscriberByCustomerId(customerId: string): Promise<ApiSubscriber | null> {
+    for (const sub of this.subscribers.values()) {
+      if (sub.customer_id === customerId) {
+        return sub;
+      }
+    }
+    return null;
+  }
+
   async createSubscriber(subscriber: ApiSubscriber): Promise<ApiSubscriber> {
     this.subscribers.set(subscriber.id, subscriber);
     this.scheduleSave();
     return subscriber;
+  }
+
+  async updateSubscriber(id: string, updates: Partial<ApiSubscriber>): Promise<ApiSubscriber | null> {
+    const sub = this.subscribers.get(id);
+    if (!sub) return null;
+    const updated: ApiSubscriber = {
+      ...sub,
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
+    this.subscribers.set(id, updated);
+    this.scheduleSave();
+    return updated;
   }
 
   async incrementSubscriberUsage(id: string, count: number = 1): Promise<ApiSubscriber | null> {
@@ -307,8 +373,91 @@ class PersistentFileRepository implements IRepository {
     return sub;
   }
 
+  async resetMonthlyQuotas(): Promise<number> {
+    let count = 0;
+    const now = new Date().toISOString();
+    for (const [id, sub] of this.subscribers.entries()) {
+      if (sub.current_usage > 0) {
+        sub.current_usage = 0;
+        sub.updated_at = now;
+        this.subscribers.set(id, sub);
+        count++;
+      }
+    }
+    if (count > 0) {
+      this.forceFlush();
+    }
+    logger.info({ resetCount: count }, 'Reset monthly subscriber quotas');
+    return count;
+  }
+
   async getAllSubscribers(): Promise<ApiSubscriber[]> {
     return Array.from(this.subscribers.values());
+  }
+
+  /**
+   * Automated rotating local snapshots saved to data/backups/db-YYYY-MM-DD-HH.json
+   */
+  async createBackupSnapshot(): Promise<{ filename: string; path: string; sizeBytes: number }> {
+    const backupsDir = path.resolve(process.cwd(), 'data', 'backups');
+    if (!fs.existsSync(backupsDir)) {
+      fs.mkdirSync(backupsDir, { recursive: true });
+    }
+
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const yyyy = now.getUTCFullYear();
+    const mm = pad(now.getUTCMonth() + 1);
+    const dd = pad(now.getUTCDate());
+    const hh = pad(now.getUTCHours());
+    const filename = `db-${yyyy}-${mm}-${dd}-${hh}.json`;
+    const targetPath = path.join(backupsDir, filename);
+
+    this.forceFlush();
+
+    const payload = {
+      sources: Array.from(this.sources.values()),
+      records: Array.from(this.records.values()),
+      subscribers: Array.from(this.subscribers.values()),
+      logs: this.logs.slice(0, 500),
+      snapshot_at: now.toISOString(),
+    };
+
+    const content = JSON.stringify(payload, null, 2);
+    this.writeAtomic(targetPath, content);
+    const stat = fs.statSync(targetPath);
+
+    logger.info({ filename, sizeBytes: stat.size }, 'Created automated backup snapshot');
+
+    // Automatically purge backups older than 14 days
+    await this.purgeOldBackups(14);
+
+    return { filename, path: targetPath, sizeBytes: stat.size };
+  }
+
+  async purgeOldBackups(retentionDays: number = 14): Promise<number> {
+    const backupsDir = path.resolve(process.cwd(), 'data', 'backups');
+    if (!fs.existsSync(backupsDir)) return 0;
+
+    const files = fs.readdirSync(backupsDir);
+    const cutoffTime = Date.now() - retentionDays * 24 * 60 * 60 * 1000;
+    let purgedCount = 0;
+
+    for (const file of files) {
+      if (!file.startsWith('db-') || !file.endsWith('.json')) continue;
+      const filePath = path.join(backupsDir, file);
+      try {
+        const stat = fs.statSync(filePath);
+        if (stat.mtimeMs < cutoffTime) {
+          fs.unlinkSync(filePath);
+          purgedCount++;
+          logger.info({ file }, 'Purged expired backup snapshot');
+        }
+      } catch (err: any) {
+        logger.warn({ file, error: err.message }, 'Failed to check/purge backup snapshot');
+      }
+    }
+    return purgedCount;
   }
 
   async createLog(logData: Omit<ExtractionLog, 'id' | 'created_at'>): Promise<ExtractionLog> {
@@ -517,6 +666,15 @@ class SupabaseRepository implements IRepository {
     return data as ApiSubscriber;
   }
 
+  async getSubscriberByCustomerId(customerId: string): Promise<ApiSubscriber | null> {
+    const client = getSupabaseClient();
+    if (!client) return this.fallback.getSubscriberByCustomerId(customerId);
+
+    const { data, error } = await client.from('api_subscribers').select('*').eq('customer_id', customerId).single();
+    if (error || !data) return this.fallback.getSubscriberByCustomerId(customerId);
+    return data as ApiSubscriber;
+  }
+
   async createSubscriber(subscriber: ApiSubscriber): Promise<ApiSubscriber> {
     const client = getSupabaseClient();
     if (!client) return this.fallback.createSubscriber(subscriber);
@@ -525,6 +683,24 @@ class SupabaseRepository implements IRepository {
     if (error) {
       logger.error({ error }, 'Supabase error creating subscriber');
       return this.fallback.createSubscriber(subscriber);
+    }
+    return data as ApiSubscriber;
+  }
+
+  async updateSubscriber(id: string, updates: Partial<ApiSubscriber>): Promise<ApiSubscriber | null> {
+    const client = getSupabaseClient();
+    if (!client) return this.fallback.updateSubscriber(id, updates);
+
+    const { data, error } = await client
+      .from('api_subscribers')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      logger.error({ error }, 'Supabase error updating subscriber');
+      return this.fallback.updateSubscriber(id, updates);
     }
     return data as ApiSubscriber;
   }
@@ -548,11 +724,39 @@ class SupabaseRepository implements IRepository {
     return data as ApiSubscriber;
   }
 
+  async resetMonthlyQuotas(): Promise<number> {
+    const client = getSupabaseClient();
+    if (!client) return this.fallback.resetMonthlyQuotas();
+
+    const { error, count } = await client
+      .from('api_subscribers')
+      .update({ current_usage: 0, updated_at: new Date().toISOString() })
+      .gt('current_usage', 0);
+
+    if (error) {
+      logger.error({ error }, 'Supabase error resetting monthly quotas');
+      return this.fallback.resetMonthlyQuotas();
+    }
+    return count || 0;
+  }
+
   async getAllSubscribers(): Promise<ApiSubscriber[]> {
     const client = getSupabaseClient();
     if (!client) return this.fallback.getAllSubscribers();
     const { data } = await client.from('api_subscribers').select('*');
     return (data as ApiSubscriber[]) || [];
+  }
+
+  async createBackupSnapshot(): Promise<{ filename: string; path: string; sizeBytes: number }> {
+    return this.fallback.createBackupSnapshot();
+  }
+
+  async purgeOldBackups(retentionDays?: number): Promise<number> {
+    return this.fallback.purgeOldBackups(retentionDays);
+  }
+
+  forceFlush(): void {
+    this.fallback.forceFlush();
   }
 
   async createLog(logData: Omit<ExtractionLog, 'id' | 'created_at'>): Promise<ExtractionLog> {

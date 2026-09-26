@@ -59,14 +59,14 @@
           "status": ".status, .badge",
           "natural_key": "h3, .title"
         },
-        "version": 17
+        "version": 18
       },
       "schedule_cron": "*/15 * * * *",
       "headers": {},
       "status": "ACTIVE",
-      "last_run_at": "2026-09-26T18:00:01.873Z",
+      "last_run_at": "2026-09-26T18:15:01.617Z",
       "created_at": "2026-09-26T12:00:09.313Z",
-      "updated_at": "2026-09-26T18:00:01.873Z"
+      "updated_at": "2026-09-26T18:15:01.617Z"
     }
   ],
   "records": [
@@ -1155,7 +1155,7 @@
       "hash": "049e10cb8bd3ae9fdb474391b252e34c1ea109313f477b821314236090c1bc2e",
       "version": 1,
       "first_seen_at": "2026-09-26T14:15:02.546Z",
-      "updated_at": "2026-09-26T18:00:01.873Z"
+      "updated_at": "2026-09-26T18:15:01.616Z"
     },
     {
       "entity_id": "3f9766ace10d16cca0fa4bf09a7742bc1fde53c85955d7fa1eccf73040f238c7",
@@ -1349,11 +1349,11 @@
       "api_key_prefix": "sk_live_af07d51...",
       "tier": "pro",
       "monthly_quota": 10000,
-      "current_usage": 2,
+      "current_usage": 0,
       "rate_limit_rpm": 300,
       "is_active": true,
       "created_at": "2026-09-26T15:32:27.288Z",
-      "updated_at": "2026-09-26T15:32:30.895Z"
+      "updated_at": "2026-09-26T18:19:13.898Z"
     },
     {
       "id": "bc50a878-6f10-41a6-b686-03d205202fc3",
@@ -1377,11 +1377,11 @@
       "api_key_prefix": "sk_live_bb25786...",
       "tier": "starter",
       "monthly_quota": 1000,
-      "current_usage": 6,
+      "current_usage": 0,
       "rate_limit_rpm": 60,
       "is_active": true,
       "created_at": "2026-09-26T15:58:03.101Z",
-      "updated_at": "2026-09-26T15:58:12.723Z"
+      "updated_at": "2026-09-26T18:19:13.898Z"
     },
     {
       "id": "f114ad63-fef9-4520-833e-b84cb9865e01",
@@ -1424,9 +1424,185 @@
       "is_active": true,
       "created_at": "2026-09-26T17:14:45.257Z",
       "updated_at": "2026-09-26T17:14:45.257Z"
+    },
+    {
+      "id": "6b0fbfdf-610d-428a-bf97-95a1425991d1",
+      "customer_id": "83975e96-9835-42ff-aff5-134f0a9a4e21",
+      "email": "",
+      "api_key_hash": "b908c8ec9bbc1ed3a9f2fc6007016e46f3b298dd6019daa774e52575dc4d0971",
+      "api_key_prefix": "sk_live_a4f161a...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T18:13:05.147Z",
+      "updated_at": "2026-09-26T18:13:05.147Z"
+    },
+    {
+      "id": "4288d506-5f45-42d3-885b-f1593d59deb0",
+      "customer_id": "cust_up_1790446753098",
+      "email": "upgrade-1790446753098@domain.com",
+      "api_key_hash": "05da110f9717155a90d90d067a9c6402d6648319d701faccd34be1629a7d8fe2",
+      "api_key_prefix": "sk_live_e5c4727...",
+      "tier": "enterprise",
+      "monthly_quota": 100000,
+      "current_usage": 0,
+      "rate_limit_rpm": 1200,
+      "is_active": true,
+      "created_at": "2026-09-26T18:19:13.099Z",
+      "updated_at": "2026-09-26T18:19:13.154Z"
+    },
+    {
+      "id": "1cc89091-098a-422a-90e5-e4825bcad5d4",
+      "customer_id": "cust_cancel_1790446753599",
+      "email": "cancel-1790446753599@domain.com",
+      "api_key_hash": "6aabdff525060519e214fabd6df760c6353fede8d739091128ee956dfda09c57",
+      "api_key_prefix": "sk_live_abb2867...",
+      "tier": "pro",
+      "monthly_quota": 10000,
+      "current_usage": 0,
+      "rate_limit_rpm": 300,
+      "is_active": false,
+      "created_at": "2026-09-26T18:19:13.599Z",
+      "updated_at": "2026-09-26T18:19:13.898Z"
+    },
+    {
+      "id": "0dfb2c35-6a94-4e4c-8a1c-b77546b34037",
+      "customer_id": "cust_refund_1790446753748",
+      "email": "refund-1790446753748@domain.com",
+      "api_key_hash": "099f64b50f316b38b5fc498d02e74e6ce116ee9572b4b9ca4488897959db97eb",
+      "api_key_prefix": "sk_live_ad981a1...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": false,
+      "created_at": "2026-09-26T18:19:13.748Z",
+      "updated_at": "2026-09-26T18:19:13.750Z"
+    },
+    {
+      "id": "df573531-cb6c-4d88-adf5-da8a41b30068",
+      "customer_id": null,
+      "email": "quota-reset-1790446753896@domain.com",
+      "api_key_hash": "0e39e6b37df05ad037119a304323402e63ff5628c2eb2e932f939e7f7aed39b5",
+      "api_key_prefix": "sk_live_3a43be2...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T18:19:13.896Z",
+      "updated_at": "2026-09-26T18:19:13.898Z"
+    },
+    {
+      "id": "474706ff-e49b-45fb-ba49-4fb3d43ff280",
+      "customer_id": "cust_up_1790446882257",
+      "email": "upgrade-1790446882257@domain.com",
+      "api_key_hash": "63391550e8682429d4e4e04cab6bca88b41df1b506a7466655fd5f840fd499fe",
+      "api_key_prefix": "sk_live_154e348...",
+      "tier": "enterprise",
+      "monthly_quota": 100000,
+      "current_usage": 0,
+      "rate_limit_rpm": 1200,
+      "is_active": true,
+      "created_at": "2026-09-26T18:21:22.257Z",
+      "updated_at": "2026-09-26T18:21:22.317Z"
+    },
+    {
+      "id": "3ae9d9b7-f4c3-4d48-99b0-d540f4c01c04",
+      "customer_id": "cust_cancel_1790446882753",
+      "email": "cancel-1790446882753@domain.com",
+      "api_key_hash": "c652f190ad43c55a87efe140170b4c47fa3a8a6f47328ad074c22bd61eae51cc",
+      "api_key_prefix": "sk_live_c4a1dc1...",
+      "tier": "pro",
+      "monthly_quota": 10000,
+      "current_usage": 0,
+      "rate_limit_rpm": 300,
+      "is_active": false,
+      "created_at": "2026-09-26T18:21:22.753Z",
+      "updated_at": "2026-09-26T18:21:23.050Z"
+    },
+    {
+      "id": "f75bb8db-5d09-487e-b242-245a39391e59",
+      "customer_id": "cust_refund_1790446882902",
+      "email": "refund-1790446882902@domain.com",
+      "api_key_hash": "3823c1a2b96f5e8027d75f401878d186df17fc648f638be5d4039db09ee820e5",
+      "api_key_prefix": "sk_live_0dfca77...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": false,
+      "created_at": "2026-09-26T18:21:22.902Z",
+      "updated_at": "2026-09-26T18:21:22.904Z"
+    },
+    {
+      "id": "d8b5f42a-120d-43f5-922e-9770ecdbeb1c",
+      "customer_id": null,
+      "email": "quota-reset-1790446883049@domain.com",
+      "api_key_hash": "cf6439521f1c4ca3f96010a270fefbfc11b9a0306fe9ad2bc1403435bf384063",
+      "api_key_prefix": "sk_live_25ea4b4...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T18:21:23.049Z",
+      "updated_at": "2026-09-26T18:21:23.050Z"
     }
   ],
   "logs": [
+    {
+      "id": "5f6f8fb2-b49d-4e9a-a7b7-6e261423ce97",
+      "source_id": "00000000-0000-0000-0000-000000000000",
+      "status": "SUCCESS",
+      "records_count": 0,
+      "duration_ms": 0,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "audit_event": "ORDER_REFUNDED",
+        "email": "refund-1790446882902@domain.com",
+        "customer_id": "cust_refund_1790446882902"
+      },
+      "created_at": "2026-09-26T18:21:22.904Z"
+    },
+    {
+      "id": "d795c733-cd30-4eb4-b5ca-8574fe475671",
+      "source_id": "00000000-0000-0000-0000-000000000000",
+      "status": "SUCCESS",
+      "records_count": 0,
+      "duration_ms": 0,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "audit_event": "ORDER_REFUNDED",
+        "email": "refund-1790446753748@domain.com",
+        "customer_id": "cust_refund_1790446753748"
+      },
+      "created_at": "2026-09-26T18:19:13.750Z"
+    },
+    {
+      "id": "dea24208-846f-402a-9ee1-402aa4240d9b",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1609,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 853,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 757,
+        "repairedVersion": 18
+      },
+      "created_at": "2026-09-26T18:15:01.617Z"
+    },
     {
       "id": "5e215dbc-4094-4373-9342-45f71478eda7",
       "source_id": "223cc332-04a2-47e5-8369-85f5b51cbfe4",
@@ -2142,5 +2318,5 @@
       "created_at": "2026-09-26T11:38:32.732Z"
     }
   ],
-  "updated_at": "2026-09-26T18:09:42.777Z"
+  "updated_at": "2026-09-26T18:21:23.051Z"
 }

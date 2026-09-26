@@ -108,14 +108,15 @@ export const webhookRoutes: FastifyPluginAsync = async (fastify) => {
       if (result) {
         return reply.status(200).send({
           received: true,
-          provisioned: true,
+          action: result.action || 'processed',
+          provisioned: result.action === 'provisioned',
           subscriber_id: result.subscriber.id,
           email: result.subscriber.email,
           tier: result.subscriber.tier,
           api_key: result.plaintextApiKey,
         });
       }
-      return reply.status(200).send({ received: true, provisioned: false });
+      return reply.status(200).send({ received: true, provisioned: false, action: 'ignored' });
     } catch (err: any) {
       logger.error({ error: err.message }, 'Polar webhook processing failed');
       return reply.status(400).send({ error: 'Webhook Error', message: err.message });
@@ -131,6 +132,7 @@ export const webhookRoutes: FastifyPluginAsync = async (fastify) => {
     const result = await PolarService.handleWebhook(payload);
     return reply.status(200).send({
       received: true,
+      action: result?.action || 'ignored',
       provisioned: Boolean(result),
       subscriber_id: result?.subscriber.id,
       email: result?.subscriber.email,

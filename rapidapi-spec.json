@@ -1,0 +1,204 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Dynep Real-Time Cloud GPU & Model Spot Intelligence API",
+    "version": "1.0.0",
+    "description": "Enterprise-grade real-time AI Cloud GPU spot rate intelligence across 31 providers (Lambda Labs, Vast.ai, RunPod, Vultr, LeaderGPU). Ingest real-time pricing data, spot trends, server inventory availability, and historical averages.\n\n### 1-Click RapidAPI Hub Import:\n1. Open RapidAPI Studio (https://rapidapi.com/studio)\n2. Click 'Add New API' -> 'Import OpenAPI'\n3. Upload this `rapidapi-spec.json` file\n4. Your endpoints, schemas, parameters, and documentation will be fully imported automatically!",
+    "termsOfService": "https://data.dynep.com/terms",
+    "contact": {
+      "name": "Dynep Engineering Support",
+      "url": "https://data.dynep.com",
+      "email": "keys@dynep.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://data.dynep.com",
+      "description": "Production Edge Gateway (Cloudflare Tunnel)"
+    },
+    {
+      "url": "https://micro-daas-engine.onrender.com",
+      "description": "Secondary Cloud Mirror (Render)"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health & Liveness Check",
+        "description": "Checks engine status, database probe, and system uptime.",
+        "responses": {
+          "200": {
+            "description": "Operational",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "timestamp": { "type": "string", "format": "date-time" },
+                    "uptime_seconds": { "type": "integer", "example": 1200 },
+                    "database": { "type": "string", "example": "in_memory_active" },
+                    "version": { "type": "string", "example": "1.0.0" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/metrics": {
+      "get": {
+        "summary": "Telemetry & Metrics Summary",
+        "description": "Returns crawler metrics, total records indexed, active sources, and LLM token usage.",
+        "responses": {
+          "200": {
+            "description": "Metrics summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": { "type": "string", "format": "date-time" },
+                    "metrics": {
+                      "type": "object",
+                      "properties": {
+                        "totalRecords": { "type": "integer", "example": 64 },
+                        "activeSources": { "type": "integer", "example": 14 },
+                        "activeSubscribers": { "type": "integer", "example": 12 },
+                        "totalExtractions": { "type": "integer", "example": 50 },
+                        "driftRepairs": { "type": "integer", "example": 3 },
+                        "failedExtractions": { "type": "integer", "example": 0 },
+                        "totalTokensUsed": { "type": "integer", "example": 1050 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data": {
+      "get": {
+        "summary": "Query GPU Spot Intelligence",
+        "description": "Query live spot rates across all monitored cloud GPU providers with pagination, sorting, and time-range filtering.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "page", "in": "query", "description": "Page number (1-indexed)", "required": false, "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "description": "Records per page (1 to 100)", "required": false, "schema": { "type": "integer", "default": 50 } },
+          { "name": "source_id", "in": "query", "description": "Filter by source UUID", "required": false, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "sort_by", "in": "query", "description": "Sort column", "required": false, "schema": { "type": "string", "default": "updated_at" } },
+          { "name": "sort_dir", "in": "query", "description": "Sort direction (asc/desc)", "required": false, "schema": { "type": "string", "default": "desc" } },
+          { "name": "since", "in": "query", "description": "ISO-8601 timestamp cutoff", "required": false, "schema": { "type": "string", "format": "date-time" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated GPU records list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "entity_id": { "type": "string", "example": "4a7f9c2d..." },
+                          "source_id": { "type": "string", "format": "uuid" },
+                          "natural_key": { "type": "string", "example": "NVIDIA H100 80GB SXM5" },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "title": { "type": "string", "example": "NVIDIA H100 SXM5" },
+                              "price": { "type": "number", "example": 2.39 },
+                              "provider": { "type": "string", "example": "Lambda Labs" },
+                              "region": { "type": "string", "example": "us-east-1" },
+                              "status": { "type": "string", "example": "available" }
+                            }
+                          },
+                          "version": { "type": "integer", "example": 1 },
+                          "first_seen_at": { "type": "string", "format": "date-time" },
+                          "updated_at": { "type": "string", "format": "date-time" }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": { "type": "integer", "example": 1 },
+                        "limit": { "type": "integer", "example": 50 },
+                        "total_records": { "type": "integer", "example": 64 },
+                        "total_pages": { "type": "integer", "example": 2 },
+                        "has_more": { "type": "boolean", "example": true }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing Authorization header" },
+          "403": { "description": "Invalid API Key or Inactive Subscription" },
+          "429": { "description": "Rate Limit or Monthly Quota Exceeded" }
+        }
+      }
+    },
+    "/v1/data/{id}": {
+      "get": {
+        "summary": "Get Record by ID",
+        "description": "Fetch a specific hardware instance or pricing record by SHA-256 entity_id.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "description": "SHA-256 natural entity identifier", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Record found" },
+          "404": { "description": "Record not found" }
+        }
+      }
+    },
+    "/v1/feed.json": {
+      "get": {
+        "summary": "Batch JSON Export Feed",
+        "description": "High-throughput JSON stream for continuous ingest or ML pipelines.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "source_id", "in": "query", "schema": { "type": "string", "format": "uuid" } },
+          { "name": "since", "in": "query", "schema": { "type": "string", "format": "date-time" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 1000 } }
+        ],
+        "responses": {
+          "200": { "description": "JSON batch stream" }
+        }
+      }
+    },
+    "/v1/feed.csv": {
+      "get": {
+        "summary": "RFC 4180 CSV Export Feed",
+        "description": "Download flattened CSV export ready for Excel, Python pandas, and R.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "source_id", "in": "query", "schema": { "type": "string", "format": "uuid" } },
+          { "name": "since", "in": "query", "schema": { "type": "string", "format": "date-time" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 1000 } }
+        ],
+        "responses": {
+          "200": { "description": "CSV stream response" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key",
+        "description": "Pass your API key as: `Authorization: Bearer sk_live_...`"
+      }
+    }
+  }
+}

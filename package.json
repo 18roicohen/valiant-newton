@@ -13,6 +13,7 @@
     "cli": "tsx src/cli.ts",
     "scrape": "tsx src/cli.ts scrape",
     "seed": "tsx src/cli.ts seed",
+    "backup": "tsx src/cli.ts backup",
     "test-drift": "tsx src/cli.ts test-drift",
     "test": "vitest run",
     "test:watch": "vitest"
