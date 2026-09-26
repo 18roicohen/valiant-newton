@@ -20,7 +20,7 @@ export const webhookRoutes: FastifyPluginAsync = async (fastify) => {
       ? body.tier
       : 'starter';
 
-    const session = PolarService.createCheckoutSession({
+    const session = await PolarService.createCheckoutSession({
       email: body.email,
       tier,
     });

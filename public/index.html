@@ -261,7 +261,7 @@
           </div>
 
           <div class="space-y-2 pt-2">
-            <button onclick="openPolarHostedCheckout()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+            <button id="btn-polar-hosted" onclick="openPolarHostedCheckout()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
               <span>💳 Pay with Polar Checkout (Live)</span>
               <span>↗</span>
             </button>
@@ -575,12 +575,34 @@ data = res.json()
       enterprise: '0e09696f-4a48-40be-8f63-66b3e1518e47'
     };
 
-    function openPolarHostedCheckout() {
-      const prodId = POLAR_PRODUCTS[selectedTier] || POLAR_PRODUCTS.starter;
+    async function openPolarHostedCheckout() {
       const email = document.getElementById('subscriber-email').value;
-      let url = `https://polar.sh/dynep/products/${prodId}`;
-      if (email) url += `?customer_email=${encodeURIComponent(email)}`;
-      window.open(url, '_blank');
+      if (!email || !email.includes('@')) {
+        alert('Please provide a valid email address');
+        return;
+      }
+
+      const btn = document.getElementById('btn-polar-hosted');
+      const origHtml = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>Opening Secure Polar Checkout...</span>';
+
+      try {
+        const res = await fetch('/api/checkout/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, tier: selectedTier })
+        });
+        const data = await res.json();
+        if (data.checkoutUrl) {
+          window.location.href = data.checkoutUrl;
+        } else {
+          alert('Error: ' + (data.message || 'Could not initiate checkout'));
+        }
+      } catch (err) {
+        alert('Checkout error: ' + err.message);
+      } finally {
+        if (btn) btn.innerHTML = origHtml;
+      }
     }
 
     // Polar Checkout Handling

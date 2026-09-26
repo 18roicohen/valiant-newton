@@ -25,8 +25,51 @@ export class PolarService {
   /**
    * Creates a Polar checkout session or instant development checkout URL
    */
-  static createCheckoutSession(options: PolarCheckoutOptions): { checkoutUrl: string; product: string; price: number } {
+  static async createCheckoutSession(options: PolarCheckoutOptions): Promise<{ checkoutUrl: string; product: string; price: number }> {
     const productInfo = this.TIER_PRODUCTS[options.tier] || this.TIER_PRODUCTS.starter;
+
+    const productIdMap: Record<SubscriberTier, string | undefined> = {
+      free: undefined,
+      starter: env.POLAR_PRODUCT_STARTER || '5ef8f816-2cc7-4986-bf08-d2ca27a0d5be',
+      pro: env.POLAR_PRODUCT_PRO || '0c3b8529-67d6-4e7b-b4dc-bc28041cd0ab',
+      enterprise: env.POLAR_PRODUCT_ENTERPRISE || '0e09696f-4a48-40be-8f63-66b3e1518e47',
+    };
+
+    const productId = productIdMap[options.tier];
+
+    if (env.POLAR_ACCESS_TOKEN && productId) {
+      try {
+        const response = await fetch('https://api.polar.sh/v1/checkouts/', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${env.POLAR_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            products: [productId],
+            customer_email: options.email,
+            success_url: options.successUrl || 'https://data.dynep.com/?checkout=success',
+          }),
+        });
+
+        if (response.ok) {
+          const data = (await response.json()) as { url?: string };
+          if (data.url) {
+            return {
+              checkoutUrl: data.url,
+              product: productInfo.name,
+              price: productInfo.priceUsd,
+            };
+          }
+        } else {
+          const errText = await response.text();
+          logger.warn({ status: response.status, err: errText }, 'Polar API error creating checkout session');
+        }
+      } catch (err: any) {
+        logger.error({ err: err.message }, 'Failed to create Polar checkout session via API');
+      }
+    }
+
     const checkoutUrl = `/api/checkout/simulate?tier=${options.tier}&email=${encodeURIComponent(options.email)}`;
 
     return {
