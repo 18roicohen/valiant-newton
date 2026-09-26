@@ -10,7 +10,7 @@ export const webhookRoutes: FastifyPluginAsync = async (fastify) => {
    * Initiates a Polar.sh checkout session
    */
   fastify.post('/api/checkout/create', async (request, reply) => {
-    const body = (request.body as { email: string; tier: SubscriberTier }) || {};
+    const body = (request.body as { email: string; tier: SubscriberTier; discountCode?: string }) || {};
 
     if (!body.email || !body.email.includes('@')) {
       return reply.status(400).send({ error: 'Bad Request', message: 'Valid email address is required' });
@@ -23,6 +23,7 @@ export const webhookRoutes: FastifyPluginAsync = async (fastify) => {
     const session = await PolarService.createCheckoutSession({
       email: body.email,
       tier,
+      discountCode: body.discountCode || 'DYNEP37',
     });
 
     return reply.status(200).send(session);

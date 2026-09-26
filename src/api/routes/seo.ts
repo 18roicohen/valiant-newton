@@ -229,4 +229,144 @@ export async function seoRoutes(fastify: FastifyInstance) {
 
     reply.type('application/xml').send(xml);
   });
+
+  /**
+   * Terms of Service & Legal Disclaimer
+   * GET /terms
+   */
+  fastify.get('/terms', async (_request: FastifyRequest, reply: FastifyReply) => {
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service & Disclaimer — Dynep Real-Time GPU Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-8 sm:p-12 shadow-2xl">
+    <a href="/" class="text-emerald-400 hover:text-emerald-300 text-sm font-semibold mb-6 inline-block">← Back to Dynep Data Portal</a>
+    <h1 class="text-3xl font-black text-white mb-2 tracking-tight">Terms of Service & Data Disclaimer</h1>
+    <p class="text-slate-400 text-sm mb-8">Effective Date: September 26, 2026 • Last updated: September 2026</p>
+
+    <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">1. Acceptance of Terms</h2>
+        <p>By accessing, subscribing to, or using the Dynep API, feeds, and datasets provided via data.dynep.com ("Service"), you agree to be bound by these Terms of Service. If you do not agree, do not access or use the Service.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">2. Merchant of Record & Billing</h2>
+        <p>All subscription billing, sales tax calculation, payment processing, and checkout interactions are exclusively fulfilled and processed by <strong>Polar Software Inc. ("Polar.sh")</strong> acting as the Merchant of Record. By completing a transaction, you also agree to Polar's terms and privacy policies.</p>
+      </section>
+
+      <section class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <h2 class="text-lg font-bold text-amber-400 mb-2">3. Third-Party Data & Spot Price Disclaimer ("AS-IS")</h2>
+        <p class="mb-2"><strong>THE SERVICE AND ALL BENCHMARK DATA ARE PROVIDED STRICTLY ON AN "AS IS" AND "AS AVAILABLE" BASIS.</strong></p>
+        <p>Dynep aggregates publicly available cloud GPU hourly rates and availability indices from independent third-party cloud infrastructure providers (including, but not limited to, Lambda Labs, RunPod, Vast.ai, Vultr, and others). Dynep has no affiliation with, sponsorship from, or endorsement by these third parties.</p>
+        <p class="mt-2">Spot market prices fluctuate dynamically. Dynep does not guarantee that any server, rate, or GPU model shown in the feeds or API will be available or honored by any third-party provider at the time of your provisioning.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">4. No Financial, Procurement, or Professional Advice</h2>
+        <p>Information provided by Dynep is intended solely for general informational, research, and benchmarking purposes. It does not constitute financial, investment, legal, or procurement advice. You are solely responsible for verifying provider pricing directly prior to deploying computing instances.</p>
+      </section>
+
+      <section class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <h2 class="text-lg font-bold text-rose-400 mb-2">5. Limitation of Liability</h2>
+        <p class="mb-2">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL DYNEP, ITS OPERATORS, AFFILIATES, OFFICERS, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA LOSS, SYSTEM DOWNTIME, OR BUSINESS INTERRUPTION ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE SERVICE.</p>
+        <p>IN ANY EVENT, DYNEP'S TOTAL AGGREGATE LIABILITY UNDER THESE TERMS SHALL BE STRICTLY CAPPED AT THE LESSER OF: (A) THE TOTAL AMOUNT ACTUALLY PAID BY YOU TO DYNEP IN THE ONE (1) MONTH IMMEDIATELY PRECEDING THE CLAIM, OR (B) $50.00 USD.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">6. Acceptable Use Policy (AUP)</h2>
+        <p>You agree not to: (a) attempt to circumvent rate limits or quota controls; (b) launch Denial of Service (DoS) attacks against our endpoints; (c) redistribute, sublicense, or resell raw API access to third parties without an explicit Enterprise License Agreement; or (d) scrape or reverse engineer the internal scrapers.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">7. Contact & Notices</h2>
+        <p>Questions regarding these terms or legal inquiries should be directed to: <a href="mailto:keys@dynep.com" class="text-emerald-400 underline">keys@dynep.com</a>.</p>
+      </section>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-slate-800 flex justify-between text-xs text-slate-500">
+      <span>© 2026 Dynep Intelligence. All rights reserved.</span>
+      <div class="space-x-4">
+        <a href="/privacy" class="text-slate-400 hover:text-white">Privacy Policy</a>
+        <a href="/" class="text-slate-400 hover:text-white">Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+    reply.type('text/html').send(html);
+  });
+
+  /**
+   * Privacy Policy
+   * GET /privacy
+   */
+  fastify.get('/privacy', async (_request: FastifyRequest, reply: FastifyReply) => {
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Dynep Real-Time GPU Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-8 sm:p-12 shadow-2xl">
+    <a href="/" class="text-emerald-400 hover:text-emerald-300 text-sm font-semibold mb-6 inline-block">← Back to Dynep Data Portal</a>
+    <h1 class="text-3xl font-black text-white mb-2 tracking-tight">Privacy Policy</h1>
+    <p class="text-slate-400 text-sm mb-8">Effective Date: September 26, 2026</p>
+
+    <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">1. Overview</h2>
+        <p>Dynep ("we", "our", or "us") respects your privacy. This policy explains how information is collected, processed, and safeguarded when using data.dynep.com and associated API endpoints.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">2. Information We Collect</h2>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><strong>Contact Information:</strong> Your email address when registering for an API key or purchasing a subscription.</li>
+          <li><strong>API Telemetry:</strong> Request counts, HTTP methods, queried endpoints, timestamps, and IP addresses for abuse prevention and quota metering.</li>
+          <li><strong>Payment Information:</strong> We do NOT store payment cards or bank details. All transactions are securely handled directly by Polar.sh / Stripe.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">3. How Information Is Used</h2>
+        <p>Your data is used solely to: (a) generate and deliver API keys via transactional email (Resend); (b) meter subscription quotas; (c) prevent malicious traffic and DDoS attacks; and (d) send critical operational updates.</p>
+        <p class="mt-2"><strong>We never sell, rent, or trade your personal information to third parties or advertisers.</strong></p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">4. Third-Party Service Providers</h2>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><strong>Polar.sh:</strong> Merchant of Record for payments and subscription management.</li>
+          <li><strong>Resend:</strong> Secure transactional email delivery for API keys.</li>
+          <li><strong>Cloudflare:</strong> Edge routing, DDoS mitigation, and privacy-preserving analytics.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">5. Data Retention & Erasure (GDPR / CCPA)</h2>
+        <p>You have the right to request deletion of your account and email records at any time. Simply email <a href="mailto:keys@dynep.com" class="text-emerald-400 underline">keys@dynep.com</a> and we will delete your record within 48 hours.</p>
+      </section>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-slate-800 flex justify-between text-xs text-slate-500">
+      <span>© 2026 Dynep Intelligence. All rights reserved.</span>
+      <div class="space-x-4">
+        <a href="/terms" class="text-slate-400 hover:text-white">Terms of Service</a>
+        <a href="/" class="text-slate-400 hover:text-white">Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+    reply.type('text/html').send(html);
+  });
 }

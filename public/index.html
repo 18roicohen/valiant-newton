@@ -147,9 +147,18 @@
     <section id="tab-pricing" class="hidden space-y-8">
       <div class="text-center max-w-3xl mx-auto space-y-3">
         <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">Simple, Transparent Data Subscriptions</h2>
-        <p class="text-slate-400 text-base">
-          Choose a tier powered by <strong>Polar.sh</strong>. Instant API key delivery with automatic monthly quotas and rate-limiting.
-        </p>
+      <!-- LAUNCH DISCOUNT BANNER -->
+      <div class="max-w-3xl mx-auto bg-gradient-to-r from-emerald-950/70 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🎉</span>
+          <div>
+            <div class="text-white font-bold text-sm sm:text-base">Special Launch Offer: 37% OFF Forever</div>
+            <div class="text-slate-400 text-xs">Use coupon code <span class="font-mono text-emerald-400 font-bold select-all">DYNEP37</span> at checkout. Valid on all subscription tiers!</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-black text-sm rounded-xl tracking-wider select-all">DYNEP37</span>
+        </div>
       </div>
 
       <!-- TIER CARDS -->
@@ -257,6 +266,13 @@
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Selected Tier:</label>
               <input type="text" id="selected-tier-display" readonly class="w-full bg-slate-950/50 border border-slate-800 rounded-xl px-3 py-2 text-sm text-emerald-400 font-semibold uppercase">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Coupon Code (37% Off):</label>
+              <div class="flex gap-2">
+                <input type="text" id="coupon-code" value="DYNEP37" placeholder="e.g. DYNEP37" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-emerald-400 font-mono font-bold uppercase focus:outline-none focus:border-emerald-500">
+                <span class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-2.5 py-2 rounded-xl font-bold flex items-center shrink-0">37% OFF</span>
+              </div>
             </div>
           </div>
 
@@ -428,6 +444,17 @@ data = res.json()
       </div>
     </section>
 
+    <!-- FOOTER & LEGAL LINKS -->
+    <footer class="mt-16 pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+      <div>© 2026 Dynep Intelligence. All rights reserved. Real-time AI Cloud GPU Spot Benchmark.</div>
+      <div class="flex items-center gap-6">
+        <a href="/terms" class="hover:text-emerald-400 transition font-medium">Terms of Service & Disclaimer</a>
+        <a href="/privacy" class="hover:text-emerald-400 transition font-medium">Privacy Policy</a>
+        <a href="/sitemap.xml" target="_blank" class="hover:text-emerald-400 transition">Sitemap</a>
+        <a href="mailto:keys@dynep.com" class="hover:text-emerald-400 transition">Contact</a>
+      </div>
+    </footer>
+
   </main>
 
   <!-- JAVASCRIPT LOGIC -->
@@ -586,11 +613,14 @@ data = res.json()
       const origHtml = btn ? btn.innerHTML : '';
       if (btn) btn.innerHTML = '<span>Opening Secure Polar Checkout...</span>';
 
+      const couponInput = document.getElementById('coupon-code');
+      const discountCode = couponInput ? couponInput.value.trim() : 'DYNEP37';
+
       try {
         const res = await fetch('/api/checkout/create', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, tier: selectedTier })
+          body: JSON.stringify({ email, tier: selectedTier, discountCode })
         });
         const data = await res.json();
         if (data.checkoutUrl) {

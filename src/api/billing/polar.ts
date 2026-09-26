@@ -9,6 +9,7 @@ export interface PolarCheckoutOptions {
   tier: SubscriberTier;
   successUrl?: string;
   cancelUrl?: string;
+  discountCode?: string;
 }
 
 export class PolarService {
@@ -39,17 +40,24 @@ export class PolarService {
 
     if (env.POLAR_ACCESS_TOKEN && productId) {
       try {
+        const payload: Record<string, any> = {
+          products: [productId],
+          customer_email: options.email,
+          success_url: options.successUrl || 'https://data.dynep.com/?checkout=success',
+        };
+
+        // Auto-apply DYNEP37 37% off coupon
+        if (options.discountCode?.trim().toUpperCase() === 'DYNEP37') {
+          payload.discount_id = 'a87e75bf-9fce-4960-b645-ef36efaa6eff';
+        }
+
         const response = await fetch('https://api.polar.sh/v1/checkouts/', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${env.POLAR_ACCESS_TOKEN}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            products: [productId],
-            customer_email: options.email,
-            success_url: options.successUrl || 'https://data.dynep.com/?checkout=success',
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (response.ok) {
