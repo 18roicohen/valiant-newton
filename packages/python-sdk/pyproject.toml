@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dynep"
+version = "0.1.0"
+authors = [
+  { name="Dynep Data Intelligence", email="keys@dynep.com" },
+]
+description = "Official Python SDK for Dynep Real-Time Cloud GPU Spot Market Engine (DGX-31)"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "requests>=2.25.0"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Distributed Computing",
+]
+
+[project.urls]
+"Homepage" = "https://data.dynep.com"
+"Bug Tracker" = "https://github.com/18roicohen/valiant-newton/issues"

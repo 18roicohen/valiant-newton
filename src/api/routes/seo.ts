@@ -297,6 +297,15 @@ export async function seoRoutes(fastify: FastifyInstance) {
   });
 
   /**
+   * IndexNow Protocol Key Verification Endpoint
+   * GET /dynep-indexnow-key.txt
+   */
+  const INDEXNOW_KEY = 'dynep-indexnow-7b4c8e192f6a';
+  fastify.get('/dynep-indexnow-key.txt', async (_request: FastifyRequest, reply: FastifyReply) => {
+    reply.type('text/plain').send(INDEXNOW_KEY);
+  });
+
+  /**
    * Terms of Service & Legal Disclaimer
    * GET /terms
    */

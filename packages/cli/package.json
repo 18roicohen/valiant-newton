@@ -1,0 +1,29 @@
+{
+  "name": "dynep-spot",
+  "version": "1.0.0",
+  "description": "Zero-friction CLI for real-time AI cloud GPU spot rates, inventory, and cluster arbitrage across 31 providers",
+  "type": "module",
+  "bin": {
+    "dynep": "./bin/dynep.js",
+    "dynep-spot": "./bin/dynep.js"
+  },
+  "keywords": [
+    "gpu",
+    "cloud-gpu",
+    "h100",
+    "rtx4090",
+    "spot-pricing",
+    "ai-infrastructure",
+    "arbitrage",
+    "runpod",
+    "vast-ai",
+    "lambda-labs"
+  ],
+  "author": "Dynep Data Intelligence <keys@dynep.com>",
+  "license": "MIT",
+  "homepage": "https://data.dynep.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/18roicohen/valiant-newton"
+  }
+}
