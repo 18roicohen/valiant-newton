@@ -306,6 +306,26 @@ export async function seoRoutes(fastify: FastifyInstance) {
   });
 
   /**
+   * Google Search Console HTML Verification Handler
+   * GET /google:code.html
+   * Responds to any Google Search Console HTML verification file request dynamically
+   */
+  fastify.get('/google:code.html', async (request: FastifyRequest, reply: FastifyReply) => {
+    const params = request.params as { code: string };
+    const code = params.code || '';
+    reply.type('text/html').send(`google-site-verification: google${code}.html`);
+  });
+
+  /**
+   * Customer Self-Service Portal Redirect
+   * GET /portal
+   * Redirects subscribers to their Polar customer management dashboard
+   */
+  fastify.get('/portal', async (_request: FastifyRequest, reply: FastifyReply) => {
+    reply.redirect('https://polar.sh/purchases');
+  });
+
+  /**
    * Terms of Service & Legal Disclaimer
    * GET /terms
    */

@@ -6,6 +6,25 @@
   <title>DYNEP | Global AI Cloud GPU Spot Market Terminal (DGX-31)</title>
   <meta name="description" content="Institutional-grade real-time AI cloud GPU spot rates, inventory availability, and hardware pricing across 31 global cloud providers.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><path d='M30 50 L50 25 L70 50 L50 75 Z' fill='%2310b981'/></svg>">
+  
+  <!-- GOOGLE SEARCH CONSOLE VERIFICATION -->
+  <meta name="google-site-verification" content="google-site-verification-token">
+
+  <!-- GOOGLE ANALYTICS 4 (GA4) -->
+  <script>
+    window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Replace with GA4 Measurement ID
+    if (window.GA_MEASUREMENT_ID && window.GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', window.GA_MEASUREMENT_ID);
+    }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -398,8 +417,19 @@
           </div>
           <button onclick="initiatePolarCheckout('enterprise')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs rounded-lg transition font-mono">
             Subscribe ($299/mo)
-          </button>
         </div>
+      </div>
+
+      <!-- CUSTOMER SELF-SERVICE GUARANTEE -->
+      <div class="mt-6 text-center text-xs text-slate-400 font-mono flex flex-wrap items-center justify-center gap-4 py-3 px-4 rounded-xl border border-slate-800/80 bg-[#090d16]">
+        <span>✓ 1-Click Instant Cancellation Anytime</span>
+        <span class="text-slate-600">•</span>
+        <span>✓ 14-Day Full Refund Policy</span>
+        <span class="text-slate-600">•</span>
+        <a href="/portal" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
+          <span>Customer Billing Portal</span>
+          <span>↗</span>
+        </a>
       </div>
     </section>
 
@@ -468,10 +498,11 @@
       </div>
       <div class="flex gap-6 font-mono text-[11px]">
         <a href="/docs" class="hover:text-emerald-400">Documentation</a>
+        <a href="/portal" class="hover:text-emerald-400 text-slate-300 font-semibold">Customer Portal ↗</a>
         <a href="/openapi.json" class="hover:text-emerald-400">OpenAPI Spec</a>
         <a href="/terms" class="hover:text-slate-300">Terms of Service</a>
         <a href="/privacy" class="hover:text-slate-300">Privacy Policy</a>
-        <a href="mailto:keys@dynep.com" class="hover:text-emerald-400">keys@dynep.com</a>
+        <a href="mailto:keys@dynep.com" class="hover:text-emerald-400">Support</a>
       </div>
     </div>
   </footer>
