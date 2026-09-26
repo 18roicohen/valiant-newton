@@ -269,6 +269,64 @@
       "last_run_at": "2026-09-26T12:06:31.378Z",
       "created_at": "2026-09-26T12:06:31.358Z",
       "updated_at": "2026-09-26T12:06:31.378Z"
+    },
+    {
+      "id": "82a35292-6029-4ec9-adef-04cf3bf2b012",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T12:23:16.112Z",
+      "created_at": "2026-09-26T12:23:16.053Z",
+      "updated_at": "2026-09-26T12:23:16.112Z"
+    },
+    {
+      "id": "c2e039a9-d36d-4fdf-aae9-cf6dcaf69c1e",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T13:17:11.512Z",
+      "created_at": "2026-09-26T13:17:11.487Z",
+      "updated_at": "2026-09-26T13:17:11.512Z"
     }
   ],
   "records": [
@@ -1307,6 +1365,38 @@
       "version": 1,
       "first_seen_at": "2026-09-26T12:06:31.366Z",
       "updated_at": "2026-09-26T12:06:31.366Z"
+    },
+    {
+      "entity_id": "3e0ffd9f402bce12c57570689b32b2d30815b430276f325791c4a8a2d540119b",
+      "source_id": "82a35292-6029-4ec9-adef-04cf3bf2b012",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:23:16.077Z",
+      "updated_at": "2026-09-26T12:23:16.077Z"
+    },
+    {
+      "entity_id": "c3be08b581619f815775eb5bba1079e632fa6a484585f318ceb145500a4592cb",
+      "source_id": "c2e039a9-d36d-4fdf-aae9-cf6dcaf69c1e",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T13:17:11.498Z",
+      "updated_at": "2026-09-26T13:17:11.498Z"
     }
   ],
   "subscribers": [
@@ -1337,9 +1427,57 @@
       "is_active": true,
       "created_at": "2026-09-26T11:30:26.489Z",
       "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "id": "ca99f5d5-489a-4655-89a2-106e1750cad3",
+      "customer_id": null,
+      "email": "growth-tester@startup.ai",
+      "api_key_hash": "e3c6d7c6e7962e487427095ae964f3f6a0ee3f03bb8fc9c4c27d067cc432e74c",
+      "api_key_prefix": "sk_live_d45afc2...",
+      "tier": "free",
+      "monthly_quota": 50,
+      "current_usage": 0,
+      "rate_limit_rpm": 15,
+      "is_active": true,
+      "created_at": "2026-09-26T13:04:06.464Z",
+      "updated_at": "2026-09-26T13:04:06.464Z"
     }
   ],
   "logs": [
+    {
+      "id": "75ea20f2-b28d-43f2-af36-80b56180a64f",
+      "source_id": "c2e039a9-d36d-4fdf-aae9-cf6dcaf69c1e",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 10,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T13:17:11.498Z"
+    },
+    {
+      "id": "ddcc2abb-e151-415f-98c7-57db372cddfc",
+      "source_id": "82a35292-6029-4ec9-adef-04cf3bf2b012",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 22,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T12:23:16.077Z"
+    },
     {
       "id": "3de3dcd2-44c6-4ccb-b437-11b030ab16e3",
       "source_id": "0096d660-c480-4bcd-b833-907dc4768985",
@@ -1512,5 +1650,5 @@
       "created_at": "2026-09-26T11:38:32.732Z"
     }
   ],
-  "updated_at": "2026-09-26T12:06:31.488Z"
+  "updated_at": "2026-09-26T13:17:11.624Z"
 }

@@ -27,6 +27,11 @@ const envSchema = z.object({
   // Billing & Webhook Secrets
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   POLAR_WEBHOOK_SECRET: z.string().optional(),
+  POLAR_ACCESS_TOKEN: z.string().optional(),
+  POLAR_ORGANIZATION_ID: z.string().optional(),
+  POLAR_PRODUCT_STARTER: z.string().optional(),
+  POLAR_PRODUCT_PRO: z.string().optional(),
+  POLAR_PRODUCT_ENTERPRISE: z.string().optional(),
   
   // API Defaults
   ADMIN_API_KEY: z.string().default('daas_admin_secret_key_2026'),

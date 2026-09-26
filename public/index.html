@@ -38,13 +38,16 @@
       </div>
 
       <!-- STATUS & ACTIONS -->
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <div class="hidden md:flex items-center gap-2 text-xs text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
           <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
           <span>Engine Status: <strong class="text-emerald-400">Autonomous Active</strong></span>
         </div>
-        <button onclick="switchTab('pricing')" class="text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-2 rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
-          <span>Get API Key</span>
+        <button onclick="openFreeKeyModal()" class="text-sm font-semibold bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5">
+          <span>🎁 Free API Key</span>
+        </button>
+        <button onclick="switchTab('pricing')" class="text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-1.5 rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
+          <span>Get Pro Access</span>
           <span>→</span>
         </button>
       </div>
@@ -257,8 +260,39 @@
             </div>
           </div>
 
-          <button onclick="processPolarPayment()" id="btn-submit-checkout" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
-            <span>Confirm & Provision Key</span>
+          <div class="space-y-2 pt-2">
+            <button onclick="openPolarHostedCheckout()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+              <span>💳 Pay with Polar Checkout (Live)</span>
+              <span>↗</span>
+            </button>
+            <button onclick="processPolarPayment()" id="btn-submit-checkout" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-xl border border-slate-700 transition">
+              <span>⚡ Fast-Track Simulator (Sandbox)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FREE KEY MODAL -->
+      <div id="free-key-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🎁</span>
+              <h4 class="text-lg font-bold text-white">Instant Free API Key</h4>
+            </div>
+            <button onclick="closeFreeKeyModal()" class="text-slate-400 hover:text-white">✕</button>
+          </div>
+          <p class="text-xs text-slate-400">Get instant sandbox access with 50 free requests per month. Zero credit card required.</p>
+          
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Developer Email:</label>
+              <input type="email" id="free-key-email" placeholder="dev@startup.io" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+            </div>
+          </div>
+
+          <button onclick="claimFreeApiKey()" id="btn-claim-free-key" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2">
+            <span>Issue My Free Key</span>
             <span>⚡</span>
           </button>
         </div>
@@ -492,6 +526,61 @@ data = res.json()
     function downloadCSV() {
       const key = currentApiKey || 'daas_admin_secret_key_2026';
       window.location.href = `/v1/feed.csv`;
+    }
+
+    // Free Key Modal Handling
+    function openFreeKeyModal() {
+      document.getElementById('free-key-modal').classList.remove('hidden');
+    }
+
+    function closeFreeKeyModal() {
+      document.getElementById('free-key-modal').classList.add('hidden');
+    }
+
+    async function claimFreeApiKey() {
+      const email = document.getElementById('free-key-email').value;
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+      }
+      const btn = document.getElementById('btn-claim-free-key');
+      btn.innerText = 'Issuing Key...';
+      try {
+        const res = await fetch('/api/keys/free', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (data.api_key) {
+          currentApiKey = data.api_key;
+          localStorage.setItem('daas_api_key', currentApiKey);
+          closeFreeKeyModal();
+          alert(`🎉 Welcome! Free Tier Key Activated:\n\n${data.api_key}\n\nQuota: 50 requests/month.\nTry it now in the API Playground!`);
+          switchTab('playground');
+        } else {
+          alert(data.message || 'Key issued');
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.innerText = 'Issue My Free Key ⚡';
+      }
+    }
+
+    // Real Polar.sh Products for Dynep
+    const POLAR_PRODUCTS = {
+      starter: '5ef8f816-2cc7-4986-bf08-d2ca27a0d5be',
+      pro: '0c3b8529-67d6-4e7b-b4dc-bc28041cd0ab',
+      enterprise: '0e09696f-4a48-40be-8f63-66b3e1518e47'
+    };
+
+    function openPolarHostedCheckout() {
+      const prodId = POLAR_PRODUCTS[selectedTier] || POLAR_PRODUCTS.starter;
+      const email = document.getElementById('subscriber-email').value;
+      let url = `https://polar.sh/dynep/products/${prodId}`;
+      if (email) url += `?customer_email=${encodeURIComponent(email)}`;
+      window.open(url, '_blank');
     }
 
     // Polar Checkout Handling

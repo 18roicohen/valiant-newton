@@ -7,6 +7,7 @@ import { dataRoutes } from './routes/data.js';
 import { feedRoutes } from './routes/feeds.js';
 import { webhookRoutes } from './routes/webhooks.js';
 import { sourceRoutes } from './routes/sources.js';
+import { seoRoutes } from './routes/seo.js';
 import { logger } from '../db/client.js';
 
 export async function buildServer(): Promise<FastifyInstance> {
@@ -46,6 +47,7 @@ export async function buildServer(): Promise<FastifyInstance> {
 
   // Register all routes
   await fastify.register(healthRoutes);
+  await fastify.register(seoRoutes);
   await fastify.register(dataRoutes, { prefix: '/v1' });
   await fastify.register(feedRoutes, { prefix: '/v1' });
   await fastify.register(webhookRoutes);
