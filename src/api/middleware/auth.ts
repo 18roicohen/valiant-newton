@@ -69,11 +69,15 @@ export async function authenticateApiKey(request: FastifyRequest, reply: Fastify
     reply.header('X-Quota-Remaining', 0);
     return reply.status(429).send({
       error: 'Too Many Requests',
-      message: `Monthly quota of ${subscriber.monthly_quota} requests exceeded. Please upgrade your plan.`,
+      message: `Monthly quota of ${subscriber.monthly_quota} requests exceeded. Upgrade to continue receiving live spot rates.`,
       code: 'QUOTA_EXCEEDED',
       current_usage: subscriber.current_usage,
       monthly_quota: subscriber.monthly_quota,
       tier: subscriber.tier,
+      upgrade_url: 'https://data.dynep.com/#pricing',
+      checkout_url: 'https://data.dynep.com/#pricing',
+      coupon_code: 'DYNEP37',
+      discount: '37% OFF first 3 months',
     });
   }
 
