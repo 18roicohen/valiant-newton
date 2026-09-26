@@ -1,0 +1,552 @@
+{
+  "sources": [
+    {
+      "id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "name": "AI Cloud GPU & Model Spot Index",
+      "url": "https://cloud-gpu-index.internal/spot-rates",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "provider": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".gpu-card",
+        "fields": {
+          "natural_key": ".gpu-id@data-sku",
+          "title": "h3.gpu-name",
+          "price": ".gpu-hourly-rate",
+          "category": ".gpu-region",
+          "status": ".gpu-stock-status",
+          "provider": ".gpu-provider"
+        },
+        "version": 1
+      },
+      "schedule_cron": "*/30 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": null,
+      "created_at": "2026-09-26T11:30:26.486Z",
+      "updated_at": "2026-09-26T11:30:26.486Z"
+    },
+    {
+      "id": "3f87f902-6ef8-4da1-95aa-bfb828ae501c",
+      "name": "LLM Inference API Token Pricing Index",
+      "url": "https://llm-pricing.internal/tokens",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".tool-item",
+        "fields": {
+          "natural_key": "a.tool-title@data-id",
+          "title": "a.tool-title",
+          "price": ".tool-price",
+          "category": ".tool-category"
+        },
+        "version": 1
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": null,
+      "created_at": "2026-09-26T11:30:26.488Z",
+      "updated_at": "2026-09-26T11:30:26.488Z"
+    },
+    {
+      "id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "name": "Real Live Cloud GPU Spot Index (31 Providers)",
+      "url": "https://gpuperhour.com",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "provider": "string",
+        "historical_avg": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": "table:first-of-type tbody tr:has(th a)",
+        "fields": {
+          "title": "th | regex:^([A-Za-z0-9 ]+?)(?:\\s*all\\s+[A-Za-z0-9]+)?$",
+          "price": "td:nth-of-type(1) | regex:\\$([0-9.]+)",
+          "provider": "td:nth-of-type(2)",
+          "historical_avg": "td:nth-of-type(3)",
+          "status": "td:nth-of-type(4)",
+          "category": "td:nth-of-type(2)",
+          "natural_key": "th | regex:^([A-Za-z0-9 ]+?)(?:\\s*all\\s+[A-Za-z0-9]+)?$"
+        },
+        "version": 1
+      },
+      "schedule_cron": "*/30 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T11:38:32.732Z",
+      "created_at": "2026-09-26T11:38:31.927Z",
+      "updated_at": "2026-09-26T11:38:32.732Z"
+    }
+  ],
+  "records": [
+    {
+      "entity_id": "4e425e5a04fe9c7163f3da982cefa38203230beff16a3fad9a1ab95c2d420eb9",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-h100-sxm5-01",
+      "data": {
+        "title": "NVIDIA H100 80GB SXM5",
+        "price": 2.39,
+        "category": "US-East-1",
+        "status": "In Stock",
+        "provider": "Lambda Labs",
+        "natural_key": "gpu-h100-sxm5-01"
+      },
+      "hash": "3d0170b8c52deb4f400769e010d5ffe5fd9dc0d459609f5a661161ce7c4712c5",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "1be8b28af65efb52d7391b1ad0a186543bf2a012ae60cdea604f9a7992213bc5",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-h100-pcie-02",
+      "data": {
+        "title": "NVIDIA H100 80GB PCIe",
+        "price": 2.15,
+        "category": "US-East-1",
+        "status": "In Stock",
+        "provider": "RunPod",
+        "natural_key": "gpu-h100-pcie-02"
+      },
+      "hash": "fb837f8819b6e2c5f813c5bed1dfcef0f06b9c6401b62ebe81bc708df4787f6f",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "a34545ce158c404822f9eca3ba5da1a9fb445127660ba5f98682ed483edaa7d5",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-a100-80g-03",
+      "data": {
+        "title": "NVIDIA A100 80GB SXM4",
+        "price": 1.29,
+        "category": "EU-Central",
+        "status": "Available",
+        "provider": "CoreWeave",
+        "natural_key": "gpu-a100-80g-03"
+      },
+      "hash": "9851e0ae2f5f42101ac8cec19375e89771d50ee83e968f9b382ba907126a57f8",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "fcc23e6da3cde146a53b1f4d933ec5b8b8b970f78a5b354fd98e9f9c6b12b931",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-a100-40g-04",
+      "data": {
+        "title": "NVIDIA A100 40GB PCIe",
+        "price": 0.89,
+        "category": "US-West",
+        "status": "Available",
+        "provider": "Lambda Labs",
+        "natural_key": "gpu-a100-40g-04"
+      },
+      "hash": "9a2d65c8d4be408f8a84ea9b756a0c9b6025c6c9f711b98299f4932504040e71",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "43192aa330af5bc1e5ebae673092772c4038c76e94e9c85e2d002174e2dd3486",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-b200-blackwell-05",
+      "data": {
+        "title": "NVIDIA B200 Blackwell 192GB",
+        "price": 4.85,
+        "category": "US-East-1",
+        "status": "Pre-Order",
+        "provider": "CoreWeave",
+        "natural_key": "gpu-b200-blackwell-05"
+      },
+      "hash": "55c0019e4bb8b417a56c2a10ec99d9e8926553a7e46e6a10c73e45b9c683d3b0",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "8a5cd3cff5c19ef3b1bed466ec4286dc54c82329ad98e9683befc3016bdb1f14",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-rtx4090-06",
+      "data": {
+        "title": "NVIDIA RTX 4090 24GB",
+        "price": 0.44,
+        "category": "Global",
+        "status": "In Stock",
+        "provider": "Vast.ai",
+        "natural_key": "gpu-rtx4090-06"
+      },
+      "hash": "b0e8148dd67da572e9ac47bd249213aac5eaeecbd9bd4735312aa3316b598dd7",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "6e5e9e9d62599c3109a091dadae56aa8c506a4c1b91e91670d8dba961b09d20d",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-rtx4080s-07",
+      "data": {
+        "title": "NVIDIA RTX 4080 Super 16GB",
+        "price": 0.32,
+        "category": "Global",
+        "status": "In Stock",
+        "provider": "RunPod",
+        "natural_key": "gpu-rtx4080s-07"
+      },
+      "hash": "87c32f1f38706dae15223741eaf555556f8e4068654e89f84b7bc66eb6e3c8d2",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "ccc072a47230b2632f46d755111f0942ebb48ca46e90c562f88169a6003bf452",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-l40s-08",
+      "data": {
+        "title": "NVIDIA L40S 48GB",
+        "price": 0.95,
+        "category": "US-West",
+        "status": "Available",
+        "provider": "RunPod",
+        "natural_key": "gpu-l40s-08"
+      },
+      "hash": "da0aa556678514a8d2000ac0858349df10d532c307b426f753f09234efa426fa",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "1397792c97e3bf796e04cdb949c659f5d9a515a9b93b3e7d282d85f4ad65f0e2",
+      "source_id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
+      "natural_key": "gpu-mi300x-09",
+      "data": {
+        "title": "AMD Instinct MI300X 192GB",
+        "price": 2.2,
+        "category": "US-East-1",
+        "status": "Available",
+        "provider": "Hot Aisle",
+        "natural_key": "gpu-mi300x-09"
+      },
+      "hash": "a0578c8cc1745c4f30ba777c86cc2e3f36a0ebcf22f51762d71a44ae2ee43774",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "entity_id": "00bc233653da173526c97708a50f3a4c6b9edd87f1d3995b0541c235aa2d2622",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "H100 SXM5",
+      "data": {
+        "title": "H100 SXM5",
+        "price": 2.79,
+        "category": "Lyceum",
+        "status": "8",
+        "provider": "Lyceum",
+        "historical_avg": "$2.08/hr (30 days)",
+        "natural_key": "H100 SXM5"
+      },
+      "hash": "11a096954d67a457b46e49fd974384b821040833ccb77a1544d98479e3aca2ab",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "c81b40663e425f09c21c9d1ab09eaa3f531d64771401f251e4c2c1b56815a57f",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "H100 PCIe",
+      "data": {
+        "title": "H100 PCIe",
+        "price": 2.5,
+        "category": "Hyperstack",
+        "status": "7",
+        "provider": "Hyperstack",
+        "historical_avg": "$2.77/hr (30 days)",
+        "natural_key": "H100 PCIe"
+      },
+      "hash": "4a848b4fb266bbfbae668234358c81aaf4f769349173a65ca21b7cc13f1f4bd6",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "4f6fbc440f06ee4366905639cca36c1febca7efdc684ef9cd3b6494318e02c36",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "H100 NVL",
+      "data": {
+        "title": "H100 NVL",
+        "price": 3.09,
+        "category": "Vast.ai",
+        "status": "3",
+        "provider": "Vast.ai",
+        "historical_avg": "$1.91/hr (30 days)",
+        "natural_key": "H100 NVL"
+      },
+      "hash": "1864dadb58006edd0e2e0147485d598fb045166b7451334b9524128ead7cfd1c",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "6cbaf1dfdc1d4fddc7eb8fd503041fe22180096eddf9d6e84e132eca49847d6f",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "H200 SXM",
+      "data": {
+        "title": "H200 SXM",
+        "price": 3.5,
+        "category": "Ori",
+        "status": "5",
+        "provider": "Ori",
+        "historical_avg": "$2.69/hr (30 days)",
+        "natural_key": "H200 SXM"
+      },
+      "hash": "fc5845d945f8d85e01e2e8ba438fad5b57a95d0461eb4849cf1364c5c6846cf5",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "a6bfcb777f8f0a7c48af9dcced924825193453a7f689e7ff4a52c4b339a651f6",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "H200 NVL",
+      "data": {
+        "title": "H200 NVL",
+        "price": 3.43,
+        "category": "QuantaCloud",
+        "status": "3",
+        "provider": "QuantaCloud",
+        "historical_avg": "$2.88/hr (30 days)",
+        "natural_key": "H200 NVL"
+      },
+      "hash": "d1d4b3d0e525d01644fa64b0d7c794414a96c6f7270b3ec2938640a50eecdb33",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "2ff28e3d4bd421ae3f669cfe2ff527f270fb32c9f9751a628b46c9e41dd8ccbf",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "B200 SXM",
+      "data": {
+        "title": "B200 SXM",
+        "price": 6.49,
+        "category": "Lyceum",
+        "status": "4",
+        "provider": "Lyceum",
+        "historical_avg": "$4.76/hr (30 days)",
+        "natural_key": "B200 SXM"
+      },
+      "hash": "3807b600dd7359502d3f6140c1ed5f21f86d4490e7e2e9636f82b2f9c06006d5",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "7db8e0e64e8984aa12f2e0ac09f5754e45faa1def2107cccbb3c35466fc88c70",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "B300 SXM6",
+      "data": {
+        "title": "B300 SXM6",
+        "price": 7.89,
+        "category": "RunPod",
+        "status": "3",
+        "provider": "RunPod",
+        "historical_avg": "$5.95/hr (30 days)",
+        "natural_key": "B300 SXM6"
+      },
+      "hash": "901c4e19e68c171aa83b6ddbae92d14192613f407589996af273e4d28e8c8c05",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "ef1450d391a82070279213b4cfaa5714c897fe2353df565883422179e04aaac0",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "A100 SXM4 80GB",
+      "data": {
+        "title": "A100 SXM4 80GB",
+        "price": 0.8,
+        "category": "Vast.ai",
+        "status": "6",
+        "provider": "Vast.ai",
+        "historical_avg": "$1.06/hr (30 days)",
+        "natural_key": "A100 SXM4 80GB"
+      },
+      "hash": "93735207c2a22fbe89c75d7c8094c25c8739ada6bc352e0dc6a442d70b272124",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "798fc9f8f233def3fa800ae6ac2be4b4f147c85da2b1d7b994ad2c70a52e0c53",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "A100 PCIe 80GB",
+      "data": {
+        "title": "A100 PCIe 80GB",
+        "price": 0.68,
+        "category": "LeaderGPU",
+        "status": "6",
+        "provider": "LeaderGPU",
+        "historical_avg": "$1.69/hr (30 days)",
+        "natural_key": "A100 PCIe 80GB"
+      },
+      "hash": "e165bdf0c0b7c6230234cd6c8b3b8964678bb737243485f4cf76b2378d9b5fcf",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "157d8422d53bfdb561cd3dd3e611652817b33e728954922677a522169ee59f84",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "L40S",
+      "data": {
+        "title": "L40S",
+        "price": 0.92,
+        "category": "Packet.ai",
+        "status": "6",
+        "provider": "Packet.ai",
+        "historical_avg": "$0.90/hr (30 days)",
+        "natural_key": "L40S"
+      },
+      "hash": "076968667a7960553426b51971a23d8be43bd16da9df110d65776f8c1fd17132",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "9fb822f142b072adbdb392aa01d73e997250a7ccd08766e777a284c68ec18deb",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "RTX PRO 6000 Blackwell MIG 24GB",
+      "data": {
+        "title": "RTX PRO 6000 Blackwell MIG 24GB",
+        "price": 0.59,
+        "category": "RunPod",
+        "status": "7",
+        "provider": "RunPod",
+        "historical_avg": "$1.74/hr (30 days)",
+        "natural_key": "RTX PRO 6000 Blackwell MIG 24GB"
+      },
+      "hash": "e6060cb5b2c501856eae81a6971eb1748d2999504f807331ed557522a615687f",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "de6d6039ccf6be6a8529c85158545775ab8ab77426f0930ebcbed425043eb92e",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "RTX 5090",
+      "data": {
+        "title": "RTX 5090",
+        "price": 0.77,
+        "category": "Vast.ai",
+        "status": "2",
+        "provider": "Vast.ai",
+        "historical_avg": "$0.44/hr (30 days)",
+        "natural_key": "RTX 5090"
+      },
+      "hash": "a18e7c4dfda74896e13644a66ecca98f746c61f1807b4b35b5e57baea6cef886",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "bc6ddc66fbcc8ec1c7d7aed195303e7eb754a0f041b692c5c720a0596da24fd2",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "RTX 4090",
+      "data": {
+        "title": "RTX 4090",
+        "price": 0.74,
+        "category": "RunPod",
+        "status": "3",
+        "provider": "RunPod",
+        "historical_avg": "$0.33/hr (30 days)",
+        "natural_key": "RTX 4090"
+      },
+      "hash": "79ac7423eff21f383d5af1935a246439ce1ce83a229108c0061cfe1841f58ba2",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "43cc80e103d4b8d905ae34089db59af3bab13fd4f277622883913e2cdf644ef6",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "RTX A6000",
+      "data": {
+        "title": "RTX A6000",
+        "price": 0.44,
+        "category": "LeaderGPU",
+        "status": "5",
+        "provider": "LeaderGPU",
+        "historical_avg": "$0.57/hr (30 days)",
+        "natural_key": "RTX A6000"
+      },
+      "hash": "165fdc027d437f6d6fab1e98e6f5116745a3e8aa48a326bed0a1388e820f797e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:38:32.731Z",
+      "updated_at": "2026-09-26T11:38:32.731Z"
+    }
+  ],
+  "subscribers": [
+    {
+      "id": "3945f99d-4720-4b6a-bad7-28e3d1c529bc",
+      "customer_id": null,
+      "email": "indie-developer@startup.io",
+      "api_key_hash": "cb9a4ba4ade45f12c9736eee91750cab803af15bb2e33375e06ef5aee55e00a4",
+      "api_key_prefix": "sk_live_facaddf...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    },
+    {
+      "id": "547a2010-2c23-41dd-a2f5-e0c22e6244aa",
+      "customer_id": null,
+      "email": "enterprise-client@ai-labs.com",
+      "api_key_hash": "38ff4890474197fbd85d8b822b011eada8efc80569de884d970dfa6d179e2df2",
+      "api_key_prefix": "sk_live_ef8c6c3...",
+      "tier": "pro",
+      "monthly_quota": 25000,
+      "current_usage": 0,
+      "rate_limit_rpm": 300,
+      "is_active": true,
+      "created_at": "2026-09-26T11:30:26.489Z",
+      "updated_at": "2026-09-26T11:30:26.489Z"
+    }
+  ],
+  "logs": [
+    {
+      "id": "b7a13f5c-e578-49ea-9485-8665cbd37e67",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 14,
+      "duration_ms": 801,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 14,
+        "updated": 0,
+        "fetchDurationMs": 494
+      },
+      "created_at": "2026-09-26T11:38:32.732Z"
+    }
+  ],
+  "updated_at": "2026-09-26T11:38:32.837Z"
+}
