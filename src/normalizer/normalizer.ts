@@ -86,7 +86,21 @@ export class Normalizer {
     let discardedCount = 0;
 
     for (const raw of rawItems) {
-      const naturalKeyRaw = raw.natural_key ?? raw.id ?? raw.slug ?? raw.title ?? raw.sku;
+      let naturalKeyRaw = raw.natural_key ?? raw.id ?? raw.slug;
+      if (!naturalKeyRaw && raw.title) {
+        if (raw.provider && (raw.category || raw.host_specs)) {
+          naturalKeyRaw = `${raw.provider}-${raw.title}-${raw.category || ''}-${raw.host_specs || ''}-${raw.price || ''}`
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        } else {
+          naturalKeyRaw = raw.title;
+        }
+      }
+      if (!naturalKeyRaw) {
+        naturalKeyRaw = raw.sku;
+      }
+
       if (!naturalKeyRaw) {
         discardedCount++;
         continue;

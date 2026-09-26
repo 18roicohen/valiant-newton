@@ -448,7 +448,14 @@ data = res.json()
         <tr class="hover:bg-slate-800/40 transition">
           <td class="px-5 py-3 font-semibold text-white flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>${r.data?.title || r.natural_key}</span>
+            <div>
+              <div class="flex items-center gap-2">
+                <span>${r.data?.title || r.natural_key}</span>
+                ${r.data?.provider ? `<span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-medium">${r.data.provider}</span>` : ''}
+                ${r.data?.vram ? `<span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono">${r.data.vram}GB</span>` : ''}
+              </div>
+              ${r.data?.host_specs ? `<div class="text-[11px] text-slate-400 font-mono mt-0.5">${r.data.host_specs}</div>` : ''}
+            </div>
           </td>
           <td class="px-5 py-3 font-mono font-bold text-emerald-400">$${r.data?.price !== null && r.data?.price !== undefined ? Number(r.data.price).toFixed(2) : 'N/A'} / hr</td>
           <td class="px-5 py-3 text-slate-300">${r.data?.category || 'Global'}</td>

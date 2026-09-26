@@ -90,6 +90,185 @@
       "last_run_at": "2026-09-26T11:38:32.732Z",
       "created_at": "2026-09-26T11:38:31.927Z",
       "updated_at": "2026-09-26T11:38:32.732Z"
+    },
+    {
+      "id": "4e8f1b26-653b-4a14-878a-42eac3ddcbf3",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T11:58:56.061Z",
+      "created_at": "2026-09-26T11:58:56.044Z",
+      "updated_at": "2026-09-26T11:58:56.061Z"
+    },
+    {
+      "id": "f923380b-32f0-4a70-a6d2-fbaf88f96baf",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T11:59:10.236Z",
+      "created_at": "2026-09-26T11:59:10.217Z",
+      "updated_at": "2026-09-26T11:59:10.236Z"
+    },
+    {
+      "id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "name": "Live Cloud GPU Server Instance Catalog (31 Providers)",
+      "url": "https://gpuperhour.com",
+      "target_schema": {
+        "title": "string",
+        "provider": "string",
+        "price": "number",
+        "category": "string",
+        "vram": "string",
+        "host_specs": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": "table[data-slot=\"table\"] tbody tr:has(button[data-track-gpu])",
+        "fields": {
+          "title": "button[data-track-gpu]@data-track-gpu",
+          "provider": "button[data-track-gpu]@data-track-provider",
+          "price": "button[data-track-gpu]@data-track-price",
+          "category": "button[data-track-gpu]@data-track-region",
+          "vram": "button[data-track-gpu]@data-track-vram",
+          "host_specs": "td:nth-child(4)",
+          "status": "td:nth-child(7)"
+        },
+        "version": 1
+      },
+      "schedule_cron": "*/15 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T12:03:19.687Z",
+      "created_at": "2026-09-26T12:00:09.313Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "id": "f127bff7-f769-43a1-8b1e-b61ca3f0e06e",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T12:04:21.823Z",
+      "created_at": "2026-09-26T12:04:21.803Z",
+      "updated_at": "2026-09-26T12:04:21.823Z"
+    },
+    {
+      "id": "69cc8918-6675-4057-81c7-685cad7c54b7",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T12:05:23.795Z",
+      "created_at": "2026-09-26T12:05:23.777Z",
+      "updated_at": "2026-09-26T12:05:23.795Z"
+    },
+    {
+      "id": "0096d660-c480-4bcd-b833-907dc4768985",
+      "name": "E2E Test Tech Deals",
+      "url": "https://test-site.internal/deals",
+      "target_schema": {
+        "title": "string",
+        "price": "number",
+        "category": "string",
+        "status": "string",
+        "natural_key": "string"
+      },
+      "selector_map": {
+        "container": ".deal-card",
+        "fields": {
+          "title": ".deal-title",
+          "price": ".deal-price",
+          "category": ".category",
+          "status": ".status, .badge",
+          "natural_key": ".@data-id"
+        },
+        "version": 2
+      },
+      "schedule_cron": "0 * * * *",
+      "headers": {},
+      "status": "ACTIVE",
+      "last_run_at": "2026-09-26T12:06:31.378Z",
+      "created_at": "2026-09-26T12:06:31.358Z",
+      "updated_at": "2026-09-26T12:06:31.378Z"
     }
   ],
   "records": [
@@ -497,6 +676,637 @@
       "version": 1,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
       "updated_at": "2026-09-26T11:38:32.731Z"
+    },
+    {
+      "entity_id": "99388e2f8ed9b6ace3c00d2b649374c3b55596ff9a5167678563a92b00218310",
+      "source_id": "4e8f1b26-653b-4a14-878a-42eac3ddcbf3",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:58:56.052Z",
+      "updated_at": "2026-09-26T11:58:56.052Z"
+    },
+    {
+      "entity_id": "cd83be57f3462cb35710fbe61e6d546a0ab0a70c5d35d23542308c9c45b345ca",
+      "source_id": "f923380b-32f0-4a70-a6d2-fbaf88f96baf",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T11:59:10.226Z",
+      "updated_at": "2026-09-26T11:59:10.226Z"
+    },
+    {
+      "entity_id": "d37445ba848406fd060cf915f070f28df8bb13f58e17376c9fd097dc210fabe8",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA A16",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.47,
+        "category": "New Jersey, US",
+        "vram": "64",
+        "host_specs": "12 vCPU128GB RAM700GB Storage",
+        "status": "Available",
+        "natural_key": "NVIDIA A16"
+      },
+      "hash": "165b6b97e7b45cc3f84232d45cfa7474423d51a3b2646f7983a51b086665b4b6",
+      "version": 20,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "entity_id": "4ba1d87b15763c326d43d0350104d2bc828f5e634e7c1312aae27fd88751f583",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA GeForce RTX 5060 Ti",
+      "data": {
+        "title": "NVIDIA GeForce RTX 5060 Ti",
+        "provider": "Vast.ai",
+        "price": 0.19,
+        "category": "Maryland, US",
+        "vram": "16",
+        "host_specs": "14 vCPU31GB RAM1624GB Storage",
+        "status": "Available",
+        "natural_key": "NVIDIA GeForce RTX 5060 Ti"
+      },
+      "hash": "81ff730bb2a61882a703b577fa81573ca8f2dcb980a06d3323dd1641ca1aed4c",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "entity_id": "1ab8b51d449e7c5c9339f08bd6a8fea108973816d225537b476ab4ebae65bc96",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA RTX A4000",
+      "data": {
+        "title": "NVIDIA RTX A4000",
+        "provider": "RunPod",
+        "price": 0.25,
+        "category": "global",
+        "vram": "16",
+        "host_specs": "8 vCPU25GB RAM",
+        "status": "Available",
+        "natural_key": "NVIDIA RTX A4000"
+      },
+      "hash": "eb99dd4da26b6fcf787a6ab11fde2e1d5c6145f29f7a0c5d55d25db4b851082e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:00:55.269Z"
+    },
+    {
+      "entity_id": "c151dc343f163ce8a06012424fd45f25172c84c08674d53db112eb796537615a",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA RTX A5000",
+      "data": {
+        "title": "NVIDIA RTX A5000",
+        "provider": "RunPod",
+        "price": 0.27,
+        "category": "global",
+        "vram": "24",
+        "host_specs": "9 vCPU25GB RAM",
+        "status": "Available",
+        "natural_key": "NVIDIA RTX A5000"
+      },
+      "hash": "1927e065c73633b0272b55eba0a7d8492f2a3e46aeb5cf37f79e768247ceb6c9",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:00:55.269Z"
+    },
+    {
+      "entity_id": "f0bd97a8803c8bb20bab6253ed94be16d8ce35e484e0403a99e334f47498a613",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA RTX 4000 Ada Generation",
+      "data": {
+        "title": "NVIDIA RTX 4000 Ada Generation",
+        "provider": "RunPod",
+        "price": 0.28,
+        "category": "global",
+        "vram": "20",
+        "host_specs": "8 vCPU50GB RAM",
+        "status": "Available",
+        "natural_key": "NVIDIA RTX 4000 Ada Generation"
+      },
+      "hash": "936d11338711d51f8ed03319686c804003fdfe7d1fb574a6fbeec2fd3f83f228",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:00:55.269Z"
+    },
+    {
+      "entity_id": "b8d68e252ae968f3dafde7675c51f26a0d74b589db149fc59b01a5109b9a54c2",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA GeForce RTX 3090",
+      "data": {
+        "title": "NVIDIA GeForce RTX 3090",
+        "provider": "Vast.ai",
+        "price": 0.43,
+        "category": "Czechia, CZ",
+        "vram": "24",
+        "host_specs": "48 vCPU126GB RAM1217GB Storage",
+        "status": "Available",
+        "natural_key": "NVIDIA GeForce RTX 3090"
+      },
+      "hash": "9e8f0a28c65cc943cc4440e1ae0047e0a80402570bea1abef1eec2bc23b1197c",
+      "version": 6,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "entity_id": "8f2610399d61b0fd52030f6465bdc8710606e09dda6ccad681fd4e158df0080f",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA A10",
+      "data": {
+        "title": "NVIDIA A10",
+        "provider": "LeaderGPU",
+        "price": 0.37,
+        "category": "The Netherlands",
+        "vram": "24",
+        "host_specs": "64 vCPU384GB RAM2000GB Storage",
+        "status": "Available",
+        "natural_key": "NVIDIA A10"
+      },
+      "hash": "152bfa13664b3b042d70b71911fd41fe2428056420e787fc2f1eddf886c97752",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "entity_id": "5d67bf235a423c7131d3d0cc9036e9f753bf70f1a6c228c8ebf14245b5d89996",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA RTX A6000",
+      "data": {
+        "title": "NVIDIA RTX A6000",
+        "provider": "LeaderGPU",
+        "price": 0.44,
+        "category": "The Netherlands",
+        "vram": "48",
+        "host_specs": "96 vCPU384GB RAM15000GB Storage",
+        "status": "Available",
+        "natural_key": "NVIDIA RTX A6000"
+      },
+      "hash": "ff821f497a94c6c01e272a16ae91a6adf7832b0fe733862400195a21acf4e318",
+      "version": 6,
+      "first_seen_at": "2026-09-26T12:00:55.269Z",
+      "updated_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "entity_id": "c3a5817f0e9be310dcd70b2714a9f702865afc38b49a6230af8c9aba22f41909",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "NVIDIA RTX 2000 Ada Generation",
+      "data": {
+        "title": "NVIDIA RTX 2000 Ada Generation",
+        "provider": "RunPod",
+        "price": 0.24,
+        "category": "global",
+        "vram": "16",
+        "host_specs": "6 vCPU35GB RAM",
+        "status": "Available",
+        "natural_key": "NVIDIA RTX 2000 Ada Generation"
+      },
+      "hash": "0cf2434f9db52aa09c11269520eff305fe7b6c52449880d846f5b804922a80a1",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:01:58.123Z",
+      "updated_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "entity_id": "215dbf27ad882b055ae7a2095426f2c1286fe8b8be25294ea52ee2e3f2f8cbfe",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-tokyo-jp-2-vcpu8gb-ram50gb-storage-0-06",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.06,
+        "category": "Tokyo, JP",
+        "vram": "64",
+        "host_specs": "2 vCPU8GB RAM50GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-tokyo-jp-2-vcpu8gb-ram50gb-storage-0-06"
+      },
+      "hash": "4f268aeb4d11d12c0bb6e72807f46ee521e07e59e82951210eef81a4c086ca83",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "e36a09a3a9a4c271e953f4fab72fb1dd232f5faddf67d68a90127b979764ffa2",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-new-jersey-us-2-vcpu8gb-ram50gb-storage-0-06",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.06,
+        "category": "New Jersey, US",
+        "vram": "64",
+        "host_specs": "2 vCPU8GB RAM50GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-new-jersey-us-2-vcpu8gb-ram50gb-storage-0-06"
+      },
+      "hash": "3ea6b54639abfe1106c765fa189ea59930e84b136882a8688e038647b8b509af",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "b2aaee5c79608f65f42093fb5a417eb02faa5fe8a6e00cf9e57235386052d393",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-atlanta-us-2-vcpu16gb-ram80gb-storage-0-12",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.12,
+        "category": "Atlanta, US",
+        "vram": "64",
+        "host_specs": "2 vCPU16GB RAM80GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-atlanta-us-2-vcpu16gb-ram80gb-storage-0-12"
+      },
+      "hash": "cf03dd35fd6c12ab552b258939cf216656b0b04445257f3d52339441a3e0cac8",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "2a3013e6139e3fe51121cedadb89879d33167e9afd82bf07020acbe4cf6be993",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-tokyo-jp-2-vcpu16gb-ram80gb-storage-0-12",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.12,
+        "category": "Tokyo, JP",
+        "vram": "64",
+        "host_specs": "2 vCPU16GB RAM80GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-tokyo-jp-2-vcpu16gb-ram80gb-storage-0-12"
+      },
+      "hash": "1a7f923cc52e3230c27842fb455475a4f3999ce1c5dcb2d42271e2b7e4157bdb",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "5b7759ec50a269c8517b6996a99e9a9e4fc853bb28338384a7e1c71b1b344550",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-chicago-us-2-vcpu16gb-ram80gb-storage-0-12",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.12,
+        "category": "Chicago, US",
+        "vram": "64",
+        "host_specs": "2 vCPU16GB RAM80GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-chicago-us-2-vcpu16gb-ram80gb-storage-0-12"
+      },
+      "hash": "0c24c9bdcc2f026635c068f4f742ad5c27e50ea892464a6dc4b7972119d7342d",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "edc4bfd0313dfa0b9dc4023c64e632d8878512c072a359cb02fe95829a596bb4",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vast-ai-nvidia-geforce-rtx-5060-ti-maryland-us-14-vcpu31gb-ram1624gb-storage-0-19",
+      "data": {
+        "title": "NVIDIA GeForce RTX 5060 Ti",
+        "provider": "Vast.ai",
+        "price": 0.19,
+        "category": "Maryland, US",
+        "vram": "16",
+        "host_specs": "14 vCPU31GB RAM1624GB Storage",
+        "status": "Available",
+        "natural_key": "vast-ai-nvidia-geforce-rtx-5060-ti-maryland-us-14-vcpu31gb-ram1624gb-storage-0-19"
+      },
+      "hash": "01ca5aec9257fb8905210507bbd95e4f94770a8beebd3233e07c7f42c45b9fbf",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "a39c5fae37f7eecd16c6951e0f2ba6e596135abf9a7f1d4b344efb64fb657b1d",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-singapore-sg-3-vcpu32gb-ram170gb-storage-0-24",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.24,
+        "category": "Singapore, SG",
+        "vram": "64",
+        "host_specs": "3 vCPU32GB RAM170GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-singapore-sg-3-vcpu32gb-ram170gb-storage-0-24"
+      },
+      "hash": "0f07edbf81d312701dea8688ae215e2221845892713f154b2f2ab916d72f3698",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "53559fb3ceed1dad71d3d91fe5e36a302b08b7a43fa389006af4cfc257f913a6",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-new-jersey-us-3-vcpu32gb-ram170gb-storage-0-24",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.24,
+        "category": "New Jersey, US",
+        "vram": "64",
+        "host_specs": "3 vCPU32GB RAM170GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-new-jersey-us-3-vcpu32gb-ram170gb-storage-0-24"
+      },
+      "hash": "574d132db487641b955a65d1d7e543207542489684d18273cba3ec709c545c6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "d86b71ecb2dc2243e4cd2e8487abb2228e75810e47d7de918a586047625c452d",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "runpod-nvidia-rtx-a4000-global-8-vcpu25gb-ram-0-25",
+      "data": {
+        "title": "NVIDIA RTX A4000",
+        "provider": "RunPod",
+        "price": 0.25,
+        "category": "global",
+        "vram": "16",
+        "host_specs": "8 vCPU25GB RAM",
+        "status": "Available",
+        "natural_key": "runpod-nvidia-rtx-a4000-global-8-vcpu25gb-ram-0-25"
+      },
+      "hash": "06a69261fd41a80bf4b19ef0fca3a31b22be2a9c5a27c89e432fdf9f1fb88831",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "58a473aa042c8e27e02281298f1dfdfcadf9e317b84ed53f835b4904ac2730bb",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "runpod-nvidia-rtx-a5000-global-9-vcpu25gb-ram-0-27",
+      "data": {
+        "title": "NVIDIA RTX A5000",
+        "provider": "RunPod",
+        "price": 0.27,
+        "category": "global",
+        "vram": "24",
+        "host_specs": "9 vCPU25GB RAM",
+        "status": "Available",
+        "natural_key": "runpod-nvidia-rtx-a5000-global-9-vcpu25gb-ram-0-27"
+      },
+      "hash": "c863ba1914b26c6b043c9af6afc53bd708e5469a1ba886014b645b8d6d83aa83",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "f7c866cdb74e195a3237779d1f7579e5423e5b37bdff77e349aaf2aee43df4c9",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "runpod-nvidia-rtx-4000-ada-generation-global-8-vcpu50gb-ram-0-28",
+      "data": {
+        "title": "NVIDIA RTX 4000 Ada Generation",
+        "provider": "RunPod",
+        "price": 0.28,
+        "category": "global",
+        "vram": "20",
+        "host_specs": "8 vCPU50GB RAM",
+        "status": "Available",
+        "natural_key": "runpod-nvidia-rtx-4000-ada-generation-global-8-vcpu50gb-ram-0-28"
+      },
+      "hash": "c2b4cea15cb82e6a84e33cf784345dc4c926025b55a877c58229d33de0dc1cc6",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "2c88a55881eacce0a908b896beb4f2a3af43ef6baba459c3356ba24b1667317f",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "leadergpu-nvidia-geforce-rtx-3090-the-netherlands-0-vcpu384gb-ram2000gb-storage-0-29",
+      "data": {
+        "title": "NVIDIA GeForce RTX 3090",
+        "provider": "LeaderGPU",
+        "price": 0.29,
+        "category": "The Netherlands",
+        "vram": "24",
+        "host_specs": "0 vCPU384GB RAM2000GB Storage",
+        "status": "Available",
+        "natural_key": "leadergpu-nvidia-geforce-rtx-3090-the-netherlands-0-vcpu384gb-ram2000gb-storage-0-29"
+      },
+      "hash": "8d0577abc7e70bf2b79c593a80bde7aeac0cdb9c7ee3b47bde1997cea2415e33",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "e1be9058ebb0e6a2bd6125fbf653da8b5de2927021a8a2c4f40c726975967872",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "leadergpu-nvidia-geforce-rtx-3090-the-netherlands-48-vcpu384gb-ram2000gb-storage-0-29",
+      "data": {
+        "title": "NVIDIA GeForce RTX 3090",
+        "provider": "LeaderGPU",
+        "price": 0.29,
+        "category": "The Netherlands",
+        "vram": "24",
+        "host_specs": "48 vCPU384GB RAM2000GB Storage",
+        "status": "Available",
+        "natural_key": "leadergpu-nvidia-geforce-rtx-3090-the-netherlands-48-vcpu384gb-ram2000gb-storage-0-29"
+      },
+      "hash": "b00dba0d21ddf03b673414cf9dabb695e6031f934add4b562b24994edb292b33",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "ce883e0adda1c0725f6b7dc3f159a86005005af87b0134aaac5609ce10096207",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "leadergpu-nvidia-a10-the-netherlands-64-vcpu384gb-ram2000gb-storage-0-37",
+      "data": {
+        "title": "NVIDIA A10",
+        "provider": "LeaderGPU",
+        "price": 0.37,
+        "category": "The Netherlands",
+        "vram": "24",
+        "host_specs": "64 vCPU384GB RAM2000GB Storage",
+        "status": "Available",
+        "natural_key": "leadergpu-nvidia-a10-the-netherlands-64-vcpu384gb-ram2000gb-storage-0-37"
+      },
+      "hash": "ea5d79ca603e56ed73b443363f34b119ab026262b7805600139ff7f8686e28b9",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "32e1d583b9fabd5cba3513633cb94c64b5687598dd9b2e3831ed3f41b2d50a2e",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vast-ai-nvidia-geforce-rtx-3090-czechia-cz-48-vcpu126gb-ram1217gb-storage-0-43",
+      "data": {
+        "title": "NVIDIA GeForce RTX 3090",
+        "provider": "Vast.ai",
+        "price": 0.43,
+        "category": "Czechia, CZ",
+        "vram": "24",
+        "host_specs": "48 vCPU126GB RAM1217GB Storage",
+        "status": "Available",
+        "natural_key": "vast-ai-nvidia-geforce-rtx-3090-czechia-cz-48-vcpu126gb-ram1217gb-storage-0-43"
+      },
+      "hash": "b87d73bd9667815a3d9e82ea025bd60bf72db0615fc6c3e8a1317fd2acafd11f",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "d3f1b002f3a4f8a94451df8a0f5aa7812995243f036937c4943c562195a3a017",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "leadergpu-nvidia-rtx-a6000-the-netherlands-48-vcpu384gb-ram2000gb-storage-0-44",
+      "data": {
+        "title": "NVIDIA RTX A6000",
+        "provider": "LeaderGPU",
+        "price": 0.44,
+        "category": "The Netherlands",
+        "vram": "48",
+        "host_specs": "48 vCPU384GB RAM2000GB Storage",
+        "status": "Available",
+        "natural_key": "leadergpu-nvidia-rtx-a6000-the-netherlands-48-vcpu384gb-ram2000gb-storage-0-44"
+      },
+      "hash": "5039e7fbce6bc75f86a70f809d7c7cb5b8d80035d5f0c0f3198f944ee7985d9c",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "ad12c20017d72609a1672ecf89606ee73fc69a933723b30db21ef986a9cbb64e",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "leadergpu-nvidia-rtx-a6000-the-netherlands-96-vcpu384gb-ram15000gb-storage-0-44",
+      "data": {
+        "title": "NVIDIA RTX A6000",
+        "provider": "LeaderGPU",
+        "price": 0.44,
+        "category": "The Netherlands",
+        "vram": "48",
+        "host_specs": "96 vCPU384GB RAM15000GB Storage",
+        "status": "Available",
+        "natural_key": "leadergpu-nvidia-rtx-a6000-the-netherlands-96-vcpu384gb-ram15000gb-storage-0-44"
+      },
+      "hash": "6053c1f985c5147e5801b1aa4f62445cacca2d34d1778e2769184c254cf12fc9",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "05ea8d9f3a1ff30f9653559e854667167d3302b426e07e0ddecfe07fdbf2bafd",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "leadergpu-nvidia-rtx-a6000-the-netherlands-16-vcpu384gb-ram2000gb-storage-0-44",
+      "data": {
+        "title": "NVIDIA RTX A6000",
+        "provider": "LeaderGPU",
+        "price": 0.44,
+        "category": "The Netherlands",
+        "vram": "48",
+        "host_specs": "16 vCPU384GB RAM2000GB Storage",
+        "status": "Available",
+        "natural_key": "leadergpu-nvidia-rtx-a6000-the-netherlands-16-vcpu384gb-ram2000gb-storage-0-44"
+      },
+      "hash": "8821f1bdfa7a134c951efe5ab481bfc571208ee5d8b35ef3e20957723712a7ce",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "be6c35dda24a9650081a536725f447314d32b28934c4916768b1abb50a3b53ff",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-silicon-valley-us-12-vcpu128gb-ram700gb-storage-0-47",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.47,
+        "category": "Silicon Valley, US",
+        "vram": "64",
+        "host_specs": "12 vCPU128GB RAM700GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-silicon-valley-us-12-vcpu128gb-ram700gb-storage-0-47"
+      },
+      "hash": "ffe8f3b4ce3421521c7e3186fc930036478f582bc30fd53f785c81be9afafe3f",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "0f0d67ded0807cec317eb1f759d55570e716269728b5660bd04da68cdecc17d7",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "vultr-nvidia-a16-new-jersey-us-12-vcpu128gb-ram700gb-storage-0-47",
+      "data": {
+        "title": "NVIDIA A16",
+        "provider": "Vultr",
+        "price": 0.47,
+        "category": "New Jersey, US",
+        "vram": "64",
+        "host_specs": "12 vCPU128GB RAM700GB Storage",
+        "status": "Available",
+        "natural_key": "vultr-nvidia-a16-new-jersey-us-12-vcpu128gb-ram700gb-storage-0-47"
+      },
+      "hash": "a6355b0ecc0b2963f5e8482a742d01ced126cd418f166bea827021169db5e679",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:03:19.687Z",
+      "updated_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "entity_id": "c47b266e6b6b08a318b739a733b6e1a4ab523f61c3927038c70907a051e4b45c",
+      "source_id": "f127bff7-f769-43a1-8b1e-b61ca3f0e06e",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:04:21.810Z",
+      "updated_at": "2026-09-26T12:04:21.810Z"
+    },
+    {
+      "entity_id": "e2ecb3e1dbd57745890dac68dc7b12bc89785a5b9055d541eae31dc90e71914d",
+      "source_id": "69cc8918-6675-4057-81c7-685cad7c54b7",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:05:23.785Z",
+      "updated_at": "2026-09-26T12:05:23.785Z"
+    },
+    {
+      "entity_id": "35b88b1c83dde1ba3549cb66fd982c9a43b35576c9c9ada875ce313e38e107cf",
+      "source_id": "0096d660-c480-4bcd-b833-907dc4768985",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T12:06:31.366Z",
+      "updated_at": "2026-09-26T12:06:31.366Z"
     }
   ],
   "subscribers": [
@@ -531,6 +1341,160 @@
   ],
   "logs": [
     {
+      "id": "3de3dcd2-44c6-4ccb-b437-11b030ab16e3",
+      "source_id": "0096d660-c480-4bcd-b833-907dc4768985",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 7,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T12:06:31.366Z"
+    },
+    {
+      "id": "208b50d2-f99a-4605-847f-bb9a722a0fc2",
+      "source_id": "69cc8918-6675-4057-81c7-685cad7c54b7",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 6,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T12:05:23.785Z"
+    },
+    {
+      "id": "9f0a136a-0463-4f3e-af23-d6176eccd074",
+      "source_id": "f127bff7-f769-43a1-8b1e-b61ca3f0e06e",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 6,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T12:04:21.810Z"
+    },
+    {
+      "id": "a91a84f9-159f-4bc3-bba1-25fe18764e3b",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "SUCCESS",
+      "records_count": 20,
+      "duration_ms": 473,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 20,
+        "updated": 0,
+        "fetchDurationMs": 412
+      },
+      "created_at": "2026-09-26T12:03:19.687Z"
+    },
+    {
+      "id": "b5601b30-8684-47a3-8876-8f5cc556e5a1",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "SUCCESS",
+      "records_count": 20,
+      "duration_ms": 700,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 19,
+        "fetchDurationMs": 630
+      },
+      "created_at": "2026-09-26T12:01:58.123Z"
+    },
+    {
+      "id": "17ddc9df-1211-444e-9f02-2d83736769d8",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "SUCCESS",
+      "records_count": 20,
+      "duration_ms": 530,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 8,
+        "updated": 12,
+        "fetchDurationMs": 466
+      },
+      "created_at": "2026-09-26T12:00:55.269Z"
+    },
+    {
+      "id": "83b3132d-9f9c-4225-b3a7-45cb611205a0",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1339,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 831,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 663,
+        "repairedVersion": 2
+      },
+      "created_at": "2026-09-26T12:00:10.654Z"
+    },
+    {
+      "id": "21404abf-996d-4529-8293-59aff5d5cdca",
+      "source_id": "f923380b-32f0-4a70-a6d2-fbaf88f96baf",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 8,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T11:59:10.226Z"
+    },
+    {
+      "id": "ac8dfb20-cc1f-445f-a8e6-b2c80c39cb4c",
+      "source_id": "4e8f1b26-653b-4a14-878a-42eac3ddcbf3",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 7,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T11:58:56.052Z"
+    },
+    {
       "id": "b7a13f5c-e578-49ea-9485-8665cbd37e67",
       "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
       "status": "SUCCESS",
@@ -548,5 +1512,5 @@
       "created_at": "2026-09-26T11:38:32.732Z"
     }
   ],
-  "updated_at": "2026-09-26T11:38:32.837Z"
+  "updated_at": "2026-09-26T12:06:31.488Z"
 }

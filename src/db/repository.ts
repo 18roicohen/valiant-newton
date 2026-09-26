@@ -248,9 +248,11 @@ class PersistentFileRepository implements IRepository {
       return filter.sort_dir === 'desc' ? -compare : compare;
     });
 
+    const page = Math.max(1, filter.page || 1);
+    const limit = Math.max(1, filter.limit || 50);
     const total = all.length;
-    const offset = (filter.page - 1) * filter.limit;
-    const paginated = all.slice(offset, offset + filter.limit);
+    const offset = (page - 1) * limit;
+    const paginated = all.slice(offset, offset + limit);
 
     return { data: paginated, total };
   }

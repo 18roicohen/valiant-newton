@@ -50,7 +50,36 @@ program
       schedule_cron: '*/30 * * * *',
     });
 
-    // Seed Source 2: Niche Developer Tool & AI API Pricing
+    // Seed Source 2: Real Live Individual GPU Server Instance Catalog (Table 2)
+    const instancesSource = await repository.createSource({
+      name: 'Live Cloud GPU Server Instance Catalog (31 Providers)',
+      url: 'https://gpuperhour.com',
+      target_schema: {
+        title: 'string',
+        provider: 'string',
+        price: 'number',
+        category: 'string',
+        vram: 'string',
+        host_specs: 'string',
+        status: 'string',
+      },
+      selector_map: {
+        container: 'table[data-slot="table"] tbody tr:has(button[data-track-gpu])',
+        fields: {
+          title: 'button[data-track-gpu]@data-track-gpu',
+          provider: 'button[data-track-gpu]@data-track-provider',
+          price: 'button[data-track-gpu]@data-track-price',
+          category: 'button[data-track-gpu]@data-track-region',
+          vram: 'button[data-track-gpu]@data-track-vram',
+          host_specs: 'td:nth-child(4)',
+          status: 'td:nth-child(7)',
+        },
+        version: 1,
+      },
+      schedule_cron: '*/15 * * * *',
+    });
+
+    // Seed Source 3: Niche Developer Tool & AI API Pricing
     const devToolsSource = await repository.createSource({
       name: 'LLM Inference API Token Pricing Index',
       url: 'https://llm-pricing.internal/tokens',
@@ -105,7 +134,8 @@ program
     console.log('\n================ SEED COMPLETED ================');
     console.log('📌 Sources Created:');
     console.log(`   1. ${gpuSource.name} (ID: ${gpuSource.id})`);
-    console.log(`   2. ${devToolsSource.name} (ID: ${devToolsSource.id})`);
+    console.log(`   2. ${instancesSource.name} (ID: ${instancesSource.id})`);
+    console.log(`   3. ${devToolsSource.name} (ID: ${devToolsSource.id})`);
     console.log(`   📊 Populated ${validRecords.length} GPU Spot Market Records in local database!`);
     console.log('\n🔑 Test Polar API Subscribers:');
     console.log(`   1. Starter Subscriber: ${starterSub.subscriber.email}`);

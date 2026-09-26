@@ -35,6 +35,8 @@ const envSchema = z.object({
 
   // Alert Notifications
   ALERT_WEBHOOK_URL: z.string().url().optional(),
+  NTFY_TOPIC: z.string().default('dynep_alerts'),
+  NTFY_URL: z.string().default('https://ntfy.sh'),
   ENABLE_CRON_SCHEDULER: z.coerce.boolean().default(true),
 });
 
