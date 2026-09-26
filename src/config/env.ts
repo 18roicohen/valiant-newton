@@ -38,11 +38,13 @@ const envSchema = z.object({
   DEFAULT_MONTHLY_QUOTA: z.coerce.number().default(1000),
   DEFAULT_RATE_LIMIT_RPM: z.coerce.number().default(60),
 
-  // Alert Notifications
+  // Alert Notifications & Emails
   ALERT_WEBHOOK_URL: z.string().url().optional(),
   NTFY_TOPIC: z.string().default('dynep_alerts'),
   NTFY_URL: z.string().default('https://ntfy.sh'),
   ENABLE_CRON_SCHEDULER: z.coerce.boolean().default(true),
+  RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM_EMAIL: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

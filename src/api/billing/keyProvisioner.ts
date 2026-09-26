@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import { repository } from '../../db/repository.js';
 import { ApiSubscriber, SubscriberTier } from '../../db/schema.js';
 import { logger } from '../../db/client.js';
+import { EmailService } from '../../alerts/emailService.js';
 
 export interface ProvisionResult {
   subscriber: ApiSubscriber;
@@ -66,6 +67,16 @@ export class ApiKeyProvisioner {
 
     const savedSubscriber = await repository.createSubscriber(subscriber);
     logger.info({ subscriberId: savedSubscriber.id, email: savedSubscriber.email, tier }, 'Provisioned API Subscriber');
+
+    // Trigger transactional welcome email asynchronously
+    EmailService.sendWelcomeApiKeyEmail({
+      to: savedSubscriber.email,
+      apiKey: rawKey,
+      tier: savedSubscriber.tier,
+      monthlyQuota: savedSubscriber.monthly_quota,
+    }).catch((err) => {
+      logger.error({ error: err.message, to: savedSubscriber.email }, 'Failed to dispatch welcome API key email');
+    });
 
     return {
       subscriber: savedSubscriber,
