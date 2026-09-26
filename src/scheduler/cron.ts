@@ -38,7 +38,31 @@ export class SchedulerService {
     });
     this.systemTasks.push(quotaResetTask);
 
-    // 3. Sync and start source scrapers
+    // 3. Schedule autonomous IndexNow search engine ping every 2 hours ('0 */2 * * *')
+    const indexNowTask = cron.schedule('0 */2 * * *', async () => {
+      try {
+        logger.info('Executing automated IndexNow search engine ping');
+        const { pingSearchEngines } = await import('../../scripts/ping-search-engines.js');
+        await pingSearchEngines();
+      } catch (err: any) {
+        logger.error({ err: err.message }, 'Scheduled IndexNow ping failed');
+      }
+    });
+    this.systemTasks.push(indexNowTask);
+
+    // 4. Schedule automated lead conversion scan via Resend every 6 hours ('0 */6 * * *')
+    const nurtureTask = cron.schedule('0 */6 * * *', async () => {
+      try {
+        logger.info('Executing automated lead nurture quota scan');
+        const { UserGrowthEngine } = await import('../../scripts/user-growth-engine.js');
+        await UserGrowthEngine.dispatchNurtureEmails();
+      } catch (err: any) {
+        logger.error({ err: err.message }, 'Scheduled lead nurture scan failed');
+      }
+    });
+    this.systemTasks.push(nurtureTask);
+
+    // 5. Sync and start source scrapers
     await this.refreshTasks();
 
     // Re-check sources every 5 minutes to pick up newly added or modified sources
