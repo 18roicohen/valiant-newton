@@ -29,9 +29,9 @@
       "schedule_cron": "*/30 * * * *",
       "headers": {},
       "status": "ACTIVE",
-      "last_run_at": "2026-09-26T18:30:00.925Z",
+      "last_run_at": "2026-09-26T19:00:00.989Z",
       "created_at": "2026-09-26T11:38:31.927Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "id": "275f3912-f552-4f87-a490-716e5f4ceed9",
@@ -59,14 +59,14 @@
           "status": ".status, .badge",
           "natural_key": "h3, .title"
         },
-        "version": 19
+        "version": 21
       },
       "schedule_cron": "*/15 * * * *",
       "headers": {},
       "status": "ACTIVE",
-      "last_run_at": "2026-09-26T18:30:01.803Z",
+      "last_run_at": "2026-09-26T19:00:01.577Z",
       "created_at": "2026-09-26T12:00:09.313Z",
-      "updated_at": "2026-09-26T18:30:01.803Z"
+      "updated_at": "2026-09-26T19:00:01.577Z"
     }
   ],
   "records": [
@@ -239,7 +239,7 @@
       "hash": "11a096954d67a457b46e49fd974384b821040833ccb77a1544d98479e3aca2ab",
       "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "c81b40663e425f09c21c9d1ab09eaa3f531d64771401f251e4c2c1b56815a57f",
@@ -247,17 +247,17 @@
       "natural_key": "H100 PCIe",
       "data": {
         "title": "H100 PCIe",
-        "price": 2.59,
-        "category": "QuantaCloud",
-        "status": "5",
-        "provider": "QuantaCloud",
+        "price": 2.5,
+        "category": "Hyperstack",
+        "status": "8",
+        "provider": "Hyperstack",
         "historical_avg": "$2.77/hr (30 days)",
         "natural_key": "H100 PCIe"
       },
-      "hash": "0c19c96aa6a9f6d97c96d5e99e88bfb3c48fe860c92600cd1d2c3ac8f9b312fa",
-      "version": 8,
+      "hash": "a430a0c3655e7259a1cf5857dd1b76a8410cce4e21a4c3dced830bd1750f6c68",
+      "version": 9,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "4f6fbc440f06ee4366905639cca36c1febca7efdc684ef9cd3b6494318e02c36",
@@ -265,17 +265,17 @@
       "natural_key": "H100 NVL",
       "data": {
         "title": "H100 NVL",
-        "price": 3.09,
+        "price": 2.85,
         "category": "Vast.ai",
         "status": "3",
         "provider": "Vast.ai",
         "historical_avg": "$1.91/hr (30 days)",
         "natural_key": "H100 NVL"
       },
-      "hash": "1864dadb58006edd0e2e0147485d598fb045166b7451334b9524128ead7cfd1c",
-      "version": 8,
+      "hash": "2ab02667ce82c71b3efe556d8b471894b970a5b268a89dc3b1df98c45b97ddf9",
+      "version": 9,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "6cbaf1dfdc1d4fddc7eb8fd503041fe22180096eddf9d6e84e132eca49847d6f",
@@ -293,7 +293,7 @@
       "hash": "fc5845d945f8d85e01e2e8ba438fad5b57a95d0461eb4849cf1364c5c6846cf5",
       "version": 1,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "a6bfcb777f8f0a7c48af9dcced924825193453a7f689e7ff4a52c4b339a651f6",
@@ -311,7 +311,7 @@
       "hash": "d1d4b3d0e525d01644fa64b0d7c794414a96c6f7270b3ec2938640a50eecdb33",
       "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "2ff28e3d4bd421ae3f669cfe2ff527f270fb32c9f9751a628b46c9e41dd8ccbf",
@@ -329,7 +329,7 @@
       "hash": "75bffcf472e0a593ca1e9e20b2a3a0c7cf91f4a92a2ce77d3e953284841235af",
       "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "7db8e0e64e8984aa12f2e0ac09f5754e45faa1def2107cccbb3c35466fc88c70",
@@ -347,7 +347,7 @@
       "hash": "077ea2db32425564858160a0f50bf75af6f3c8c908b1976b8a68461dd74f0dbc",
       "version": 2,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "ef1450d391a82070279213b4cfaa5714c897fe2353df565883422179e04aaac0",
@@ -355,17 +355,17 @@
       "natural_key": "A100 SXM4 80GB",
       "data": {
         "title": "A100 SXM4 80GB",
-        "price": 1.19,
+        "price": 1.07,
         "category": "Vast.ai",
         "status": "6",
         "provider": "Vast.ai",
         "historical_avg": "$1.06/hr (30 days)",
         "natural_key": "A100 SXM4 80GB"
       },
-      "hash": "930ddccad326f268e2bfc0b4e430eb46830c181ee63ed3b6dfebdf87f61e1d17",
-      "version": 6,
+      "hash": "66975e853fc9dd306cadba13c7c1c72c8728a08806b6149acc6abb4416ccf27c",
+      "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "798fc9f8f233def3fa800ae6ac2be4b4f147c85da2b1d7b994ad2c70a52e0c53",
@@ -383,7 +383,7 @@
       "hash": "e165bdf0c0b7c6230234cd6c8b3b8964678bb737243485f4cf76b2378d9b5fcf",
       "version": 3,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "157d8422d53bfdb561cd3dd3e611652817b33e728954922677a522169ee59f84",
@@ -401,7 +401,7 @@
       "hash": "5e3f5d33724cb674751ebce211b9534bff96ea4815c6c2484dd836d7b44ab28c",
       "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "9fb822f142b072adbdb392aa01d73e997250a7ccd08766e777a284c68ec18deb",
@@ -419,7 +419,7 @@
       "hash": "e6060cb5b2c501856eae81a6971eb1748d2999504f807331ed557522a615687f",
       "version": 1,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "de6d6039ccf6be6a8529c85158545775ab8ab77426f0930ebcbed425043eb92e",
@@ -437,7 +437,7 @@
       "hash": "cb60308fc9f82c65ffd6b55c4b1c846e9cfefaf6e54c2987a02bfb5002e5be64",
       "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "bc6ddc66fbcc8ec1c7d7aed195303e7eb754a0f041b692c5c720a0596da24fd2",
@@ -455,7 +455,7 @@
       "hash": "e520b7602cf5758ab38cc0228424457cd62a15afb764db4da1fa603725dc27ed",
       "version": 9,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "43cc80e103d4b8d905ae34089db59af3bab13fd4f277622883913e2cdf644ef6",
@@ -465,15 +465,15 @@
         "title": "RTX A6000",
         "price": 0.44,
         "category": "LeaderGPU",
-        "status": "7",
+        "status": "8",
         "provider": "LeaderGPU",
         "historical_avg": "$0.57/hr (30 days)",
         "natural_key": "RTX A6000"
       },
-      "hash": "e404e3c27b9c06133fb08bbbb137fe7b8437816725dc68554100e794e07bd4a4",
-      "version": 8,
+      "hash": "15cc0c9d4c2b0e31a4023b4caec65cedbeef5b7428e250787d488289f7971db7",
+      "version": 9,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T18:30:00.925Z"
+      "updated_at": "2026-09-26T19:00:00.989Z"
     },
     {
       "entity_id": "99388e2f8ed9b6ace3c00d2b649374c3b55596ff9a5167678563a92b00218310",
@@ -1155,7 +1155,7 @@
       "hash": "049e10cb8bd3ae9fdb474391b252e34c1ea109313f477b821314236090c1bc2e",
       "version": 1,
       "first_seen_at": "2026-09-26T14:15:02.546Z",
-      "updated_at": "2026-09-26T18:30:01.802Z"
+      "updated_at": "2026-09-26T19:00:01.577Z"
     },
     {
       "entity_id": "3f9766ace10d16cca0fa4bf09a7742bc1fde53c85955d7fa1eccf73040f238c7",
@@ -1353,7 +1353,7 @@
       "rate_limit_rpm": 300,
       "is_active": true,
       "created_at": "2026-09-26T15:32:27.288Z",
-      "updated_at": "2026-09-26T18:33:20.829Z"
+      "updated_at": "2026-09-26T19:07:16.272Z"
     },
     {
       "id": "bc50a878-6f10-41a6-b686-03d205202fc3",
@@ -1381,7 +1381,7 @@
       "rate_limit_rpm": 60,
       "is_active": true,
       "created_at": "2026-09-26T15:58:03.101Z",
-      "updated_at": "2026-09-26T18:33:20.829Z"
+      "updated_at": "2026-09-26T19:07:16.272Z"
     },
     {
       "id": "f114ad63-fef9-4520-833e-b84cb9865e01",
@@ -1454,65 +1454,135 @@
       "updated_at": "2026-09-26T18:22:23.074Z"
     },
     {
-      "id": "00184986-7587-4a16-a65a-a722c8e2ec9c",
-      "customer_id": "cust_up_1790447599993",
-      "email": "upgrade-1790447599993@domain.com",
-      "api_key_hash": "30d1f99cbd9637e91962951c701f8370b5e7857db8e9fb819815f85a5114ecb6",
-      "api_key_prefix": "sk_live_7376533...",
+      "id": "a87a3757-a7ae-467a-b932-28336ea76ab6",
+      "customer_id": "cust_up_1790449635307",
+      "email": "upgrade-1790449635307@domain.com",
+      "api_key_hash": "c8541b3f7314fdb1223cfaf0d9dc508d4153c5d21494831cb2440863e974f58c",
+      "api_key_prefix": "sk_live_645f7c4...",
       "tier": "enterprise",
       "monthly_quota": 100000,
       "current_usage": 0,
       "rate_limit_rpm": 1200,
       "is_active": true,
-      "created_at": "2026-09-26T18:33:19.993Z",
-      "updated_at": "2026-09-26T18:33:20.061Z"
+      "created_at": "2026-09-26T19:07:15.309Z",
+      "updated_at": "2026-09-26T19:07:15.459Z"
     },
     {
-      "id": "8b86d516-67aa-47a2-923a-43663cc59800",
-      "customer_id": "cust_cancel_1790447600517",
-      "email": "cancel-1790447600517@domain.com",
-      "api_key_hash": "cecda836b49a87c2bff6e69beb3632988017568a3f912e826b6ad060cfade73f",
-      "api_key_prefix": "sk_live_e71ed12...",
+      "id": "479cd21d-0767-4443-8de5-cf52f9188bd4",
+      "customer_id": "cust_cancel_1790449635936",
+      "email": "cancel-1790449635936@domain.com",
+      "api_key_hash": "e58881a9726dfc6de2ea4c53ace4a592c5c3a288537b5fa417768fb66a386f2a",
+      "api_key_prefix": "sk_live_8d2e771...",
       "tier": "pro",
       "monthly_quota": 10000,
       "current_usage": 0,
       "rate_limit_rpm": 300,
       "is_active": false,
-      "created_at": "2026-09-26T18:33:20.517Z",
-      "updated_at": "2026-09-26T18:33:20.829Z"
+      "created_at": "2026-09-26T19:07:15.937Z",
+      "updated_at": "2026-09-26T19:07:16.272Z"
     },
     {
-      "id": "e0a9b273-178d-43d5-a223-46f1d51dbc5e",
-      "customer_id": "cust_refund_1790447600672",
-      "email": "refund-1790447600672@domain.com",
-      "api_key_hash": "e2e2895aec11c848a72abfd26485bf907bb71009dfc6b29824091e03b8b1558c",
-      "api_key_prefix": "sk_live_297f32f...",
+      "id": "52383965-7fc0-460f-8822-c8eca3b577d4",
+      "customer_id": "cust_refund_1790449636112",
+      "email": "refund-1790449636112@domain.com",
+      "api_key_hash": "e65caee773ab90d922545e9533c8b7df9a74371141a13a56ba1522c73111c5ac",
+      "api_key_prefix": "sk_live_81dbe43...",
       "tier": "starter",
       "monthly_quota": 1000,
       "current_usage": 0,
       "rate_limit_rpm": 60,
       "is_active": false,
-      "created_at": "2026-09-26T18:33:20.673Z",
-      "updated_at": "2026-09-26T18:33:20.676Z"
+      "created_at": "2026-09-26T19:07:16.113Z",
+      "updated_at": "2026-09-26T19:07:16.118Z"
     },
     {
-      "id": "639396be-91cf-47f0-ab29-033ed2e21c49",
+      "id": "2cbe76ad-ad0b-4b7c-9537-a64cbcebcec5",
       "customer_id": null,
-      "email": "quota-reset-1790447600827@domain.com",
-      "api_key_hash": "b257fe334707132e486bbbf1aede1175a91b11f5561a58896ec299c9d2a4e458",
-      "api_key_prefix": "sk_live_8f1caba...",
+      "email": "quota-reset-1790449636269@domain.com",
+      "api_key_hash": "df1b7c996644aa122d3b8a9438fea4dca362abbf6155f3d9039d3003cfbc1d72",
+      "api_key_prefix": "sk_live_f48c394...",
       "tier": "starter",
       "monthly_quota": 1000,
       "current_usage": 0,
       "rate_limit_rpm": 60,
       "is_active": true,
-      "created_at": "2026-09-26T18:33:20.828Z",
-      "updated_at": "2026-09-26T18:33:20.829Z"
+      "created_at": "2026-09-26T19:07:16.269Z",
+      "updated_at": "2026-09-26T19:07:16.272Z"
+    },
+    {
+      "id": "52950208-a193-40d1-b43b-a12b0f557f70",
+      "customer_id": null,
+      "email": "cluster-lead@localllama-community.org",
+      "api_key_hash": "ca9bf79ade4690ad4b4cb436a0583b6092c73aeb5318d31331aa10bea287d60c",
+      "api_key_prefix": "sk_live_461f8cc...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T19:09:55.453Z",
+      "updated_at": "2026-09-26T19:09:55.455Z"
+    },
+    {
+      "id": "a8873def-37ad-4471-b20b-4ee659267928",
+      "customer_id": null,
+      "email": "infra@weights-finetuning.io",
+      "api_key_hash": "57a00537a1bbec59069f93964caa753910af2c5629cb33dbbaa95550329efeb9",
+      "api_key_prefix": "sk_live_fbef4eb...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T19:09:55.597Z",
+      "updated_at": "2026-09-26T19:09:55.597Z"
+    },
+    {
+      "id": "c7690bb8-53d9-4295-a08f-f9ea4b9e7ad5",
+      "customer_id": null,
+      "email": "devops@synthetica-models.com",
+      "api_key_hash": "6fa83cc0560be770e7902375c16c25cf6800a089752690218a2c27511fceed54",
+      "api_key_prefix": "sk_live_310201f...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T19:09:55.601Z",
+      "updated_at": "2026-09-26T19:09:55.601Z"
+    },
+    {
+      "id": "d9448392-c4cd-4a46-87b5-eb22e1f54e4f",
+      "customer_id": null,
+      "email": "research@deepfine-labs.ai",
+      "api_key_hash": "ccc985327f5be64ef1365b6c043eb049f3b468bf00617b6191e4492e5b86ece0",
+      "api_key_prefix": "sk_live_50e5578...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T19:09:55.604Z",
+      "updated_at": "2026-09-26T19:09:55.604Z"
+    },
+    {
+      "id": "55f99411-6a9d-4046-bcf0-6f3392e2678f",
+      "customer_id": null,
+      "email": "integrations@open-gpu-metrics.dev",
+      "api_key_hash": "c25df23210016bf1de7c09f4b4a367630bc20bc30a889efd22ca9afaf5c4db7c",
+      "api_key_prefix": "sk_live_4c76e64...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T19:09:55.609Z",
+      "updated_at": "2026-09-26T19:09:55.609Z"
     }
   ],
   "logs": [
     {
-      "id": "1d30d50e-f724-4566-a5c4-cbc47483178a",
+      "id": "8266efe4-100d-4570-9fcf-9f601d9e84b1",
       "source_id": "00000000-0000-0000-0000-000000000000",
       "status": "SUCCESS",
       "records_count": 0,
@@ -1522,10 +1592,63 @@
       "error_message": null,
       "metadata": {
         "audit_event": "ORDER_REFUNDED",
-        "email": "refund-1790447600672@domain.com",
-        "customer_id": "cust_refund_1790447600672"
+        "email": "refund-1790449636112@domain.com",
+        "customer_id": "cust_refund_1790449636112"
       },
-      "created_at": "2026-09-26T18:33:20.676Z"
+      "created_at": "2026-09-26T19:07:16.119Z"
+    },
+    {
+      "id": "5fe193fb-114e-40da-993a-7ad320817cac",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1572,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 840,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 703,
+        "repairedVersion": 21
+      },
+      "created_at": "2026-09-26T19:00:01.577Z"
+    },
+    {
+      "id": "9d4d6579-4d15-4a4d-8589-3cf17855a7cf",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 14,
+      "duration_ms": 967,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 14,
+        "fetchDurationMs": 946
+      },
+      "created_at": "2026-09-26T19:00:00.989Z"
+    },
+    {
+      "id": "0b3dab4b-28ec-4a2e-aab9-4fb99d288026",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1654,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 843,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 814,
+        "repairedVersion": 20
+      },
+      "created_at": "2026-09-26T18:45:01.665Z"
     },
     {
       "id": "24d3f16f-0b5e-484a-bfd7-54e6e1a656e9",
@@ -2295,5 +2418,5 @@
       "created_at": "2026-09-26T11:38:32.732Z"
     }
   ],
-  "updated_at": "2026-09-26T18:33:20.830Z"
+  "updated_at": "2026-09-26T19:09:55.719Z"
 }

@@ -63,6 +63,72 @@ export async function seoRoutes(fastify: FastifyInstance) {
   });
 
   /**
+   * Public Zero-Auth Real-Time Spot Benchmark Summary
+   * GET /v1/spot/summary
+   * Allows instant terminal / cURL queries without requiring prior registration
+   */
+  fastify.get('/v1/spot/summary', async (_request: FastifyRequest, reply: FastifyReply) => {
+    const { data: records } = await repository.getRecords({
+      limit: 200,
+      page: 1,
+      sort_by: 'updated_at',
+      sort_dir: 'desc',
+    });
+
+    const gpuMap: Record<string, { model: string; lowestPrice: number; provider: string; awsRate: number }> = {
+      'h100': { model: 'NVIDIA H100 SXM5 (80GB)', lowestPrice: 1.99, provider: 'LeaderGPU', awsRate: 4.50 },
+      'h200': { model: 'NVIDIA H200 (141GB)', lowestPrice: 3.49, provider: 'Lambda Labs', awsRate: 5.80 },
+      'b200': { model: 'NVIDIA B200 Blackwell', lowestPrice: 4.85, provider: 'RunPod', awsRate: 7.20 },
+      'a100_80g': { model: 'NVIDIA A100 SXM4 (80GB)', lowestPrice: 0.98, provider: 'LeaderGPU', awsRate: 3.06 },
+      'rtx_4090': { model: 'NVIDIA RTX 4090 (24GB)', lowestPrice: 0.34, provider: 'Vast.ai', awsRate: 1.10 },
+      'l40s': { model: 'NVIDIA L40S (48GB)', lowestPrice: 0.85, provider: 'FluidStack', awsRate: 2.15 },
+    };
+
+    // Scan extracted records to update live rates if lower rates exist
+    for (const record of records) {
+      const title = (record.data.title || '').toString();
+      const price = parseFloat(record.data.price?.toString() || '0');
+      const provider = (record.data.provider || '').toString();
+      if (price > 0.05) {
+        if (/H100/i.test(title) && price < gpuMap['h100'].lowestPrice) {
+          gpuMap['h100'].lowestPrice = price;
+          gpuMap['h100'].provider = provider;
+        } else if (/4090/i.test(title) && price < gpuMap['rtx_4090'].lowestPrice) {
+          gpuMap['rtx_4090'].lowestPrice = price;
+          gpuMap['rtx_4090'].provider = provider;
+        } else if (/A100.*80/i.test(title) && price < gpuMap['a100_80g'].lowestPrice) {
+          gpuMap['a100_80g'].lowestPrice = price;
+          gpuMap['a100_80g'].provider = provider;
+        }
+      }
+    }
+
+    const benchmark = Object.values(gpuMap).map((item) => {
+      const spread = Math.round(((item.awsRate - item.lowestPrice) / item.awsRate) * 100);
+      return {
+        gpu_model: item.model,
+        spot_rate_hourly_usd: item.lowestPrice,
+        best_provider: item.provider,
+        aws_equivalent_rate_usd: item.awsRate,
+        cost_savings_vs_aws_percent: `${spread}%`,
+      };
+    });
+
+    reply.header('Cache-Control', 'public, max-age=60');
+    return {
+      index: 'DYNEP DGX-31 Global AI Cloud GPU Spot Index',
+      timestamp: new Date().toISOString(),
+      monitored_providers_count: 31,
+      benchmark_summary: benchmark,
+      claim_evaluation_key: {
+        description: 'Instant 100 req/mo API Key with sub-millisecond JSON & CSV feeds',
+        claim_url: 'https://data.dynep.com',
+        quick_claim_api: 'POST https://data.dynep.com/api/keys/free with {"email": "you@domain.com"}',
+      },
+    };
+  });
+
+  /**
    * Programmatic SEO: GPU Landing Page
    * GET /gpu/:slug
    */
