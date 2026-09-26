@@ -1,64 +1,6 @@
 {
   "sources": [
     {
-      "id": "316c42f0-01e6-4428-8c51-c2547c1f1d10",
-      "name": "AI Cloud GPU & Model Spot Index",
-      "url": "https://cloud-gpu-index.internal/spot-rates",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "provider": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".gpu-card",
-        "fields": {
-          "natural_key": ".gpu-id@data-sku",
-          "title": "h3.gpu-name",
-          "price": ".gpu-hourly-rate",
-          "category": ".gpu-region",
-          "status": ".gpu-stock-status",
-          "provider": ".gpu-provider"
-        },
-        "version": 1
-      },
-      "schedule_cron": "*/30 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": null,
-      "created_at": "2026-09-26T11:30:26.486Z",
-      "updated_at": "2026-09-26T11:30:26.486Z"
-    },
-    {
-      "id": "3f87f902-6ef8-4da1-95aa-bfb828ae501c",
-      "name": "LLM Inference API Token Pricing Index",
-      "url": "https://llm-pricing.internal/tokens",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".tool-item",
-        "fields": {
-          "natural_key": "a.tool-title@data-id",
-          "title": "a.tool-title",
-          "price": ".tool-price",
-          "category": ".tool-category"
-        },
-        "version": 1
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": null,
-      "created_at": "2026-09-26T11:30:26.488Z",
-      "updated_at": "2026-09-26T11:30:26.488Z"
-    },
-    {
       "id": "522375e9-bca7-4759-a60b-0123ee3c9232",
       "name": "Real Live Cloud GPU Spot Index (31 Providers)",
       "url": "https://gpuperhour.com",
@@ -87,67 +29,9 @@
       "schedule_cron": "*/30 * * * *",
       "headers": {},
       "status": "ACTIVE",
-      "last_run_at": "2026-09-26T11:38:32.732Z",
+      "last_run_at": "2026-09-26T18:00:01.016Z",
       "created_at": "2026-09-26T11:38:31.927Z",
-      "updated_at": "2026-09-26T11:38:32.732Z"
-    },
-    {
-      "id": "4e8f1b26-653b-4a14-878a-42eac3ddcbf3",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T11:58:56.061Z",
-      "created_at": "2026-09-26T11:58:56.044Z",
-      "updated_at": "2026-09-26T11:58:56.061Z"
-    },
-    {
-      "id": "f923380b-32f0-4a70-a6d2-fbaf88f96baf",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T11:59:10.236Z",
-      "created_at": "2026-09-26T11:59:10.217Z",
-      "updated_at": "2026-09-26T11:59:10.236Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "id": "275f3912-f552-4f87-a490-716e5f4ceed9",
@@ -164,169 +48,25 @@
         "natural_key": "string"
       },
       "selector_map": {
-        "container": "table[data-slot=\"table\"] tbody tr:has(button[data-track-gpu])",
+        "container": ".items-center",
         "fields": {
-          "title": "button[data-track-gpu]@data-track-gpu",
-          "provider": "button[data-track-gpu]@data-track-provider",
-          "price": "button[data-track-gpu]@data-track-price",
-          "category": "button[data-track-gpu]@data-track-region",
-          "vram": "button[data-track-gpu]@data-track-vram",
-          "host_specs": "td:nth-child(4)",
-          "status": "td:nth-child(7)"
+          "title": "h3, .title",
+          "provider": ".provider",
+          "price": ".price",
+          "category": ".category",
+          "vram": ".vram",
+          "host_specs": ".host_specs",
+          "status": ".status, .badge",
+          "natural_key": "h3, .title"
         },
-        "version": 1
+        "version": 17
       },
       "schedule_cron": "*/15 * * * *",
       "headers": {},
       "status": "ACTIVE",
-      "last_run_at": "2026-09-26T12:03:19.687Z",
+      "last_run_at": "2026-09-26T18:00:01.873Z",
       "created_at": "2026-09-26T12:00:09.313Z",
-      "updated_at": "2026-09-26T12:03:19.687Z"
-    },
-    {
-      "id": "f127bff7-f769-43a1-8b1e-b61ca3f0e06e",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T12:04:21.823Z",
-      "created_at": "2026-09-26T12:04:21.803Z",
-      "updated_at": "2026-09-26T12:04:21.823Z"
-    },
-    {
-      "id": "69cc8918-6675-4057-81c7-685cad7c54b7",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T12:05:23.795Z",
-      "created_at": "2026-09-26T12:05:23.777Z",
-      "updated_at": "2026-09-26T12:05:23.795Z"
-    },
-    {
-      "id": "0096d660-c480-4bcd-b833-907dc4768985",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T12:06:31.378Z",
-      "created_at": "2026-09-26T12:06:31.358Z",
-      "updated_at": "2026-09-26T12:06:31.378Z"
-    },
-    {
-      "id": "82a35292-6029-4ec9-adef-04cf3bf2b012",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T12:23:16.112Z",
-      "created_at": "2026-09-26T12:23:16.053Z",
-      "updated_at": "2026-09-26T12:23:16.112Z"
-    },
-    {
-      "id": "c2e039a9-d36d-4fdf-aae9-cf6dcaf69c1e",
-      "name": "E2E Test Tech Deals",
-      "url": "https://test-site.internal/deals",
-      "target_schema": {
-        "title": "string",
-        "price": "number",
-        "category": "string",
-        "status": "string",
-        "natural_key": "string"
-      },
-      "selector_map": {
-        "container": ".deal-card",
-        "fields": {
-          "title": ".deal-title",
-          "price": ".deal-price",
-          "category": ".category",
-          "status": ".status, .badge",
-          "natural_key": ".@data-id"
-        },
-        "version": 2
-      },
-      "schedule_cron": "0 * * * *",
-      "headers": {},
-      "status": "ACTIVE",
-      "last_run_at": "2026-09-26T13:17:11.512Z",
-      "created_at": "2026-09-26T13:17:11.487Z",
-      "updated_at": "2026-09-26T13:17:11.512Z"
+      "updated_at": "2026-09-26T18:00:01.873Z"
     }
   ],
   "records": [
@@ -497,9 +237,9 @@
         "natural_key": "H100 SXM5"
       },
       "hash": "11a096954d67a457b46e49fd974384b821040833ccb77a1544d98479e3aca2ab",
-      "version": 1,
+      "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "c81b40663e425f09c21c9d1ab09eaa3f531d64771401f251e4c2c1b56815a57f",
@@ -507,17 +247,17 @@
       "natural_key": "H100 PCIe",
       "data": {
         "title": "H100 PCIe",
-        "price": 2.5,
-        "category": "Hyperstack",
+        "price": 2.59,
+        "category": "QuantaCloud",
         "status": "7",
-        "provider": "Hyperstack",
+        "provider": "QuantaCloud",
         "historical_avg": "$2.77/hr (30 days)",
         "natural_key": "H100 PCIe"
       },
-      "hash": "4a848b4fb266bbfbae668234358c81aaf4f769349173a65ca21b7cc13f1f4bd6",
-      "version": 1,
+      "hash": "1ae4f9f1f0be5eb7229942447eb6c0ae78b11c343f2d8e7f5a49b826fcebd072",
+      "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "4f6fbc440f06ee4366905639cca36c1febca7efdc684ef9cd3b6494318e02c36",
@@ -525,17 +265,17 @@
       "natural_key": "H100 NVL",
       "data": {
         "title": "H100 NVL",
-        "price": 3.09,
-        "category": "Vast.ai",
+        "price": 3.11,
+        "category": "Massed Compute",
         "status": "3",
-        "provider": "Vast.ai",
+        "provider": "Massed Compute",
         "historical_avg": "$1.91/hr (30 days)",
         "natural_key": "H100 NVL"
       },
-      "hash": "1864dadb58006edd0e2e0147485d598fb045166b7451334b9524128ead7cfd1c",
-      "version": 1,
+      "hash": "917d16174269ce0016e7f9ed584cde9921ccd0be90e0560e05704c7ef1323ce6",
+      "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "6cbaf1dfdc1d4fddc7eb8fd503041fe22180096eddf9d6e84e132eca49847d6f",
@@ -553,7 +293,7 @@
       "hash": "fc5845d945f8d85e01e2e8ba438fad5b57a95d0461eb4849cf1364c5c6846cf5",
       "version": 1,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "a6bfcb777f8f0a7c48af9dcced924825193453a7f689e7ff4a52c4b339a651f6",
@@ -569,9 +309,9 @@
         "natural_key": "H200 NVL"
       },
       "hash": "d1d4b3d0e525d01644fa64b0d7c794414a96c6f7270b3ec2938640a50eecdb33",
-      "version": 1,
+      "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "2ff28e3d4bd421ae3f669cfe2ff527f270fb32c9f9751a628b46c9e41dd8ccbf",
@@ -579,17 +319,17 @@
       "natural_key": "B200 SXM",
       "data": {
         "title": "B200 SXM",
-        "price": 6.49,
-        "category": "Lyceum",
-        "status": "4",
-        "provider": "Lyceum",
+        "price": 3.75,
+        "category": "Packet.ai",
+        "status": "5",
+        "provider": "Packet.ai",
         "historical_avg": "$4.76/hr (30 days)",
         "natural_key": "B200 SXM"
       },
-      "hash": "3807b600dd7359502d3f6140c1ed5f21f86d4490e7e2e9636f82b2f9c06006d5",
-      "version": 1,
+      "hash": "75bffcf472e0a593ca1e9e20b2a3a0c7cf91f4a92a2ce77d3e953284841235af",
+      "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "7db8e0e64e8984aa12f2e0ac09f5754e45faa1def2107cccbb3c35466fc88c70",
@@ -599,15 +339,15 @@
         "title": "B300 SXM6",
         "price": 7.89,
         "category": "RunPod",
-        "status": "3",
+        "status": "1",
         "provider": "RunPod",
         "historical_avg": "$5.95/hr (30 days)",
         "natural_key": "B300 SXM6"
       },
-      "hash": "901c4e19e68c171aa83b6ddbae92d14192613f407589996af273e4d28e8c8c05",
-      "version": 1,
+      "hash": "077ea2db32425564858160a0f50bf75af6f3c8c908b1976b8a68461dd74f0dbc",
+      "version": 2,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "ef1450d391a82070279213b4cfaa5714c897fe2353df565883422179e04aaac0",
@@ -615,17 +355,17 @@
       "natural_key": "A100 SXM4 80GB",
       "data": {
         "title": "A100 SXM4 80GB",
-        "price": 0.8,
+        "price": 1.19,
         "category": "Vast.ai",
         "status": "6",
         "provider": "Vast.ai",
         "historical_avg": "$1.06/hr (30 days)",
         "natural_key": "A100 SXM4 80GB"
       },
-      "hash": "93735207c2a22fbe89c75d7c8094c25c8739ada6bc352e0dc6a442d70b272124",
-      "version": 1,
+      "hash": "930ddccad326f268e2bfc0b4e430eb46830c181ee63ed3b6dfebdf87f61e1d17",
+      "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "798fc9f8f233def3fa800ae6ac2be4b4f147c85da2b1d7b994ad2c70a52e0c53",
@@ -641,9 +381,9 @@
         "natural_key": "A100 PCIe 80GB"
       },
       "hash": "e165bdf0c0b7c6230234cd6c8b3b8964678bb737243485f4cf76b2378d9b5fcf",
-      "version": 1,
+      "version": 3,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "157d8422d53bfdb561cd3dd3e611652817b33e728954922677a522169ee59f84",
@@ -651,17 +391,17 @@
       "natural_key": "L40S",
       "data": {
         "title": "L40S",
-        "price": 0.92,
-        "category": "Packet.ai",
-        "status": "6",
-        "provider": "Packet.ai",
+        "price": 0.8,
+        "category": "Vast.ai",
+        "status": "7",
+        "provider": "Vast.ai",
         "historical_avg": "$0.90/hr (30 days)",
         "natural_key": "L40S"
       },
-      "hash": "076968667a7960553426b51971a23d8be43bd16da9df110d65776f8c1fd17132",
-      "version": 1,
+      "hash": "5e3f5d33724cb674751ebce211b9534bff96ea4815c6c2484dd836d7b44ab28c",
+      "version": 6,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "9fb822f142b072adbdb392aa01d73e997250a7ccd08766e777a284c68ec18deb",
@@ -679,7 +419,7 @@
       "hash": "e6060cb5b2c501856eae81a6971eb1748d2999504f807331ed557522a615687f",
       "version": 1,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "de6d6039ccf6be6a8529c85158545775ab8ab77426f0930ebcbed425043eb92e",
@@ -687,17 +427,17 @@
       "natural_key": "RTX 5090",
       "data": {
         "title": "RTX 5090",
-        "price": 0.77,
+        "price": 0.53,
         "category": "Vast.ai",
         "status": "2",
         "provider": "Vast.ai",
         "historical_avg": "$0.44/hr (30 days)",
         "natural_key": "RTX 5090"
       },
-      "hash": "a18e7c4dfda74896e13644a66ecca98f746c61f1807b4b35b5e57baea6cef886",
-      "version": 1,
+      "hash": "cb60308fc9f82c65ffd6b55c4b1c846e9cfefaf6e54c2987a02bfb5002e5be64",
+      "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "bc6ddc66fbcc8ec1c7d7aed195303e7eb754a0f041b692c5c720a0596da24fd2",
@@ -705,17 +445,17 @@
       "natural_key": "RTX 4090",
       "data": {
         "title": "RTX 4090",
-        "price": 0.74,
-        "category": "RunPod",
-        "status": "3",
-        "provider": "RunPod",
+        "price": 0.45,
+        "category": "Vast.ai",
+        "status": "2",
+        "provider": "Vast.ai",
         "historical_avg": "$0.33/hr (30 days)",
         "natural_key": "RTX 4090"
       },
-      "hash": "79ac7423eff21f383d5af1935a246439ce1ce83a229108c0061cfe1841f58ba2",
-      "version": 1,
+      "hash": "a59050e518fb99dce3fbb1c25afe01ddd7b1b3d0e2bdca48c19a499146b64b42",
+      "version": 8,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "43cc80e103d4b8d905ae34089db59af3bab13fd4f277622883913e2cdf644ef6",
@@ -725,15 +465,15 @@
         "title": "RTX A6000",
         "price": 0.44,
         "category": "LeaderGPU",
-        "status": "5",
+        "status": "8",
         "provider": "LeaderGPU",
         "historical_avg": "$0.57/hr (30 days)",
         "natural_key": "RTX A6000"
       },
-      "hash": "165fdc027d437f6d6fab1e98e6f5116745a3e8aa48a326bed0a1388e820f797e",
-      "version": 1,
+      "hash": "15cc0c9d4c2b0e31a4023b4caec65cedbeef5b7428e250787d488289f7971db7",
+      "version": 7,
       "first_seen_at": "2026-09-26T11:38:32.731Z",
-      "updated_at": "2026-09-26T11:38:32.731Z"
+      "updated_at": "2026-09-26T18:00:01.016Z"
     },
     {
       "entity_id": "99388e2f8ed9b6ace3c00d2b649374c3b55596ff9a5167678563a92b00218310",
@@ -1397,6 +1137,123 @@
       "version": 1,
       "first_seen_at": "2026-09-26T13:17:11.498Z",
       "updated_at": "2026-09-26T13:17:11.498Z"
+    },
+    {
+      "entity_id": "098228c6ce730cdf54880d3a1da6c669f816b22406d192fc7db518cb4af6d9cf",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "natural_key": "GPUPerHour",
+      "data": {
+        "title": "GPUPerHour",
+        "provider": null,
+        "price": null,
+        "category": null,
+        "vram": null,
+        "host_specs": null,
+        "status": null,
+        "natural_key": "GPUPerHour"
+      },
+      "hash": "049e10cb8bd3ae9fdb474391b252e34c1ea109313f477b821314236090c1bc2e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T14:15:02.546Z",
+      "updated_at": "2026-09-26T18:00:01.873Z"
+    },
+    {
+      "entity_id": "3f9766ace10d16cca0fa4bf09a7742bc1fde53c85955d7fa1eccf73040f238c7",
+      "source_id": "f62a6bd8-a78f-47ae-88c7-958b751819ac",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T14:19:19.583Z",
+      "updated_at": "2026-09-26T14:19:19.583Z"
+    },
+    {
+      "entity_id": "fd0c895bffa9f83b17e559debd82e0c276449627f443925850019ceb78eda27a",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "natural_key": "MI300X",
+      "data": {
+        "title": "MI300X",
+        "price": 2.39,
+        "category": "RunPod",
+        "status": "2",
+        "provider": "RunPod",
+        "historical_avg": "$2.75/hr (30 days)",
+        "natural_key": "MI300X"
+      },
+      "hash": "9829eef525c47b991d416fd132692a20f8176f08b122f18cc72d37d34dcf9658",
+      "version": 4,
+      "first_seen_at": "2026-09-26T14:30:01.199Z",
+      "updated_at": "2026-09-26T18:00:01.016Z"
+    },
+    {
+      "entity_id": "9cdb6a8cbe8e12fb26a2e70bc43b38481ce614f886ba584743daa9a6b3133fd9",
+      "source_id": "db9a6f4a-b474-4d99-8964-17055e118b66",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T15:55:14.122Z",
+      "updated_at": "2026-09-26T15:55:14.122Z"
+    },
+    {
+      "entity_id": "d55df9658f98a53b2e7f57f4bb559b2d00f537dd0a206b7166996df0ac8bc10a",
+      "source_id": "b82226f9-2df0-4da4-82b9-687d1acf3113",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T17:23:40.643Z",
+      "updated_at": "2026-09-26T17:23:40.643Z"
+    },
+    {
+      "entity_id": "ebb642681797f7c16b7c8b58d12dc63cbc4800974b11396bac58390bea66195e",
+      "source_id": "e8988043-993d-48fe-9b85-70ab49e4e3ca",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T18:06:09.359Z",
+      "updated_at": "2026-09-26T18:06:09.359Z"
+    },
+    {
+      "entity_id": "1fccb1a550ce4c69c189e10cce2f35e01dda19262071b4340099f4d7c723b214",
+      "source_id": "223cc332-04a2-47e5-8369-85f5b51cbfe4",
+      "natural_key": "item-e2e-101",
+      "data": {
+        "title": "Fast SSD 2TB",
+        "price": 149.99,
+        "category": "Storage",
+        "status": "In Stock",
+        "natural_key": "item-e2e-101"
+      },
+      "hash": "b7098dcb975526f0637f6f08d3c6befb3af7955859f65991da8b2b3974ca3d6e",
+      "version": 1,
+      "first_seen_at": "2026-09-26T18:09:42.648Z",
+      "updated_at": "2026-09-26T18:09:42.648Z"
     }
   ],
   "subscribers": [
@@ -1441,9 +1298,644 @@
       "is_active": true,
       "created_at": "2026-09-26T13:04:06.464Z",
       "updated_at": "2026-09-26T13:04:06.464Z"
+    },
+    {
+      "id": "1eabd65a-a2e4-4d25-af8c-1bb6370fedf0",
+      "customer_id": null,
+      "email": "test_probe@dynep.com",
+      "api_key_hash": "b77ef7b9f9986c79c68e85d7e7b03c7d45121235bcf7516d51b4733c6ca19f3d",
+      "api_key_prefix": "sk_live_0a43d7d...",
+      "tier": "free",
+      "monthly_quota": 50,
+      "current_usage": 0,
+      "rate_limit_rpm": 15,
+      "is_active": true,
+      "created_at": "2026-09-26T14:21:33.299Z",
+      "updated_at": "2026-09-26T14:21:33.299Z"
+    },
+    {
+      "id": "0ef81cad-2902-40a0-82f2-f6823271e104",
+      "customer_id": "polar_1790432563180",
+      "email": "test_customer@dynep.com",
+      "api_key_hash": "3b64ccb9c85508f6641790b7cf31fdb1967dedb1a8f1043d17d7f40176e7ac57",
+      "api_key_prefix": "sk_live_ae2deb6...",
+      "tier": "pro",
+      "monthly_quota": 10000,
+      "current_usage": 0,
+      "rate_limit_rpm": 300,
+      "is_active": true,
+      "created_at": "2026-09-26T14:22:43.180Z",
+      "updated_at": "2026-09-26T14:22:43.180Z"
+    },
+    {
+      "id": "3f5e8104-bf8d-4029-8289-6871e0040fe6",
+      "customer_id": null,
+      "email": "prod_verifier@dynep.com",
+      "api_key_hash": "8648c947065fac986c58bff8c43a2acbe9921e249c40a5990e036095f3438447",
+      "api_key_prefix": "sk_live_8e9440e...",
+      "tier": "free",
+      "monthly_quota": 50,
+      "current_usage": 0,
+      "rate_limit_rpm": 15,
+      "is_active": true,
+      "created_at": "2026-09-26T15:32:12.739Z",
+      "updated_at": "2026-09-26T15:32:12.739Z"
+    },
+    {
+      "id": "0477f74e-b313-4872-a99a-882f271884fd",
+      "customer_id": "polar_1790436747288",
+      "email": "prod_subscriber@dynep.com",
+      "api_key_hash": "b87b9b6022b1d0138d14340b89fac8c17702972a4ab9455df5c2b63b9255fc4e",
+      "api_key_prefix": "sk_live_af07d51...",
+      "tier": "pro",
+      "monthly_quota": 10000,
+      "current_usage": 2,
+      "rate_limit_rpm": 300,
+      "is_active": true,
+      "created_at": "2026-09-26T15:32:27.288Z",
+      "updated_at": "2026-09-26T15:32:30.895Z"
+    },
+    {
+      "id": "bc50a878-6f10-41a6-b686-03d205202fc3",
+      "customer_id": "polar_1790436762149",
+      "email": "webhook_test@dynep.com",
+      "api_key_hash": "d6a098010a8056c8176d05587b6c36642085f385454e05c56eb87a4808aea432",
+      "api_key_prefix": "sk_live_a082376...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 0,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T15:32:42.150Z",
+      "updated_at": "2026-09-26T15:32:42.150Z"
+    },
+    {
+      "id": "e3ef0190-7ab7-4b15-97f2-b64c4fa33198",
+      "customer_id": "polar_1790438283101",
+      "email": "elele@gmail.com",
+      "api_key_hash": "d452b81ecd8a76d85df0d6b0d2758da46ce1605a9c3c6d03d4c37a4f88dfd640",
+      "api_key_prefix": "sk_live_bb25786...",
+      "tier": "starter",
+      "monthly_quota": 1000,
+      "current_usage": 6,
+      "rate_limit_rpm": 60,
+      "is_active": true,
+      "created_at": "2026-09-26T15:58:03.101Z",
+      "updated_at": "2026-09-26T15:58:12.723Z"
+    },
+    {
+      "id": "f114ad63-fef9-4520-833e-b84cb9865e01",
+      "customer_id": null,
+      "email": "18roicohen@gmail.com",
+      "api_key_hash": "d77ca5633c7c51eba47e78bb966c917add483303fef8e51e43b06c144ac03c28",
+      "api_key_prefix": "sk_live_adb8a71...",
+      "tier": "free",
+      "monthly_quota": 50,
+      "current_usage": 0,
+      "rate_limit_rpm": 15,
+      "is_active": true,
+      "created_at": "2026-09-26T16:52:20.036Z",
+      "updated_at": "2026-09-26T16:52:20.037Z"
+    },
+    {
+      "id": "bc3b207b-cd93-4783-b130-9ea5c8236931",
+      "customer_id": null,
+      "email": "1cohenrr@gmail.com",
+      "api_key_hash": "0d404069c5be266dda0458466323eab60fbb50d6caf748bd0705ad70a55057e3",
+      "api_key_prefix": "sk_live_c406bd4...",
+      "tier": "free",
+      "monthly_quota": 50,
+      "current_usage": 0,
+      "rate_limit_rpm": 15,
+      "is_active": true,
+      "created_at": "2026-09-26T16:52:30.169Z",
+      "updated_at": "2026-09-26T16:52:30.169Z"
+    },
+    {
+      "id": "f8d2c34c-03a8-4fde-bbfb-3390921f4a71",
+      "customer_id": "polar_1790442885256",
+      "email": "1cohenrr@gmail.com",
+      "api_key_hash": "ccab4aa344d834ad3f041979328ebde404d0abb07b710b7cfed684b24306e19c",
+      "api_key_prefix": "sk_live_b287cb3...",
+      "tier": "free",
+      "monthly_quota": 100,
+      "current_usage": 0,
+      "rate_limit_rpm": 15,
+      "is_active": true,
+      "created_at": "2026-09-26T17:14:45.257Z",
+      "updated_at": "2026-09-26T17:14:45.257Z"
     }
   ],
   "logs": [
+    {
+      "id": "5e215dbc-4094-4373-9342-45f71478eda7",
+      "source_id": "223cc332-04a2-47e5-8369-85f5b51cbfe4",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 8,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T18:09:42.648Z"
+    },
+    {
+      "id": "1e1360b6-7e5b-4e54-9c70-66576bbfe239",
+      "source_id": "e8988043-993d-48fe-9b85-70ab49e4e3ca",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 11,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T18:06:09.359Z"
+    },
+    {
+      "id": "98a2fe27-10ca-4c5f-83b3-ad14d59d3713",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1856,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 848,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 1003,
+        "repairedVersion": 17
+      },
+      "created_at": "2026-09-26T18:00:01.873Z"
+    },
+    {
+      "id": "4e0a8878-6412-4752-88e0-b5c3f47e26db",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 996,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 15,
+        "fetchDurationMs": 893
+      },
+      "created_at": "2026-09-26T18:00:01.016Z"
+    },
+    {
+      "id": "34c98578-7ca3-49b2-853f-ac2fb41e7503",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1729,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 853,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 697,
+        "repairedVersion": 16
+      },
+      "created_at": "2026-09-26T17:45:01.733Z"
+    },
+    {
+      "id": "fc0e9180-dbc5-4098-9992-449fee686865",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1611,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 851,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 766,
+        "repairedVersion": 15
+      },
+      "created_at": "2026-09-26T17:30:01.641Z"
+    },
+    {
+      "id": "5209d80b-8c65-4134-bbbe-b8ef14065b9c",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 13,
+      "duration_ms": 1194,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 13,
+        "fetchDurationMs": 1166
+      },
+      "created_at": "2026-09-26T17:30:01.222Z"
+    },
+    {
+      "id": "a314aa50-d216-47a0-99b7-3c234d7eeb0f",
+      "source_id": "b82226f9-2df0-4da4-82b9-687d1acf3113",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 7,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T17:23:40.643Z"
+    },
+    {
+      "id": "b5c9ddbc-819d-409c-b04c-0b1e549653db",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 2535,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 845,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 684,
+        "repairedVersion": 14
+      },
+      "created_at": "2026-09-26T17:15:02.542Z"
+    },
+    {
+      "id": "0f0aa24b-54ef-4a1f-b887-d83782c27ff3",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1947,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 847,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 726,
+        "repairedVersion": 13
+      },
+      "created_at": "2026-09-26T17:00:01.978Z"
+    },
+    {
+      "id": "34e67d52-dc5a-4bab-a8b2-343a768ad796",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 1458,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 15,
+        "fetchDurationMs": 1395
+      },
+      "created_at": "2026-09-26T17:00:01.478Z"
+    },
+    {
+      "id": "c29b3cf4-d022-44bb-b25d-0d2cdd3a124d",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 2164,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 838,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 1031,
+        "repairedVersion": 12
+      },
+      "created_at": "2026-09-26T16:45:02.170Z"
+    },
+    {
+      "id": "6c7d455f-59ce-461d-bb89-9fefe7a71b33",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1954,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 837,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 758,
+        "repairedVersion": 11
+      },
+      "created_at": "2026-09-26T16:30:01.962Z"
+    },
+    {
+      "id": "1837c506-53c3-46b2-9d9e-d7bee8df8e1a",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 1457,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 15,
+        "fetchDurationMs": 1410
+      },
+      "created_at": "2026-09-26T16:30:01.476Z"
+    },
+    {
+      "id": "8a7536a4-f0c4-4afc-b9b5-6e80482c7fbd",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1355,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 843,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 628,
+        "repairedVersion": 10
+      },
+      "created_at": "2026-09-26T16:15:01.369Z"
+    },
+    {
+      "id": "d47368a5-4065-4839-8b4e-87578695130b",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 3687,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 843,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 634,
+        "repairedVersion": 9
+      },
+      "created_at": "2026-09-26T16:00:03.715Z"
+    },
+    {
+      "id": "c33dafae-27be-4405-bf82-8fa0f66d576b",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 1091,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 15,
+        "fetchDurationMs": 1055
+      },
+      "created_at": "2026-09-26T16:00:01.139Z"
+    },
+    {
+      "id": "34abd21a-a853-4546-97d0-0f17db088261",
+      "source_id": "db9a6f4a-b474-4d99-8964-17055e118b66",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 8,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T15:55:14.122Z"
+    },
+    {
+      "id": "18be1020-2835-4125-b6d9-058db328780a",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1443,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 838,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 652,
+        "repairedVersion": 8
+      },
+      "created_at": "2026-09-26T15:45:01.448Z"
+    },
+    {
+      "id": "caae7c68-3554-4cff-b190-d3ba05853702",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1951,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 845,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 1043,
+        "repairedVersion": 7
+      },
+      "created_at": "2026-09-26T15:30:01.957Z"
+    },
+    {
+      "id": "54a1f012-89c5-45ec-8d9a-b70cf50b3a9a",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 1032,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 15,
+        "fetchDurationMs": 939
+      },
+      "created_at": "2026-09-26T15:30:01.040Z"
+    },
+    {
+      "id": "5f99b1a4-f7af-4b49-8fad-b0f31e2d51ca",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1544,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 845,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 728,
+        "repairedVersion": 6
+      },
+      "created_at": "2026-09-26T15:15:01.560Z"
+    },
+    {
+      "id": "288e1e42-5f2a-4e87-8e12-1b1e8fc8a3d3",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1760,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 835,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 820,
+        "repairedVersion": 5
+      },
+      "created_at": "2026-09-26T15:00:01.801Z"
+    },
+    {
+      "id": "42a54261-1326-414f-b0b8-1a44406abea9",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 1227,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 0,
+        "updated": 15,
+        "fetchDurationMs": 1195
+      },
+      "created_at": "2026-09-26T15:00:01.290Z"
+    },
+    {
+      "id": "02e73d91-6109-47eb-ba80-cbc72fe34452",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1959,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 830,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 765,
+        "repairedVersion": 4
+      },
+      "created_at": "2026-09-26T14:45:01.969Z"
+    },
+    {
+      "id": "a1c1a5f3-a194-4a0e-b977-b455c507d5ba",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 1755,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 839,
+        "inserted": 0,
+        "updated": 1,
+        "fetchDurationMs": 701,
+        "repairedVersion": 3
+      },
+      "created_at": "2026-09-26T14:30:01.772Z"
+    },
+    {
+      "id": "c23707f6-e24d-4fa0-ae8d-0674eec8efeb",
+      "source_id": "522375e9-bca7-4759-a60b-0123ee3c9232",
+      "status": "SUCCESS",
+      "records_count": 15,
+      "duration_ms": 1176,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 14,
+        "fetchDurationMs": 1140
+      },
+      "created_at": "2026-09-26T14:30:01.199Z"
+    },
+    {
+      "id": "31fcb119-0f1c-4076-a3e6-41671a013621",
+      "source_id": "f62a6bd8-a78f-47ae-88c7-958b751819ac",
+      "status": "SUCCESS",
+      "records_count": 1,
+      "duration_ms": 19,
+      "tokens_used": 0,
+      "drift_detected": false,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 0,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 0
+      },
+      "created_at": "2026-09-26T14:19:19.583Z"
+    },
+    {
+      "id": "66478f35-e433-4a8d-bb99-6cda0942ec55",
+      "source_id": "275f3912-f552-4f87-a490-716e5f4ceed9",
+      "status": "DRIFT_REPAIRED",
+      "records_count": 1,
+      "duration_ms": 2541,
+      "tokens_used": 350,
+      "drift_detected": true,
+      "error_message": null,
+      "metadata": {
+        "discardedCount": 833,
+        "inserted": 1,
+        "updated": 0,
+        "fetchDurationMs": 1094,
+        "repairedVersion": 2
+      },
+      "created_at": "2026-09-26T14:15:02.547Z"
+    },
     {
       "id": "75ea20f2-b28d-43f2-af36-80b56180a64f",
       "source_id": "c2e039a9-d36d-4fdf-aae9-cf6dcaf69c1e",
@@ -1650,5 +2142,5 @@
       "created_at": "2026-09-26T11:38:32.732Z"
     }
   ],
-  "updated_at": "2026-09-26T13:17:11.624Z"
+  "updated_at": "2026-09-26T18:09:42.777Z"
 }

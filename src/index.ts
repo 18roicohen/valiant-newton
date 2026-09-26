@@ -43,6 +43,15 @@ async function main() {
 
   process.on('SIGINT', () => shutdown('SIGINT'));
   process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+  // Prevent unexpected crashes from killing the daemon
+  process.on('unhandledRejection', (reason) => {
+    logger.error({ reason: String(reason) }, 'Unhandled rejection trapped; keeping engine alive');
+  });
+
+  process.on('uncaughtException', (err) => {
+    logger.error({ error: err.message, stack: err.stack }, 'Uncaught exception trapped; keeping engine alive');
+  });
 }
 
 main().catch((err) => {
