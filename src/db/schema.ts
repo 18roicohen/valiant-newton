@@ -158,3 +158,22 @@ export const DataQueryFilterSchema = z.object({
 });
 
 export type DataQueryFilter = z.infer<typeof DataQueryFilterSchema>;
+
+// ---------------------------------------------------------------------------
+// 9. GPU SPOT DROP ALERT SUBSCRIPTION SCHEMA
+// ---------------------------------------------------------------------------
+export const AlertSubscriptionSchema = z.object({
+  id: z.string().uuid(),
+  email: z.string().email(),
+  gpu_model: z.string().min(1),
+  target_price_usd: z.number().positive(),
+  channel: z.enum(['email', 'discord', 'slack', 'webhook']).default('email'),
+  webhook_url: z.string().url().optional(),
+  is_active: z.boolean().default(true),
+  created_at: z.string().datetime().optional(),
+  last_notified_at: z.string().datetime().nullable().optional(),
+  last_notified_price: z.number().nullable().optional(),
+});
+
+export type AlertSubscription = z.infer<typeof AlertSubscriptionSchema>;
+

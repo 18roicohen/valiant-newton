@@ -42,7 +42,8 @@ export class SchedulerService {
     const indexNowTask = cron.schedule('0 */2 * * *', async () => {
       try {
         logger.info('Executing automated IndexNow search engine ping');
-        const { pingSearchEngines } = await import('../../scripts/ping-search-engines.js');
+        const scriptPath = '../../scripts/ping-search-engines.js';
+        const { pingSearchEngines } = await import(scriptPath);
         await pingSearchEngines();
       } catch (err: any) {
         logger.error({ err: err.message }, 'Scheduled IndexNow ping failed');
@@ -54,7 +55,8 @@ export class SchedulerService {
     const nurtureTask = cron.schedule('0 */6 * * *', async () => {
       try {
         logger.info('Executing automated lead nurture quota scan');
-        const { UserGrowthEngine } = await import('../../scripts/user-growth-engine.js');
+        const scriptPath = '../../scripts/user-growth-engine.js';
+        const { UserGrowthEngine } = await import(scriptPath);
         await UserGrowthEngine.dispatchNurtureEmails();
       } catch (err: any) {
         logger.error({ err: err.message }, 'Scheduled lead nurture scan failed');
@@ -62,7 +64,22 @@ export class SchedulerService {
     });
     this.systemTasks.push(nurtureTask);
 
-    // 5. Sync and start source scrapers
+    // 5. Schedule automated GPU spot price drop & stock alert scan every 15 minutes ('*/15 * * * *')
+    const alertEvaluationTask = cron.schedule('*/15 * * * *', async () => {
+      try {
+        logger.info('Executing automated GPU spot price drop alert evaluation');
+        const { AlertEngine } = await import('../alerts/alertEngine.js');
+        const result = await AlertEngine.evaluateAndDispatch();
+        if (result.triggered > 0) {
+          logger.info({ triggered: result.triggered, evaluated: result.evaluated }, 'Dispatched GPU spot drop alerts');
+        }
+      } catch (err: any) {
+        logger.error({ err: err.message }, 'Scheduled alert evaluation failed');
+      }
+    });
+    this.systemTasks.push(alertEvaluationTask);
+
+    // 6. Sync and start source scrapers
     await this.refreshTasks();
 
     // Re-check sources every 5 minutes to pick up newly added or modified sources

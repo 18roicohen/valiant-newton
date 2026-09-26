@@ -9,6 +9,7 @@ import { webhookRoutes } from './routes/webhooks.js';
 import { sourceRoutes } from './routes/sources.js';
 import { seoRoutes } from './routes/seo.js';
 import { docsRoutes } from './routes/docs.js';
+import { alertRoutes } from './routes/alerts.js';
 import { logger } from '../db/client.js';
 
 export async function buildServer(): Promise<FastifyInstance> {
@@ -53,6 +54,7 @@ export async function buildServer(): Promise<FastifyInstance> {
   await fastify.register(dataRoutes, { prefix: '/v1' });
   await fastify.register(feedRoutes, { prefix: '/v1' });
   await fastify.register(webhookRoutes);
+  await fastify.register(alertRoutes);
   await fastify.register(sourceRoutes, { prefix: '/v1' });
 
   return fastify;

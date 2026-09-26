@@ -115,6 +115,10 @@
         <button onclick="switchTab('playground')" id="tab-btn-playground" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900">
           API Playground
         </button>
+        <button onclick="switchTab('alerts')" id="tab-btn-alerts" class="nav-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Spot Drop Alerts</span>
+        </button>
         <a href="/docs" target="_blank" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-emerald-400 hover:bg-slate-900 flex items-center gap-1">
           Docs & OpenAPI <span class="text-[10px] text-slate-500">↗</span>
         </a>
@@ -331,7 +335,140 @@
       </div>
     </section>
 
-    <!-- TAB 4: PRICING & SUBSCRIPTION CHECKOUT -->
+    <!-- TAB 4: GPU SPOT PRICE DROP & STOCK ALERTS -->
+    <section id="tab-alerts" class="hidden space-y-6">
+      <div class="bg-[#0c111d] border border-slate-800 rounded-xl p-6 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-mono text-emerald-400 font-semibold mb-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              REAL-TIME PUSH MONITOR • 31 CLOUDS
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-tight">Autonomous GPU Spot Drop & Availability Alerts</h2>
+            <p class="text-xs text-slate-400">Never miss cheap compute. Get instant push alerts via Email, Discord, Slack, or Webhook the second spot prices drop or target GPUs reappear in stock.</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-xs text-slate-400 font-mono">Crawler Frequency:</span>
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-mono">Every 15 mins</span>
+          </div>
+        </div>
+
+        <!-- QUICK PRESET TRIGGER CARDS -->
+        <div class="mb-6">
+          <div class="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">Popular Alert Presets (1-Click Fill):</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div onclick="setAlertPreset('NVIDIA H100 SXM5 (80GB)', 2.20)" class="cursor-pointer bg-[#07090e] border border-slate-800 hover:border-emerald-500/50 p-3.5 rounded-xl transition group">
+              <div class="text-xs font-bold text-white group-hover:text-emerald-400 transition">H100 SXM5 (80GB)</div>
+              <div class="text-[11px] text-slate-400 mt-1">Live Spot: <strong class="text-emerald-400 font-mono">$1.99/h</strong></div>
+              <div class="text-[10px] text-slate-500 mt-0.5">AWS: ~~$4.50/h~~ (56% off)</div>
+              <div class="mt-2 text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                <span>Alert at &lt; $2.20/h</span> <span>→</span>
+              </div>
+            </div>
+
+            <div onclick="setAlertPreset('NVIDIA RTX 4090 (24GB)', 0.40)" class="cursor-pointer bg-[#07090e] border border-slate-800 hover:border-emerald-500/50 p-3.5 rounded-xl transition group">
+              <div class="text-xs font-bold text-white group-hover:text-emerald-400 transition">RTX 4090 (24GB)</div>
+              <div class="text-[11px] text-slate-400 mt-1">Live Spot: <strong class="text-emerald-400 font-mono">$0.34/h</strong></div>
+              <div class="text-[10px] text-slate-500 mt-0.5">AWS: ~~$1.10/h~~ (69% off)</div>
+              <div class="mt-2 text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                <span>Alert at &lt; $0.40/h</span> <span>→</span>
+              </div>
+            </div>
+
+            <div onclick="setAlertPreset('NVIDIA B200 Blackwell', 5.00)" class="cursor-pointer bg-[#07090e] border border-slate-800 hover:border-emerald-500/50 p-3.5 rounded-xl transition group">
+              <div class="text-xs font-bold text-white group-hover:text-emerald-400 transition">B200 Blackwell</div>
+              <div class="text-[11px] text-slate-400 mt-1">Live Spot: <strong class="text-emerald-400 font-mono">$4.85/h</strong></div>
+              <div class="text-[10px] text-slate-500 mt-0.5">AWS: ~~$7.20/h~~ (33% off)</div>
+              <div class="mt-2 text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                <span>Alert at &lt; $5.00/h</span> <span>→</span>
+              </div>
+            </div>
+
+            <div onclick="setAlertPreset('NVIDIA A100 SXM4 (80GB)', 0.85)" class="cursor-pointer bg-[#07090e] border border-slate-800 hover:border-emerald-500/50 p-3.5 rounded-xl transition group">
+              <div class="text-xs font-bold text-white group-hover:text-emerald-400 transition">A100 SXM4 (80GB)</div>
+              <div class="text-[11px] text-slate-400 mt-1">Live Spot: <strong class="text-emerald-400 font-mono">$0.68/h</strong></div>
+              <div class="text-[10px] text-slate-500 mt-0.5">AWS: ~~$3.06/h~~ (78% off)</div>
+              <div class="mt-2 text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                <span>Alert at &lt; $0.85/h</span> <span>→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALERT REGISTRATION FORM -->
+        <div class="bg-[#07090e] border border-slate-800 rounded-xl p-5 max-w-2xl">
+          <h3 class="text-sm font-bold text-white mb-3 font-mono flex items-center gap-2">
+            <span>⚙️ Configure Your Custom Spot Alert Rule</span>
+          </h3>
+
+          <form onsubmit="event.preventDefault(); submitAlertSubscription();" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs text-slate-400 mb-1 font-mono">Target GPU Hardware:</label>
+                <select id="alert-gpu-model" class="w-full bg-[#0c111d] border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+                  <option value="NVIDIA H100 SXM5 (80GB)">NVIDIA H100 SXM5 (80GB)</option>
+                  <option value="NVIDIA H200 (141GB)">NVIDIA H200 (141GB)</option>
+                  <option value="NVIDIA B200 Blackwell">NVIDIA B200 Blackwell</option>
+                  <option value="NVIDIA A100 SXM4 (80GB)">NVIDIA A100 SXM4 (80GB)</option>
+                  <option value="NVIDIA RTX 4090 (24GB)">NVIDIA RTX 4090 (24GB)</option>
+                  <option value="NVIDIA L40S (48GB)">NVIDIA L40S (48GB)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs text-slate-400 mb-1 font-mono">Alert Price Trigger ($/hr):</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-slate-500 font-mono">$</span>
+                  <input type="number" step="0.05" id="alert-target-price" value="2.20" required class="w-full bg-[#0c111d] border border-slate-800 rounded-lg pl-7 pr-3 py-2 text-xs text-emerald-400 font-bold font-mono focus:outline-none focus:border-emerald-500">
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs text-slate-400 mb-1 font-mono">Your Email Address:</label>
+                <input type="email" id="alert-email" required placeholder="developer@company.com" class="w-full bg-[#0c111d] border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+              </div>
+
+              <div>
+                <label class="block text-xs text-slate-400 mb-1 font-mono">Notification Delivery Channel:</label>
+                <select id="alert-channel" onchange="toggleWebhookField()" class="w-full bg-[#0c111d] border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+                  <option value="email">Email (Direct via Resend)</option>
+                  <option value="discord">Discord Webhook (Rich Embed)</option>
+                  <option value="slack">Slack Webhook (Message Block)</option>
+                  <option value="webhook">Custom Webhook (JSON POST)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="alert-webhook-group" class="hidden">
+              <label class="block text-xs text-slate-400 mb-1 font-mono">Discord / Slack / HTTP Webhook URL:</label>
+              <input type="url" id="alert-webhook-url" placeholder="https://discord.com/api/webhooks/... or https://hooks.slack.com/..." class="w-full bg-[#0c111d] border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+            </div>
+
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+              <button type="submit" id="btn-submit-alert" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-6 py-2.5 rounded-lg transition font-mono flex items-center justify-center gap-2">
+                <span>⚡ Activate Real-Time Spot Drop Alert</span>
+              </button>
+              <span class="text-[11px] text-slate-500 font-mono">Zero spam. Free tier: instant alerts when market meets threshold.</span>
+            </div>
+          </form>
+        </div>
+
+        <!-- UPGRADE PRO PROMO -->
+        <div class="p-4 bg-gradient-to-r from-emerald-950/30 to-[#0c111d] border border-emerald-500/20 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 font-mono">Need Enterprise Urgency?</span>
+            <p class="text-xs text-white font-medium">Pro ($99/mo) unlocks sub-minute crawler priority, automated Slack channel broadcasts, and direct rental reservation deep-links.</p>
+          </div>
+          <button onclick="initiatePolarCheckout('pro')" class="shrink-0 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-lg text-xs font-mono font-bold transition">
+            Upgrade to Pro (37% Off) →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PRICING & SUBSCRIPTION CHECKOUT -->
     <section id="tab-pricing" class="hidden space-y-8">
       <div class="text-center max-w-2xl mx-auto space-y-2">
         <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Institutional & Quant Data Plans</h2>
@@ -461,6 +598,13 @@
         </div>
       </div>
 
+      <div class="flex items-start gap-2 pt-1 font-sans">
+        <input type="checkbox" id="terms-agree" class="mt-0.5 accent-emerald-500 rounded cursor-pointer">
+        <label for="terms-agree" class="text-[11px] text-slate-400 cursor-pointer select-none leading-tight">
+          I agree to the <a href="/terms" target="_blank" class="text-emerald-400 underline hover:text-emerald-300">Terms of Service</a>, <a href="/privacy" target="_blank" class="text-emerald-400 underline hover:text-emerald-300">Privacy Policy</a>, and Third-Party Spot Data Disclaimer ("AS-IS").
+        </label>
+      </div>
+
       <div class="pt-2">
         <button id="btn-polar-hosted" onclick="openPolarHostedCheckout()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded transition flex items-center justify-center gap-1.5 text-xs">
           <span>Proceed to Polar Checkout (37% Off Pre-Applied)</span>
@@ -516,7 +660,7 @@
     let selectedTier = 'starter';
 
     function switchTab(tabId) {
-      ['terminal', 'calculator', 'playground', 'pricing'].forEach(t => {
+      ['terminal', 'calculator', 'playground', 'alerts', 'pricing'].forEach(t => {
         const el = document.getElementById(`tab-${t}`);
         const btn = document.getElementById(`tab-btn-${t}`);
         if (el) el.classList.add('hidden');
@@ -740,6 +884,11 @@
         showToast('Please provide a valid email address', 'error');
         return;
       }
+      const termsAgree = document.getElementById('terms-agree')?.checked;
+      if (!termsAgree) {
+        showToast('Please check the box agreeing to the Terms of Service & Disclaimer to proceed', 'error');
+        return;
+      }
       const btn = document.getElementById('btn-polar-hosted');
       btn.innerText = 'Opening Secure Checkout...';
       try {
@@ -761,6 +910,66 @@
       }
     }
 
+    function toggleWebhookField() {
+      const channel = document.getElementById('alert-channel').value;
+      const group = document.getElementById('alert-webhook-group');
+      if (channel === 'email') {
+        group.classList.add('hidden');
+      } else {
+        group.classList.remove('hidden');
+      }
+    }
+
+    function setAlertPreset(gpu, price) {
+      document.getElementById('alert-gpu-model').value = gpu;
+      document.getElementById('alert-target-price').value = price.toFixed(2);
+      showToast(`Selected ${gpu} at < $${price.toFixed(2)}/h`);
+      document.getElementById('alert-email').focus();
+    }
+
+    async function submitAlertSubscription() {
+      const gpu_model = document.getElementById('alert-gpu-model').value;
+      const target_price_usd = parseFloat(document.getElementById('alert-target-price').value);
+      const email = document.getElementById('alert-email').value.trim();
+      const channel = document.getElementById('alert-channel').value;
+      const webhook_url = document.getElementById('alert-webhook-url').value.trim() || undefined;
+
+      if (!email || !email.includes('@')) {
+        showToast('Please provide a valid email address for alert delivery', 'error');
+        return;
+      }
+
+      if (!target_price_usd || target_price_usd <= 0) {
+        showToast('Please specify a valid price target', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btn-submit-alert');
+      btn.innerText = 'Activating Alert...';
+
+      try {
+        const res = await fetch('/api/alerts/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, gpu_model, target_price_usd, channel, webhook_url })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(`⚡ Alert Activated! Sent confirmation to ${email}`);
+          btn.innerText = '✓ Alert Live & Monitoring';
+          setTimeout(() => {
+            btn.innerText = '⚡ Activate Real-Time Spot Drop Alert';
+          }, 4000);
+        } else {
+          showToast(data.message || 'Failed to activate alert', 'error');
+          btn.innerText = '⚡ Activate Real-Time Spot Drop Alert';
+        }
+      } catch (err) {
+        showToast('Network error: ' + err.message, 'error');
+        btn.innerText = '⚡ Activate Real-Time Spot Drop Alert';
+      }
+    }
+
     function updateSavings() {
       const gpu = document.getElementById('calc-gpu').value;
       const hours = parseInt(document.getElementById('calc-hours').value, 10) || 720;
@@ -778,7 +987,7 @@
 
     const snippets = {
       curl: `curl -H "Authorization: Bearer YOUR_API_KEY" \\\n  "https://data.dynep.com/v1/spot/summary"`,
-      python: `import requests\n\nheaders = {"Authorization": "Bearer YOUR_API_KEY"}\nres = requests.get("https://data.dynep.com/v1/spot/summary", headers=headers)\ndata = res.json()\nprint(f"Tracking {data['count']} GPU models across 31 clouds")`,
+      python: `# 1. Install Official SDK: pip install dynep\nfrom dynep import DynepClient\n\n# 2. Instant Zero-Auth Real-Time Spot Check\nclient = DynepClient()\nbest_h100 = client.get_cheapest_spot("H100")\nprint(f"Deploy on {best_h100.best_provider} for ${best_h100.spot_rate_hourly_usd}/hr (-{best_h100.cost_savings_vs_aws_percent} vs AWS)")\n\n# 3. List All Active Spot Spreads\nfor item in client.get_spot_summary():\n    print(f"{item.gpu_model}: ${item.spot_rate_hourly_usd}/h on {item.best_provider}")`,
       node: `import fetch from 'node-fetch';\n\nconst res = await fetch('https://data.dynep.com/v1/spot/summary', {\n  headers: { Authorization: 'Bearer YOUR_API_KEY' }\n});\nconst json = await res.json();\nconsole.log(json.data);`
     };
 

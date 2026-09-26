@@ -33,14 +33,14 @@ export async function seoRoutes(fastify: FastifyInstance) {
       const { subscriber, plaintextApiKey } = await ApiKeyProvisioner.provisionSubscriber({
         email,
         tier: 'free',
-        monthlyQuota: 50,
+        monthlyQuota: 100,
       });
 
       // Dispatch alert to ntfy.sh
       await WebhookNotifier.sendNtfy({
         topic: 'dynep_alerts',
         title: '👤 New Free Tier Lead Registered!',
-        message: `Lead captured: ${email}\nTier: FREE (50 req/mo quota issued)\nCheck dashboard at data.dynep.com`,
+        message: `Lead captured: ${email}\nTier: FREE (100 req/mo quota issued)\nCheck dashboard at data.dynep.com`,
         priority: 3,
         tags: ['bust_in_silhouette', 'zap', 'envelope'],
         clickUrl: 'https://data.dynep.com',
@@ -335,7 +335,7 @@ export async function seoRoutes(fastify: FastifyInstance) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms of Service & Disclaimer — Dynep Real-Time GPU Intelligence</title>
+  <title>Terms of Service & Legal Disclaimer — Dynep Real-Time GPU Intelligence</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-200 font-sans min-h-screen py-12 px-4 sm:px-6 lg:px-8">
@@ -346,49 +346,66 @@ export async function seoRoutes(fastify: FastifyInstance) {
 
     <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
       <section>
-        <h2 class="text-lg font-bold text-white mb-2">1. Acceptance of Terms</h2>
-        <p>By accessing, subscribing to, or using the Dynep API, feeds, and datasets provided via data.dynep.com ("Service"), you agree to be bound by these Terms of Service. If you do not agree, do not access or use the Service.</p>
+        <h2 class="text-lg font-bold text-white mb-2">1. Acceptance of Terms & Legal Capacity</h2>
+        <p>By accessing, subscribing to, querying, or using the Dynep API, SDKs, feeds, and datasets provided via data.dynep.com ("Service"), you expressly agree to be legally bound by these Terms of Service. If you do not unconditionally agree to all terms herein, you must immediately cease all access and use of the Service. You represent and warrant that you have full legal authority to enter into this agreement on behalf of yourself or your entity.</p>
       </section>
 
       <section>
-        <h2 class="text-lg font-bold text-white mb-2">2. Merchant of Record & Billing</h2>
-        <p>All subscription billing, sales tax calculation, payment processing, and checkout interactions are exclusively fulfilled and processed by <strong>Polar Software Inc. ("Polar.sh")</strong> acting as the Merchant of Record. By completing a transaction, you also agree to Polar's terms and privacy policies.</p>
+        <h2 class="text-lg font-bold text-white mb-2">2. Merchant of Record & Billing Exemption</h2>
+        <p>All subscription billing, sales tax calculation, VAT/GST compliance, payment processing, chargebacks, and checkout interactions are exclusively fulfilled and processed by <strong>Polar Software Inc. ("Polar.sh")</strong> acting as the Merchant of Record. Dynep and its operators do not process, store, or hold credit card numbers. By completing a transaction, you also agree to Polar's terms, conditions, and refund policies.</p>
       </section>
 
       <section class="bg-slate-950 p-4 rounded-xl border border-slate-800">
         <h2 class="text-lg font-bold text-amber-400 mb-2">3. Third-Party Data & Spot Price Disclaimer ("AS-IS")</h2>
-        <p class="mb-2"><strong>THE SERVICE AND ALL BENCHMARK DATA ARE PROVIDED STRICTLY ON AN "AS IS" AND "AS AVAILABLE" BASIS.</strong></p>
-        <p>Dynep aggregates publicly available cloud GPU hourly rates and availability indices from independent third-party cloud infrastructure providers (including, but not limited to, Lambda Labs, RunPod, Vast.ai, Vultr, and others). Dynep has no affiliation with, sponsorship from, or endorsement by these third parties.</p>
-        <p class="mt-2">Spot market prices fluctuate dynamically. Dynep does not guarantee that any server, rate, or GPU model shown in the feeds or API will be available or honored by any third-party provider at the time of your provisioning.</p>
-      </section>
-
-      <section>
-        <h2 class="text-lg font-bold text-white mb-2">4. No Financial, Procurement, or Professional Advice</h2>
-        <p>Information provided by Dynep is intended solely for general informational, research, and benchmarking purposes. It does not constitute financial, investment, legal, or procurement advice. You are solely responsible for verifying provider pricing directly prior to deploying computing instances.</p>
+        <p class="mb-2"><strong>THE SERVICE, ALERTS, AND ALL BENCHMARK DATA ARE PROVIDED STRICTLY ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND.</strong></p>
+        <p>Dynep operates as an automated public data indexer aggregating publicly accessible cloud GPU hourly rates, availability indicators, and hardware specifications from independent third-party cloud infrastructure providers (including, without limitation, AWS, RunPod, Lambda Labs, Vast.ai, LeaderGPU, Vultr, and others).</p>
+        <p class="mt-2">Spot market prices and cluster stock fluctuate dynamically every second. Dynep makes no representations or warranties that any server, rate, price spread, or GPU instance displayed in the feeds or alerted via email/webhook will remain available, un-preempted, or honored by any third-party provider at the time of your procurement or deployment.</p>
       </section>
 
       <section class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-        <h2 class="text-lg font-bold text-rose-400 mb-2">5. Limitation of Liability</h2>
-        <p class="mb-2">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL DYNEP, ITS OPERATORS, AFFILIATES, OFFICERS, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA LOSS, SYSTEM DOWNTIME, OR BUSINESS INTERRUPTION ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE SERVICE.</p>
-        <p>IN ANY EVENT, DYNEP'S TOTAL AGGREGATE LIABILITY UNDER THESE TERMS SHALL BE STRICTLY CAPPED AT THE LESSER OF: (A) THE TOTAL AMOUNT ACTUALLY PAID BY YOU TO DYNEP IN THE ONE (1) MONTH IMMEDIATELY PRECEDING THE CLAIM, OR (B) $50.00 USD.</p>
+        <h2 class="text-lg font-bold text-blue-400 mb-2">4. Nominative Fair Use & Trademark Disclaimer</h2>
+        <p>All product names, trademarks, logos, and brands (including NVIDIA®, H100®, H200®, B200®, A100®, RTX 4090®, AWS®, Azure®, GCP®, RunPod®, Lambda Labs®, Vast.ai®, and others) are the property of their respective owners. Use of these names, trademarks, and brands within the Service or API is strictly for identification, comparison, research, and nominative fair use purposes only.</p>
+        <p class="mt-2">Dynep is an independent data indexing service and is NOT affiliated with, sponsored by, endorsed by, or in partnership with any of the referenced hardware manufacturers or cloud infrastructure hosting companies.</p>
       </section>
 
       <section>
-        <h2 class="text-lg font-bold text-white mb-2">6. Acceptable Use Policy (AUP)</h2>
-        <p>You agree not to: (a) attempt to circumvent rate limits or quota controls; (b) launch Denial of Service (DoS) attacks against our endpoints; (c) redistribute, sublicense, or resell raw API access to third parties without an explicit Enterprise License Agreement; or (d) scrape or reverse engineer the internal scrapers.</p>
+        <h2 class="text-lg font-bold text-white mb-2">5. No Financial, Procurement, or Investment Advice</h2>
+        <p>All pricing intelligence, cost savings calculations, and arbitrage feeds provided by Dynep are intended exclusively for general informational, educational, and benchmarking purposes. They do not constitute financial, investment, legal, architectural, or procurement advice. You are solely responsible for conducting independent due diligence and verifying current provider terms, SLAs, and billing rates prior to deploying computing instances.</p>
+      </section>
+
+      <section class="bg-slate-950 p-4 rounded-xl border border-rose-900/50">
+        <h2 class="text-lg font-bold text-rose-400 mb-2">6. Limitation of Liability</h2>
+        <p class="mb-2">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL DYNEP, ITS FOUNDERS, OPERATORS, AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, CONTRACTORS, OR AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF REVENUE, LOSS OF PROFITS, DATA LOSS, COMPUTE OVERRUNS, SYSTEM PREEMPTION, HARDWARE FAILURE, DOWNTIME, OR BUSINESS INTERRUPTION ARISING OUT OF OR IN CONNECTION WITH THE USE OF OR INABILITY TO USE THE SERVICE OR SPOT DATA.</p>
+        <p>IN ANY EVENT, THE MAXIMUM AGGREGATE LIABILITY OF DYNEP AND ITS OPERATORS UNDER THESE TERMS OR RELATING TO THE SERVICE SHALL BE STRICTLY AND ABSOLUTELY CAPPED AT THE LESSER OF: (A) THE TOTAL AMOUNT ACTUALLY PAID BY YOU TO DYNEP IN THE ONE (1) MONTH IMMEDIATELY PRECEDING THE CLAIM, OR (B) $50.00 USD.</p>
+      </section>
+
+      <section class="bg-slate-950 p-4 rounded-xl border border-emerald-900/50">
+        <h2 class="text-lg font-bold text-emerald-400 mb-2">7. Comprehensive Indemnification</h2>
+        <p>You agree to defend, indemnify, and hold harmless Dynep, its individual owner(s), operators, parent entities, affiliates, officers, contractors, and licensors from and against any and all claims, liabilities, damages, losses, costs, expenses, and fees (including reasonable attorneys' fees and court costs) resulting or arising from: (a) your access to or use of the Service or API data; (b) any decision, cluster deployment, or financial transaction made in reliance on data provided by Dynep; (c) your violation of these Terms or any applicable laws; or (d) any dispute between you and any third-party cloud infrastructure provider.</p>
+      </section>
+
+      <section class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <h2 class="text-lg font-bold text-purple-400 mb-2">8. Class Action Waiver & Dispute Resolution</h2>
+        <p>YOU EXPRESSLY AGREE THAT ANY LEGAL DISPUTE, PROCEEDING, OR CLAIM ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE SHALL BE RESOLVED SOLELY ON AN INDIVIDUAL BASIS AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, CONSOLIDATED, OR REPRESENTATIVE PROCEEDING.</p>
+        <p class="mt-2">You waive any right to trial by jury or participation in a class action lawsuit against Dynep or its operators. Any dispute not resolved through good-faith informal negotiation shall be submitted to confidential, binding individual arbitration under standard commercial arbitration rules.</p>
       </section>
 
       <section>
-        <h2 class="text-lg font-bold text-white mb-2">7. Contact & Notices</h2>
-        <p>Questions regarding these terms or legal inquiries should be directed to: <a href="mailto:keys@dynep.com" class="text-emerald-400 underline">keys@dynep.com</a>.</p>
+        <h2 class="text-lg font-bold text-white mb-2">9. Acceptable Use Policy (AUP)</h2>
+        <p>You agree not to: (a) circumvent, tamper with, or bypass rate limits, authentication tokens, or quota controls; (b) initiate Denial of Service (DoS/DDoS) attacks against our edge network; (c) redistribute, sublicense, or resell raw API feeds to third parties without an explicit Enterprise License Agreement; (d) deploy automated bots to aggressively crawl or reverse engineer Dynep's internal extractors; or (e) use the Service for any unlawful or deceptive purpose.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">10. Contact & Designated Agent</h2>
+        <p>All legal inquiries, DMCA notices, or questions regarding these terms should be addressed to: <a href="mailto:keys@dynep.com" class="text-emerald-400 underline font-mono">keys@dynep.com</a>.</p>
       </section>
     </div>
 
-    <div class="mt-10 pt-6 border-t border-slate-800 flex justify-between text-xs text-slate-500">
+    <div class="mt-10 pt-6 border-t border-slate-800 flex justify-between text-xs text-slate-500 font-mono">
       <span>© 2026 Dynep Intelligence. All rights reserved.</span>
       <div class="space-x-4">
         <a href="/privacy" class="text-slate-400 hover:text-white">Privacy Policy</a>
-        <a href="/" class="text-slate-400 hover:text-white">Home</a>
+        <a href="/" class="text-slate-400 hover:text-white">Live Data Portal</a>
       </div>
     </div>
   </div>

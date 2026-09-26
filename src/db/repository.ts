@@ -10,6 +10,7 @@ import {
   SelectorMap,
   SourceStatus,
   TargetSchemaDefinition,
+  AlertSubscription,
 } from './schema.js';
 
 export interface CreateSourceInput {
@@ -49,6 +50,13 @@ export interface IRepository {
   resetMonthlyQuotas(): Promise<number>;
   getAllSubscribers(): Promise<ApiSubscriber[]>;
 
+  // Alert operations
+  createAlertSubscription(alert: AlertSubscription): Promise<AlertSubscription>;
+  getAllAlertSubscriptions(): Promise<AlertSubscription[]>;
+  getActiveAlertSubscriptions(): Promise<AlertSubscription[]>;
+  updateAlertSubscription(id: string, updates: Partial<AlertSubscription>): Promise<AlertSubscription | null>;
+  deleteAlertSubscription(id: string): Promise<boolean>;
+
   // Backups & Persistence
   createBackupSnapshot(): Promise<{ filename: string; path: string; sizeBytes: number }>;
   purgeOldBackups(retentionDays?: number): Promise<number>;
@@ -75,6 +83,7 @@ class PersistentFileRepository implements IRepository {
   private sources: Map<string, Source> = new Map();
   private records: Map<string, ExtractedRecord> = new Map();
   private subscribers: Map<string, ApiSubscriber> = new Map();
+  private alerts: Map<string, AlertSubscription> = new Map();
   private logs: ExtractionLog[] = [];
   private dbFilePath: string;
   private saveTimeout: NodeJS.Timeout | null = null;
@@ -103,6 +112,9 @@ class PersistentFileRepository implements IRepository {
           if (parsed.subscribers) {
             for (const sub of parsed.subscribers) this.subscribers.set(sub.id, sub);
           }
+          if (parsed.alerts) {
+            for (const a of parsed.alerts) this.alerts.set(a.id, a);
+          }
           if (parsed.logs) {
             this.logs = parsed.logs;
           }
@@ -111,6 +123,7 @@ class PersistentFileRepository implements IRepository {
               sources: this.sources.size,
               records: this.records.size,
               subscribers: this.subscribers.size,
+              alerts: this.alerts.size,
             },
             'Loaded database state from local disk'
           );
@@ -159,6 +172,7 @@ class PersistentFileRepository implements IRepository {
         sources: Array.from(this.sources.values()),
         records: Array.from(this.records.values()),
         subscribers: Array.from(this.subscribers.values()),
+        alerts: Array.from(this.alerts.values()),
         logs: this.logs.slice(0, 500),
         updated_at: new Date().toISOString(),
       };
@@ -498,6 +512,36 @@ class PersistentFileRepository implements IRepository {
       totalTokensUsed,
     };
   }
+
+  // Alert operations
+  async createAlertSubscription(alert: AlertSubscription): Promise<AlertSubscription> {
+    this.alerts.set(alert.id, alert);
+    this.scheduleSave();
+    return alert;
+  }
+
+  async getAllAlertSubscriptions(): Promise<AlertSubscription[]> {
+    return Array.from(this.alerts.values());
+  }
+
+  async getActiveAlertSubscriptions(): Promise<AlertSubscription[]> {
+    return Array.from(this.alerts.values()).filter((a) => a.is_active);
+  }
+
+  async updateAlertSubscription(id: string, updates: Partial<AlertSubscription>): Promise<AlertSubscription | null> {
+    const existing = this.alerts.get(id);
+    if (!existing) return null;
+    const updated = { ...existing, ...updates };
+    this.alerts.set(id, updated);
+    this.scheduleSave();
+    return updated;
+  }
+
+  async deleteAlertSubscription(id: string): Promise<boolean> {
+    const deleted = this.alerts.delete(id);
+    if (deleted) this.scheduleSave();
+    return deleted;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -785,6 +829,27 @@ class SupabaseRepository implements IRepository {
 
   async getMetricsSummary() {
     return this.fallback.getMetricsSummary();
+  }
+
+  // Alert operations
+  async createAlertSubscription(alert: AlertSubscription): Promise<AlertSubscription> {
+    return this.fallback.createAlertSubscription(alert);
+  }
+
+  async getAllAlertSubscriptions(): Promise<AlertSubscription[]> {
+    return this.fallback.getAllAlertSubscriptions();
+  }
+
+  async getActiveAlertSubscriptions(): Promise<AlertSubscription[]> {
+    return this.fallback.getActiveAlertSubscriptions();
+  }
+
+  async updateAlertSubscription(id: string, updates: Partial<AlertSubscription>): Promise<AlertSubscription | null> {
+    return this.fallback.updateAlertSubscription(id, updates);
+  }
+
+  async deleteAlertSubscription(id: string): Promise<boolean> {
+    return this.fallback.deleteAlertSubscription(id);
   }
 }
 
