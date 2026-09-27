@@ -83,5 +83,22 @@ describe('Affiliate & Referral Monetization Engine', () => {
       expect(item.deploy_url).toContain('dynep');
     }
   });
+
+  it('GET /v1/spot/instances returns public live instance table with zero auth and deploy links', async () => {
+    const { buildServer } = await import('../src/api/server.js');
+    const app = await buildServer();
+    const res = await app.inject({
+      method: 'GET',
+      url: '/v1/spot/instances',
+    });
+
+    expect(res.statusCode).toBe(200);
+    const json = JSON.parse(res.body);
+    expect(json.status).toBe('ok');
+    expect(Array.isArray(json.data)).toBe(true);
+    expect(json.data.length).toBeGreaterThan(0);
+    expect(json.data[0].data.deploy_url).toBeDefined();
+  });
 });
+
 

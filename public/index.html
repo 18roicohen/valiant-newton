@@ -690,11 +690,36 @@
       if (refreshIcon) refreshIcon.classList.add('animate-spin');
 
       try {
-        const res = await fetch('/v1/data?limit=50', {
+        const endpoint = currentApiKey ? '/v1/data?limit=50' : '/v1/spot/instances';
+        const res = await fetch(endpoint, {
           headers: currentApiKey ? { 'Authorization': `Bearer ${currentApiKey}` } : {}
         });
         const json = await res.json();
         allRecords = json.data || [];
+
+        // Resilient Fallback: If instances array is empty or unauthenticated /v1/data was rejected, fetch /v1/spot/summary
+        if (!allRecords || allRecords.length === 0) {
+          const sumRes = await fetch('/v1/spot/summary');
+          if (sumRes.ok) {
+            const sumJson = await sumRes.json();
+            if (sumJson.benchmark_summary && sumJson.benchmark_summary.length > 0) {
+              allRecords = sumJson.benchmark_summary.map((b, i) => ({
+                entity_id: `bench-${i}`,
+                natural_key: b.gpu_model,
+                version: 1,
+                data: {
+                  title: b.gpu_model,
+                  provider: b.best_provider,
+                  price: b.spot_rate_hourly_usd,
+                  category: 'Global',
+                  status: 'Available',
+                  deploy_url: b.deploy_url || getAffiliateDeployUrl(b.best_provider, b.gpu_model),
+                }
+              }));
+            }
+          }
+        }
+
         renderTable(allRecords);
       } catch (err) {
         console.error('Failed to fetch data:', err);

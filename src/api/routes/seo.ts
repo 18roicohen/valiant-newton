@@ -132,6 +132,29 @@ export async function seoRoutes(fastify: FastifyInstance) {
   });
 
   /**
+   * Public Zero-Auth Live Spot Instance Feed for Frontend Terminal Table
+   * GET /v1/spot/instances
+   */
+  fastify.get('/v1/spot/instances', async (_request: FastifyRequest, reply: FastifyReply) => {
+    const { data: records, total } = await repository.getRecords({
+      limit: 100,
+      page: 1,
+      sort_by: 'updated_at',
+      sort_dir: 'desc',
+    });
+
+    const enriched = records.map((r) => AffiliateService.enrichRecord(r));
+
+    reply.header('Cache-Control', 'public, max-age=30');
+    return {
+      status: 'ok',
+      count: enriched.length,
+      total,
+      data: enriched,
+    };
+  });
+
+  /**
    * Programmatic SEO: GPU Landing Page
    * GET /gpu/:slug
    */
