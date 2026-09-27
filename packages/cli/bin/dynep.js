@@ -79,6 +79,29 @@ async function main() {
     return;
   }
 
+  // Handle MCP Stdio Protocol Transport
+  if (args.includes('--mcp')) {
+    const readline = await import('readline');
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: false });
+
+    rl.on('line', async (line) => {
+      if (!line.trim()) return;
+      try {
+        const msg = JSON.parse(line);
+        const res = await fetch(`${BASE_URL}/v1/agent/mcp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(msg),
+        });
+        const out = await res.json();
+        process.stdout.write(JSON.stringify(out) + '\n');
+      } catch (err) {
+        process.stdout.write(JSON.stringify({ jsonrpc: '2.0', id: null, error: { code: -32603, message: err.message } }) + '\n');
+      }
+    });
+    return;
+  }
+
   // Handle Free Key Claim
   const claimIndex = args.indexOf('--claim');
   if (claimIndex !== -1) {
