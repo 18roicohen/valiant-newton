@@ -1,0 +1,101 @@
+Metadata-Version: 2.4
+Name: dynep
+Version: 0.1.0
+Summary: Official Python SDK for Dynep Real-Time Cloud GPU Spot Market Engine (DGX-31)
+Home-page: https://data.dynep.com
+Author: Dynep Data Intelligence
+Author-email: Dynep Data Intelligence <keys@dynep.com>
+Project-URL: Homepage, https://data.dynep.com
+Project-URL: Bug Tracker, https://github.com/18roicohen/valiant-newton/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: System :: Distributed Computing
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.25.0
+Dynamic: author
+Dynamic: home-page
+
+# dynep: Python SDK for Real-Time Cloud GPU Spot Intelligence
+
+[![PyPI Version](https://img.shields.io/pypi/v/dynep.svg)](https://pypi.org/project/dynep/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
+[![Endpoint](https://img.shields.io/badge/API-data.dynep.com-blue)](https://data.dynep.com)
+
+The official Python client for **[Dynep](https://data.dynep.com)** — the autonomous real-time cloud GPU spot market indexer tracking 31 cloud providers (RunPod, Lambda Labs, Vast.ai, LeaderGPU, AWS, Vultr, FluidStack, and more).
+
+Stop overpaying for fine-tuning and inference compute. Find the lowest hourly spot rate for NVIDIA H100, H200, B200, A100, and RTX 4090 in milliseconds.
+
+---
+
+## ⚡ Installation
+
+```bash
+pip install dynep
+```
+
+---
+
+## 🚀 Quickstart (Zero-Auth)
+
+Query real-time spot rates across 31 providers instantly without registering or needing an API key:
+
+```python
+from dynep import DynepClient
+
+client = DynepClient()
+
+# 1. Fetch live market spot benchmark summary across all GPU families
+quotes = client.get_spot_summary()
+
+for q in quotes:
+    print(f"{q.gpu_model}: ${q.spot_rate_hourly_usd}/hr on {q.best_provider} (Savings vs AWS: {q.cost_savings_vs_aws_percent})")
+
+# 2. Find the single cheapest spot instance for a specific GPU model
+best_h100 = client.get_cheapest_spot("H100")
+if best_h100:
+    print(f"\nCheapest H100: ${best_h100.spot_rate_hourly_usd}/hr via {best_h100.best_provider}")
+    print(f"AWS equivalent: ${best_h100.aws_equivalent_rate_usd}/hr")
+```
+
+---
+
+## 🔑 Claim Complimentary Developer API Key (100 reqs/mo)
+
+You can claim an instant evaluation API key programmatically:
+
+```python
+from dynep import DynepClient
+
+res = DynepClient.claim_free_key("developer@startup.ai")
+print(f"Your API Key: {res['api_key']}")
+print(f"Monthly Quota: {res['monthly_quota']} requests")
+```
+
+---
+
+## 📊 Full Structured Feed Queries (With API Key)
+
+Query paginated, filtered hardware instance feeds with region, VRAM, and provider metadata:
+
+```python
+from dynep import DynepClient
+
+client = DynepClient(api_key="sk_live_your_api_key_here")
+
+# Filter instances by GPU model
+results = client.query_live_instances(search="H100", limit=10)
+
+for record in results.get("data", []):
+    item = record["data"]
+    print(f"[{item.get('provider')}] {item.get('title')} - ${item.get('price')}/hr ({item.get('category')})")
+```
+
+---
+
+## 🌐 Links
+- **Interactive Web Terminal & Playground:** [https://data.dynep.com](https://data.dynep.com)
+- **API Documentation:** [https://data.dynep.com/#playground](https://data.dynep.com/#playground)
+- **Issues & Feedback:** [GitHub Issues](https://github.com/18roicohen/valiant-newton/issues)

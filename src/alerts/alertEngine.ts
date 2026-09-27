@@ -2,6 +2,7 @@ import { repository } from '../db/repository.js';
 import { logger } from '../db/client.js';
 import { EmailService } from './emailService.js';
 import { WebhookNotifier } from './webhookNotifier.js';
+import { AffiliateService } from '../affiliates/affiliateService.js';
 
 export interface AlertTriggerResult {
   evaluated: number;
@@ -89,6 +90,8 @@ export class AlertEngine {
 
         const savingsPercent = `${Math.round(((currentMarket.awsRate - currentMarket.price) / currentMarket.awsRate) * 100)}%`;
 
+        const deployUrl = AffiliateService.getDeployUrl(currentMarket.provider, alert.gpu_model);
+
         // 1. Deliver Email via Resend
         if (alert.channel === 'email' || !alert.webhook_url) {
           await EmailService.sendGpuPriceDropAlertEmail({
@@ -99,7 +102,7 @@ export class AlertEngine {
             targetPrice: alert.target_price_usd,
             awsPrice: currentMarket.awsRate,
             savingsPercent,
-            directUrl: 'https://data.dynep.com',
+            directUrl: deployUrl,
           });
         }
 
@@ -119,7 +122,7 @@ export class AlertEngine {
                     title: `${alert.gpu_model} dropped to $${currentMarket.price.toFixed(2)}/hr!`,
                     description: `Live instance available on **${currentMarket.provider}**.\nAWS Equivalent: ~~$${currentMarket.awsRate.toFixed(2)}/hr~~ (**${savingsPercent} below AWS**)\nYour target alert: $${alert.target_price_usd.toFixed(2)}/hr`,
                     color: 0x10b981,
-                    url: 'https://data.dynep.com',
+                    url: deployUrl,
                     timestamp: new Date().toISOString(),
                     footer: { text: 'Dynep DGX-31 Real-Time GPU Spot Engine' },
                   }],
@@ -130,7 +133,7 @@ export class AlertEngine {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  text: `🚨 *Dynep Spot Alert:* ${alert.gpu_model} dropped to *$${currentMarket.price.toFixed(2)}/hr* on ${currentMarket.provider} (${savingsPercent} savings vs AWS). <https://data.dynep.com|Deploy Now>`,
+                  text: `🚨 *Dynep Spot Alert:* ${alert.gpu_model} dropped to *$${currentMarket.price.toFixed(2)}/hr* on ${currentMarket.provider} (${savingsPercent} savings vs AWS). <${deployUrl}|Deploy Now on ${currentMarket.provider} ↗>`,
                 }),
               });
             } else {
@@ -143,6 +146,7 @@ export class AlertEngine {
                   gpu_model: alert.gpu_model,
                   spot_rate_hourly_usd: currentMarket.price,
                   provider: currentMarket.provider,
+                  deploy_url: deployUrl,
                   aws_equivalent_rate_usd: currentMarket.awsRate,
                   savings_vs_aws_percent: savingsPercent,
                   target_price_usd: alert.target_price_usd,

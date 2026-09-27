@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { repository } from '../../db/repository.js';
 import { ApiKeyProvisioner } from '../billing/keyProvisioner.js';
 import { WebhookNotifier } from '../../alerts/webhookNotifier.js';
+import { AffiliateService } from '../../affiliates/affiliateService.js';
 
 export async function seoRoutes(fastify: FastifyInstance) {
   /**
@@ -105,12 +106,14 @@ export async function seoRoutes(fastify: FastifyInstance) {
 
     const benchmark = Object.values(gpuMap).map((item) => {
       const spread = Math.round(((item.awsRate - item.lowestPrice) / item.awsRate) * 100);
+      const deployUrl = AffiliateService.getDeployUrl(item.provider, item.model);
       return {
         gpu_model: item.model,
         spot_rate_hourly_usd: item.lowestPrice,
         best_provider: item.provider,
         aws_equivalent_rate_usd: item.awsRate,
         cost_savings_vs_aws_percent: `${spread}%`,
+        deploy_url: deployUrl,
       };
     });
 
@@ -214,6 +217,7 @@ export async function seoRoutes(fastify: FastifyInstance) {
               <th class="px-6 py-3">Host Specs</th>
               <th class="px-6 py-3">Hourly Rate</th>
               <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3 text-right">Action</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800">
@@ -225,9 +229,14 @@ export async function seoRoutes(fastify: FastifyInstance) {
                 <td class="px-6 py-4 font-mono text-xs text-slate-400">${r.data.host_specs || 'On-Demand'}</td>
                 <td class="px-6 py-4 font-mono font-bold text-emerald-400 text-base">$${Number(r.data.price).toFixed(2)}/hr</td>
                 <td class="px-6 py-4"><span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">${r.data.status || 'Available'}</span></td>
+                <td class="px-6 py-4 text-right">
+                  <a href="${AffiliateService.getDeployUrl(r.data.provider, r.data.title || gpuName)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md transition inline-flex items-center gap-1">
+                    Deploy ↗
+                  </a>
+                </td>
               </tr>
             `).join('') : `
-              <tr><td colspan="6" class="px-6 py-8 text-center text-slate-500">Live data fetching... Check full index at <a href="/" class="text-emerald-400 underline">data.dynep.com</a></td></tr>
+              <tr><td colspan="7" class="px-6 py-8 text-center text-slate-500">Live data fetching... Check full index at <a href="/" class="text-emerald-400 underline">data.dynep.com</a></td></tr>
             `}
           </tbody>
         </table>

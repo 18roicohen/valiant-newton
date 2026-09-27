@@ -8,3 +8,5 @@ scratch/
 cloudflared.exe
 data/backups/
 data/*.tmp*
+outreach_leads.csv
+*.csv

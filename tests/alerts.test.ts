@@ -7,9 +7,11 @@ import { FastifyInstance } from 'fastify';
 describe('GPU Spot Drop Alerts Product & Lifecycle', () => {
   let app: FastifyInstance;
   let createdAlertId: string;
+  let testEmail: string;
 
   beforeAll(async () => {
     app = await buildServer();
+    testEmail = `dev-alert-${Date.now()}@startup.ai`;
   });
 
   it('GET /api/alerts/presets returns valid market benchmarks and trigger recommendations', async () => {
@@ -31,7 +33,7 @@ describe('GPU Spot Drop Alerts Product & Lifecycle', () => {
       method: 'POST',
       url: '/api/alerts/subscribe',
       payload: {
-        email: 'dev-alert-test@startup.ai',
+        email: testEmail,
         gpu_model: 'NVIDIA H100 SXM5 (80GB)',
         target_price_usd: 2.20,
         channel: 'email',
@@ -42,7 +44,7 @@ describe('GPU Spot Drop Alerts Product & Lifecycle', () => {
     const json = JSON.parse(res.body);
     expect(json.success).toBe(true);
     expect(json.alert).toBeDefined();
-    expect(json.alert.email).toBe('dev-alert-test@startup.ai');
+    expect(json.alert.email).toBe(testEmail);
     expect(json.alert.gpu_model).toBe('NVIDIA H100 SXM5 (80GB)');
     expect(json.alert.target_price_usd).toBe(2.20);
     createdAlertId = json.alert.id;
@@ -53,7 +55,7 @@ describe('GPU Spot Drop Alerts Product & Lifecycle', () => {
       method: 'POST',
       url: '/api/alerts/subscribe',
       payload: {
-        email: 'dev-alert-test@startup.ai',
+        email: testEmail,
         gpu_model: 'NVIDIA H100 SXM5 (80GB)',
         target_price_usd: 2.10,
         channel: 'discord',

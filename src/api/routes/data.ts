@@ -3,6 +3,7 @@ import { repository } from '../../db/repository.js';
 import { DataQueryFilterSchema } from '../../db/schema.js';
 import { authenticateApiKey } from '../middleware/auth.js';
 import { rateLimitHook } from '../middleware/rateLimiter.js';
+import { AffiliateService } from '../../affiliates/affiliateService.js';
 
 export const dataRoutes: FastifyPluginAsync = async (fastify) => {
   // Apply auth and rate limiting to all data endpoints
@@ -11,7 +12,7 @@ export const dataRoutes: FastifyPluginAsync = async (fastify) => {
 
   /**
    * GET /v1/data
-   * Filterable, paginated high-value structured data feed
+   * Filterable, paginated high-value structured data feed with tracked affiliate deployment links
    */
   fastify.get('/data', async (request, reply) => {
     const parseResult = DataQueryFilterSchema.safeParse(request.query);
@@ -26,9 +27,10 @@ export const dataRoutes: FastifyPluginAsync = async (fastify) => {
     const filter = parseResult.data;
     const { data, total } = await repository.getRecords(filter);
     const totalPages = Math.ceil(total / filter.limit);
+    const enrichedData = data.map((record) => AffiliateService.enrichRecord(record));
 
     return {
-      data,
+      data: enrichedData,
       pagination: {
         page: filter.page,
         limit: filter.limit,
@@ -41,7 +43,7 @@ export const dataRoutes: FastifyPluginAsync = async (fastify) => {
 
   /**
    * GET /v1/data/:id
-   * Single entity detail lookup by SHA-256 entity_id
+   * Single entity detail lookup by SHA-256 entity_id with affiliate deployment link
    */
   fastify.get('/data/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
@@ -58,6 +60,6 @@ export const dataRoutes: FastifyPluginAsync = async (fastify) => {
       });
     }
 
-    return { data: record };
+    return { data: AffiliateService.enrichRecord(record) };
   });
 };

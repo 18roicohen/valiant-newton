@@ -24,18 +24,29 @@ To solve this, I built an indexer and API tracking 31 cloud GPU providers in rea
   curl -s https://data.dynep.com/v1/spot/summary
   ```
 
-### Quick Python Integration (Fetch 3 cheapest H100s):
-```python
-import requests
-
-resp = requests.get("https://data.dynep.com/v1/spot/summary")
-summary = resp.json()["benchmark_summary"]
-
-for item in summary:
-    print(f"{item['gpu_model']}: ${item['spot_rate_hourly_usd']}/hr via {item['best_provider']} (Savings vs AWS: {item['cost_savings_vs_aws_percent']})")
+### 1-Line CLI Terminal:
+```bash
+# Query live spot depth across all 31 clouds:
+npx dynep-spot --gpu 4090
 ```
 
-There is an instant 100 req/mo evaluation tier on the homepage (1 click, zero card or sign-up friction). 
+### Official Python SDK:
+```bash
+pip install dynep
+```
+```python
+from dynep import DynepClient
+
+client = DynepClient()
+quote = client.get_cheapest_spot("H100")
+print(f"Deploy on {quote.best_provider} for ${quote.spot_rate_hourly_usd}/hr (-{quote.cost_savings_vs_aws_percent} vs AWS)")
+print(f"Direct deploy URL: {quote.deploy_url}")
+```
+
+### Free Tier & Launch Perks:
+There is an instant 100 req/mo evaluation tier on the homepage (1 click, zero card or sign-up friction). You can also set up free real-time price drop alerts to Discord/Slack/Email via `POST /api/alerts/subscribe`.
+
+For anyone needing programmatic high-throughput JSON/CSV feeds, use code `DYNEP37` for 37% off subscriptions.
 
 Would love feedback on:
 1. What additional niche providers or bare-metal clouds should be indexed?

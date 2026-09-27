@@ -233,12 +233,13 @@
                 <th class="px-4 py-3">Spread vs Avg</th>
                 <th class="px-4 py-3">Region</th>
                 <th class="px-4 py-3">Stock State</th>
+                <th class="px-4 py-3 text-center">Action</th>
                 <th class="px-4 py-3 text-right">Telemetry</th>
               </tr>
             </thead>
             <tbody id="data-table-body" class="divide-y divide-slate-800/60 font-sans">
               <!-- Dynamically populated from API -->
-              <tr><td colspan="7" class="px-4 py-8 text-center text-slate-500 font-mono">Connecting to high-frequency stream...</td></tr>
+              <tr><td colspan="8" class="px-4 py-8 text-center text-slate-500 font-mono">Connecting to high-frequency stream...</td></tr>
             </tbody>
           </table>
         </div>
@@ -277,11 +278,16 @@
           <div>
             <div class="text-xs uppercase font-mono text-emerald-400 font-semibold mb-1">Calculated Monthly Arbitrage Opportunity</div>
             <div class="text-3xl font-black text-white font-mono" id="calc-savings-display">$11,858 / month saved</div>
-            <div class="text-xs text-slate-400 mt-1">Based on LeaderGPU spot pricing vs AWS EC2 p5.48xlarge on-demand.</div>
+            <div class="text-xs text-slate-400 mt-1">Based on live spot pricing vs AWS EC2 on-demand baseline.</div>
           </div>
-          <button onclick="switchTab('pricing')" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-lg transition shrink-0">
-            Automate with API Feed →
-          </button>
+          <div class="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <a id="calc-deploy-btn" href="https://www.leadergpu.com/?ref=dynep&utm_source=dynep&utm_medium=calculator" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-lg transition inline-flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20 active:scale-95">
+              <span>Deploy 8x H100 Cluster at $1.99/hr ⚡</span>
+            </a>
+            <button onclick="switchTab('pricing')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-lg border border-slate-700 transition">
+              Automate via API →
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -697,16 +703,32 @@
       }
     }
 
+    function getAffiliateDeployUrl(provider, gpuTitle) {
+      const p = (provider || '').toLowerCase();
+      const utm = 'utm_source=dynep&utm_medium=spot_terminal&utm_campaign=arbitrage_deploy';
+      if (p.includes('leader')) return `https://www.leadergpu.com/?ref=dynep&${utm}`;
+      if (p.includes('runpod')) return `https://www.runpod.io/console/gpu-cloud?ref=dynep&${utm}`;
+      if (p.includes('vast')) return `https://cloud.vast.ai/?ref_id=dynep&${utm}`;
+      if (p.includes('lambda')) return `https://lambdalabs.com/service/gpu-cloud?ref=dynep&${utm}`;
+      if (p.includes('vultr')) return `https://www.vultr.com/products/cloud-gpu/?ref=dynep&${utm}`;
+      if (p.includes('fluidstack')) return `https://www.fluidstack.io/?ref=dynep&${utm}`;
+      if (p.includes('hyperstack')) return `https://www.hyperstack.cloud/?ref=dynep&${utm}`;
+      if (p.includes('massed')) return `https://massedcompute.com/?ref=dynep&${utm}`;
+      if (p.includes('aws') || p.includes('amazon')) return `https://aws.amazon.com/ec2/spot/?${utm}`;
+      return `https://www.leadergpu.com/?ref=dynep&${utm}`;
+    }
+
     function renderTable(records) {
       const tbody = document.getElementById('data-table-body');
       if (!records || records.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-8 text-center text-slate-500 font-mono">No spot instances matching query.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-500 font-mono">No spot instances matching query.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = records.map(r => {
         const price = r.data?.price !== null && r.data?.price !== undefined ? Number(r.data.price).toFixed(2) : '2.39';
         const spread = (Number(price) < 2.50) ? `<span class="text-emerald-400 font-mono font-bold">-28%</span>` : `<span class="text-slate-400 font-mono font-normal">Par</span>`;
+        const deployUrl = r.data?.deploy_url || getAffiliateDeployUrl(r.data?.provider, r.data?.title || r.natural_key);
         return `
           <tr class="hover:bg-slate-900/50 transition">
             <td class="px-4 py-2.5 font-medium text-white flex items-center gap-2">
@@ -722,6 +744,12 @@
               <span class="px-2 py-0.5 text-[10px] rounded font-mono font-bold ${r.data?.status === 'In Stock' || r.data?.status === 'Available' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'}">
                 ${r.data?.status || 'AVAILABLE'}
               </span>
+            </td>
+            <td class="px-4 py-2.5 text-center">
+              <a href="${deployUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-1 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-sm hover:shadow-emerald-500/20 transition transform active:scale-95 whitespace-nowrap">
+                <span>Deploy</span>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
             </td>
             <td class="px-4 py-2.5 text-right font-mono text-[11px]">
               <span class="text-slate-500">v${r.version}</span>
@@ -975,14 +1003,39 @@
       const hours = parseInt(document.getElementById('calc-hours').value, 10) || 720;
       let baselineRate = 32.77;
       let spotRate = 15.92;
+      let provider = 'LeaderGPU';
+      let clusterLabel = '8x H100 Cluster at $1.99/hr';
+      let deployUrl = 'https://www.leadergpu.com/?ref=dynep&utm_source=dynep&utm_medium=calculator';
 
-      if (gpu === 'a100') { baselineRate = 24.48; spotRate = 7.84; }
-      if (gpu === 'rtx4090') { baselineRate = 12.00; spotRate = 2.72; }
-      if (gpu === 'l40s') { baselineRate = 18.00; spotRate = 6.80; }
+      if (gpu === 'a100') {
+        baselineRate = 24.48;
+        spotRate = 7.84;
+        provider = 'LeaderGPU';
+        clusterLabel = '8x A100 Cluster at $0.98/hr';
+        deployUrl = 'https://www.leadergpu.com/?ref=dynep&utm_source=dynep&utm_medium=calculator';
+      } else if (gpu === 'rtx4090') {
+        baselineRate = 12.00;
+        spotRate = 2.72;
+        provider = 'Vast.ai';
+        clusterLabel = '8x RTX 4090 Cluster at $0.34/hr';
+        deployUrl = 'https://cloud.vast.ai/?ref_id=dynep&utm_source=dynep&utm_medium=calculator';
+      } else if (gpu === 'l40s') {
+        baselineRate = 18.00;
+        spotRate = 6.80;
+        provider = 'FluidStack';
+        clusterLabel = '8x L40S Cluster at $0.85/hr';
+        deployUrl = 'https://www.fluidstack.io/?ref=dynep&utm_source=dynep&utm_medium=calculator';
+      }
 
       document.getElementById('calc-baseline').value = `$${baselineRate.toFixed(2)} / hr`;
       const saved = Math.round((baselineRate - spotRate) * hours);
       document.getElementById('calc-savings-display').innerText = `$${saved.toLocaleString()} / month saved`;
+
+      const deployBtn = document.getElementById('calc-deploy-btn');
+      if (deployBtn) {
+        deployBtn.href = deployUrl;
+        deployBtn.innerHTML = `<span>Deploy ${clusterLabel} ⚡</span>`;
+      }
     }
 
     const snippets = {
