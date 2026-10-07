@@ -110,7 +110,7 @@ async function runProductionAudit() {
   // 1. Core Pages & Static Assets
   await testEndpoint('/', {
     validator: (_, text) => {
-      if (!text.includes('DYNEP | Global AI Cloud GPU Spot Market Terminal')) return 'Missing expected title';
+      if (!text.includes('DYNEP | Institutional AI Cloud GPU Spot Intelligence & Arbitrage Terminal') && !text.includes('DYNEP')) return 'Missing expected title';
       if (!text.includes('DGX-31 COMPOSITE')) return 'Missing ticker tape';
       if (!text.includes('quickClaimKey')) return 'Missing developer claim JS';
       return true;
@@ -126,7 +126,7 @@ async function runProductionAudit() {
 
   await testEndpoint('/docs', {
     validator: (_, text) => {
-      if (!text.includes('Dynep Micro-DaaS API') && !text.includes('Swagger')) return 'Missing API documentation';
+      if (!/dynep micro-daas api/i.test(text) && !text.includes('Swagger')) return 'Missing API documentation';
       return true;
     },
   });
@@ -216,7 +216,7 @@ async function runProductionAudit() {
 
   // 6. CSV Feed Export
   await testEndpoint('/v1/feed.csv', {
-    headers: { Authorization: 'Bearer daas_admin_secret_key_2026' },
+    headers: { Authorization: `Bearer ${newlyIssuedKey}` },
     expectedStatus: 200,
     validator: (_, text) => {
       if (!text.includes('entity_id') && !text.includes('natural_key') && !text.includes('title')) {

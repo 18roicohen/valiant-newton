@@ -7,6 +7,10 @@
     "dynep": "./bin/dynep.js",
     "dynep-spot": "./bin/dynep.js"
   },
+  "files": [
+    "bin",
+    "README.md"
+  ],
   "keywords": [
     "gpu",
     "cloud-gpu",

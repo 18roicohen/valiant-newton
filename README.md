@@ -1,191 +1,174 @@
-# 🚀 Autonomous Micro-DaaS Engine
+# ⚡ DYNEP // Real-Time Institutional AI Cloud GPU Spot Intelligence & Arbitrage Terminal
 
-An end-to-end, production-grade **Autonomous Data-as-a-Service (Micro-DaaS)** platform built in TypeScript (Node.js 22 LTS). The system autonomously scrapes, parses, normalizes, stores, and serves high-value niche structured data via a metered public API, featuring an **automated self-healing pipeline** that dynamically recovers from website layout and selector drift at near-zero LLM cost.
+> Real-time global spot price indexer, hardware arbitrage terminal, and programmatic Data-as-a-Service (DaaS) engine tracking **31+ AI cloud GPU providers** (AWS, Lambda Labs, RunPod, Vast.ai, LeaderGPU, Vultr, Nebius, CoreWeave, and more).
+
+Live Production Service: **[https://data.dynep.com](https://data.dynep.com)**
+
+[![Edge Runtime](https://img.shields.io/badge/Runtime-Cloudflare%20Workers%20Edge-orange.svg)](https://workers.cloudflare.com)
+[![Database](https://img.shields.io/badge/Database-Cloudflare%20D1%20SQLite-blue.svg)](https://developers.cloudflare.com/d1/)
+[![npm package](https://img.shields.io/npm/v/dynep-spot.svg)](https://www.npmjs.com/package/dynep-spot)
+[![PyPI package](https://img.shields.io/pypi/v/dynep.svg)](https://pypi.org/project/dynep/)
+[![MCP Server](https://img.shields.io/badge/MCP-Cursor%20%7C%20Claude%20Desktop-emerald.svg)](https://modelcontextprotocol.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-slate.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## 🏗️ Architectural Blueprint
+## 🏗️ Architecture Blueprint
+
+DYNEP runs 100% serverless at the global edge on **Cloudflare Workers (V8 Edge)** and **Cloudflare D1 (Distributed SQLite)** with zero external virtual machine or container dependencies.
 
 ```mermaid
 flowchart TD
-    subgraph S["Target Resolution & Ingestion"]
-        A["Active Sources DB (Supabase/PostgreSQL)"] -->|Target URL, Selector Map, Headers| B["Resilient HTTP Fetcher\n(User-Agent Rotation + Exponential Backoff)"]
-        B --> C["Fast-Path Cheerio Parser\n(Cached CSS/XPath Selectors)"]
+    subgraph Ingest["Edge Ingestion Pipeline (15-Min Cron)"]
+        A["Cloudflare Edge Cron Trigger (*/15 * * * *)"] --> B["worker/scraper.ts"]
+        B --> C1["Direct Public APIs\n(Vast.ai, Lambda Labs, RunPod)"]
+        B --> C2["Streaming HTMLRewriter\n(Zero-Memory C++ Parser)"]
+        C1 & C2 --> D["Affiliate URL & Commission Enricher\n(24 Cloud Partners)"]
+        D --> E[("Cloudflare D1 SQLite\nAtomic .batch() Upserts")]
     end
 
-    subgraph D["Drift Detection & Self-Healing"]
-        C -->|Extracted Items| E{"Drift Detector\n(Empty, Anomaly, Null Ratio, Key Check)"}
-        E -->|Drift Detected| F["Semantic DOM Cleaner\n(Strips Script, Style, SVG, Noisy Attributes)"]
-        F --> G["LLM Self-Healing Service\n(OpenAI / Claude / Gemini / LiteLLM)"]
-        G --> H["Selector Verifier & Synthesizer"]
-        H -->|Auto-Patch| I["Update selector_map in sources Table"]
-        I --> J["Fast-Path Restored (Version N+1)"]
+    subgraph Storage["Cloudflare D1 & Edge Cache"]
+        E --> F["Indexed records Table\n(gpu_model, provider, price_hourly, updated_at)"]
+        F --> G["Cloudflare Edge Cache API\n(s-maxage=60, stale-while-revalidate=300)"]
     end
 
-    subgraph N["Normalization & Storage Layer"]
-        E -->|No Drift / Fast-Path| K["Normalizer Engine\n(Zero-Hallucination, Strict Typing)"]
-        H -->|Repaired Records| K
-        K --> L["Deterministic Key & Content Hasher\nSHA-256(source + natural_key)"]
-        L --> M[("extracted_records\nON CONFLICT DO UPDATE")]
-        M --> O["extraction_logs\n(Audit Trail & Token Telemetry)"]
-    end
-
-    subgraph GAT["Monetization & Metered API Gateway"]
-        P["Subscribers & Consumers"] -->|Authorization: Bearer sk_live_...| Q["Fastify API Gateway"]
-        Q --> R["Token Bucket & Quota Metering Middleware"]
-        R --> S1["GET /v1/data (Filtered & Paginated)"]
-        R --> S2["GET /v1/data/:id (Entity View)"]
-        R --> S3["GET /v1/feed.json (Batch Stream)"]
-        R --> S4["GET /v1/feed.csv (RFC 4180 Export)"]
-        T["Stripe / Polar.sh Webhook"] -->|POST /api/webhooks/billing| U["API Key Provisioner\n(Crypto Key + SHA-256 Hash)"]
+    subgraph Gateway["Global Edge API Gateway (data.dynep.com)"]
+        G --> H1["GET /v1/spot/summary\n(Zero-Auth Public Benchmark <15ms)"]
+        F --> H2["GET /v1/data\n(Keyset / Cursor Pagination + Bearer Token)"]
+        F --> H3["GET /v1/feed.csv\n(High-Throughput RFC 4180 Export)"]
+        F --> H4["POST /v1/agent/mcp\n(JSON-RPC 2.0 for Cursor & Claude Desktop)"]
+        F --> H5["GET /badge/:gpu.svg\n(Real-Time Shields.io GitHub Badges)"]
+        I["Polar.sh Checkout Webhooks"] --> H6["POST /api/webhooks/polar\n(Automated Tier & Quota Upgrades)"]
     end
 ```
 
 ---
 
-## ⚡ Core Innovations & Features
+## ⚡ Core Features & Capabilities
 
-1. **Self-Healing Scraping Pipeline:**
-   - Routine extraction executes on the **Fast-Path** with Cheerio at sub-millisecond speeds and **\$0 LLM token cost**.
-   - If website layout changes or selectors break, **Drift Detection** isolates the failure.
-   - The **Semantic DOM Cleaner** strips scripts, styles, SVG, comments, and base64 blobs, reducing HTML size by >85% to minimize LLM token usage.
-   - The **LLM Self-Healing Engine** extracts target items with strict Zod validation, verifies proposed selectors against the DOM, and **auto-patches** the database `selector_map`.
-   - Subsequent runs automatically revert to Fast-Path with the new selectors at 0 LLM cost.
+1. **Zero-Auth Edge Benchmark (`/v1/spot/summary`):**
+   - Returns live spot rates across major AI accelerator families (H100, H200, B200, A100, RTX 4090, L40S) in under 50ms worldwide.
+   - Includes real-time arbitrage spreads vs AWS EC2 baseline rates (e.g. saving up to 78% on A100 / H100 SXM5).
 
-2. **Zero-Hallucination & Deterministic Deduplication:**
-   - Strict normalization guarantees that raw data fields reflect source truth; missing fields are stored as `null`.
-   - Deterministic entity identification: `entity_id = SHA256(source_id + '::' + natural_key)`.
-   - Content hash change tracking: `hash = SHA256(canonicalJson(data))` tracks payload revisions (`version = version + 1`) without duplicate records.
+2. **Model Context Protocol (MCP) Server for Cursor & Claude Desktop:**
+   - Native JSON-RPC 2.0 protocol handler (`POST /v1/agent/mcp`).
+   - Query lowest spot prices directly inside your IDE using natural language:
+     `"Find the cheapest available 8x H100 cluster for my PyTorch script"`.
 
-3. **Public API Gateway & Monetization:**
-   - Full REST API with query filters (`since`, `category`, `status`, `search`), pagination, and single item lookup.
-   - Real-time batch feeds in **JSON** (`/v1/feed.json`) and **RFC 4180 CSV** (`/v1/feed.csv`).
-   - Built-in **Token Bucket Rate Limiting** and monthly quota decrementing with HTTP headers (`X-Quota-Limit`, `X-Quota-Remaining`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`).
-   - Webhook auto-checkout receiver (`POST /api/webhooks/billing`) for Stripe and Polar.sh to provision API keys automatically upon payment confirmation.
+3. **Multi-Cloud Ingest Engine:**
+   - Ingests structured pricing directly from public provider APIs (Vast.ai REST, RunPod GraphQL, Lambda Labs instance catalog) and fallback HTML tables via native streaming `HTMLRewriter`.
+   - Atomic multi-row upserts via Cloudflare D1 `.batch()` to eliminate database write locking.
 
-4. **Multi-Provider LLM Support:**
-   - Works with **OpenAI** (`gpt-4o-mini`, `gpt-4o`), **Anthropic** (`claude-3-5-sonnet`), **Gemini** (`gemini-1.5-flash`), **LiteLLM**, or local **Mock Heuristic Engine** for offline test execution.
+4. **Dual-Stream Monetization:**
+   - **Data-as-a-Service (DaaS):** Tiered programmatic API subscriptions via Polar.sh ($0 Free, $29 Starter, $99 Pro, $299 Enterprise).
+   - **Hardware Kickbacks:** Integrated affiliate tracking across **24 GPU cloud partners** (LeaderGPU, RunPod, Vast.ai, Lambda Labs, Vultr, Nebius, FluidStack, etc.) generating 3% to 15% recurring hardware rental commissions.
 
----
-
-## 🗄️ Database Schema (Supabase / PostgreSQL)
-
-DDL migrations are located in `src/db/migrations/001_initial_schema.sql`:
-
-- `sources`: Stores scraping targets, URL, `target_schema`, `selector_map`, `schedule_cron`, `headers`, and `status`.
-- `extracted_records`: Stores normalized entities with `entity_id` PK (SHA-256), `natural_key`, `data` (JSONB), `hash`, and `version`.
-- `api_subscribers`: Manages customer API keys (`api_key_hash`), `tier` (free, starter, pro, enterprise), `monthly_quota`, and `current_usage`.
-- `extraction_logs`: Audit trail for every scrape: `status` (SUCCESS, DRIFT_REPAIRED, FAILED), `records_count`, `duration_ms`, and `tokens_used`.
+5. **Live Dynamic GitHub Shields / Badges (`/badge/:gpu.svg`):**
+   - Embed real-time pricing badges directly in open-source AI repositories (e.g. `[![H100](https://data.dynep.com/badge/h100.svg)](https://data.dynep.com)`).
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Instant Terminal Quickstart
 
-### 1. Installation
+### 1. Query Live Spot Rates (No Auth, No Install)
 ```bash
-pnpm install
+curl -s https://data.dynep.com/v1/spot/summary | jq .benchmark_summary
 ```
 
-### 2. Environment Setup
+### 2. Official CLI (`dynep-spot`)
 ```bash
-cp .env.example .env
+# Query market depth for NVIDIA H100
+npx dynep-spot --gpu H100
+
+# Claim complimentary 100 req/mo Developer API Key
+npx dynep-spot --claim dev@company.com
 ```
 
-### 3. Run Automated Tests
-```bash
-pnpm run test
-```
-
-### 4. Interactive Self-Healing Demonstration
-Run the live simulation to see fast-path extraction, HTML layout change, drift detection, LLM self-repair, and auto-patching:
-```bash
-pnpm run test-drift
-```
-
-### 5. Seed Demo Data & Issue Test API Keys
-```bash
-pnpm run seed
-```
-
-### 6. Start the API Gateway & Worker Scheduler
-```bash
-# Start both API and Background Scheduler
-pnpm run start
-
-# Or start individually:
-pnpm run api     # API Gateway only (port 3000)
-pnpm run worker  # Background Cron Worker only
-```
-
----
-
-## 📡 Public API Reference
-
-All requests require Bearer token authentication:
-`Authorization: Bearer sk_live_...`
-
-### 1. `GET /v1/data`
-Query and filter normalized records.
-- **Query Params:**
-  - `page` (number, default: 1)
-  - `limit` (number, default: 50, max: 250)
-  - `source_id` (UUID)
-  - `category` (string)
-  - `status` (string)
-  - `since` (ISO 8601 timestamp)
-  - `search` (string)
-
-**Response:**
+### 3. Model Context Protocol (MCP) Configuration
+Add to your `claude_desktop_config.json` or `.cursor/mcp.json`:
 ```json
 {
-  "data": [
-    {
-      "entity_id": "a9f8b2c...",
-      "source_id": "b59b1c7...",
-      "natural_key": "gpu-h100-sxm5-01",
-      "data": {
-        "title": "NVIDIA H100 80GB SXM5",
-        "price": 2.39,
-        "category": "US-East-1",
-        "status": "In Stock",
-        "natural_key": "gpu-h100-sxm5-01"
-      },
-      "hash": "c8e1...",
-      "version": 2,
-      "first_seen_at": "2026-09-26T10:00:00.000Z",
-      "updated_at": "2026-09-26T10:16:41.000Z"
+  "mcpServers": {
+    "dynep-spot": {
+      "command": "npx",
+      "args": ["-y", "dynep-spot", "--mcp"]
     }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 50,
-    "total_records": 1,
-    "total_pages": 1,
-    "has_more": false
   }
 }
 ```
 
-### 2. `GET /v1/data/:id`
-Fetch single entity by its `entity_id`.
-
-### 3. `GET /v1/feed.json`
-Bulk ingestion endpoint for high-volume consumers.
-
-### 4. `GET /v1/feed.csv`
-Streams RFC 4180 CSV with flattened headers:
-```csv
-"entity_id","source_id","natural_key","version","first_seen_at","updated_at","category","price","status","title"
-"a9f8b2c...","b59b1c7...","gpu-h100-sxm5-01",2,"2026-09-26T10:00:00.000Z","2026-09-26T10:16:41.000Z","US-East-1","2.39","In Stock","NVIDIA H100 80GB SXM5"
+### 4. Official Python SDK (`dynep`)
+```bash
+pip install dynep
 ```
+```python
+from dynep import DynepClient
 
-### 5. `POST /api/webhooks/billing`
-Stripe and Polar.sh webhook endpoint to auto-provision API keys upon subscriber checkout.
+client = DynepClient()
+quote = client.get_cheapest_spot("H100")
+print(f"Deploy on {quote.best_provider} for ${quote.spot_rate_hourly_usd}/hr (-{quote.cost_savings_vs_aws_percent} vs AWS)")
+print(f"Deploy URL: {quote.deploy_url}")
+```
 
 ---
 
-## 🐳 Docker Deployment
+## 🛠️ Local Development & Deployment
 
+### Prerequisites
+- Node.js 20+
+- Cloudflare Wrangler CLI (`wrangler`)
+- Cloudflare account with D1 database binding (`dynep-db`)
+
+### 1. Clone & Typecheck
 ```bash
-docker-compose up --build
+git clone https://github.com/18roicohen/valiant-newton.git
+cd valiant-newton
+pnpm install
+cmd.exe /c "npx.cmd tsc --noEmit"
 ```
+
+### 2. Run Test Suite (Vitest)
+```bash
+cmd.exe /c "npx.cmd vitest run"
+```
+
+### 3. Local Edge Emulation
+```bash
+cmd.exe /c "npx.cmd wrangler dev"
+```
+
+### 4. Deploy to Production
+```bash
+# Set encrypted secrets (one-time setup)
+cmd.exe /c "npx.cmd wrangler secret put RESEND_API_KEY"
+cmd.exe /c "npx.cmd wrangler secret put ADMIN_API_KEY"
+
+# Deploy Worker & Assets to Cloudflare Edge
+cmd.exe /c "npx.cmd wrangler deploy"
+
+# Execute D1 Schema Migrations
+cmd.exe /c "npx.cmd wrangler d1 execute dynep-db --file=worker/schema.sql"
+```
+
+---
+
+## 📡 API Reference Summary
+
+| Endpoint | Method | Auth | Description |
+| :--- | :---: | :---: | :--- |
+| `/v1/spot/summary` | `GET` | None | DGX-31 real-time composite benchmark with AWS savings deltas |
+| `/v1/spot/instances` | `GET` | None | Paginated live instance table feed with Edge Cache API |
+| `/v1/agent/arbitrage` | `GET` | None | Dynamic cluster sizing & monthly cost arbitrage calculation |
+| `/v1/agent/mcp` | `POST` | None | Model Context Protocol JSON-RPC 2.0 handler for AI coding IDEs |
+| `/badge/:gpu.svg` | `GET` | None | Real-time Shields.io-compatible SVG status badges for GitHub |
+| `/v1/data` | `GET` | Bearer Key | Structured instance feed with Keyset cursor pagination & filters |
+| `/v1/feed.csv` | `GET` | Bearer Key | High-throughput streaming RFC 4180 CSV export |
+| `/api/keys/free` | `POST` | None | 1-Click developer key issuance with disposable email defense |
+| `/api/alerts/subscribe` | `POST` | None | Push alerts (Email / Discord / Slack / Webhook) for spot price drops |
+| `/api/webhooks/polar` | `POST` | Webhook Sig | Automated customer subscription upgrades |
+| `/health` | `GET` | None | Health probe returning edge region, D1 status, and record count |
+
+---
+
+## 📄 License
+MIT License. © 2026 Dynep Intelligence.

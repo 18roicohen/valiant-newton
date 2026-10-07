@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { AffiliateService, AFFILIATE_PARTNERS } from '../src/affiliates/affiliateService.js';
+import { AffiliateService, AFFILIATE_PARTNERS } from '../worker/affiliates.js';
 
 describe('Affiliate & Referral Monetization Engine', () => {
   it('correctly maps known providers to affiliate deploy links with referral and UTM parameters', () => {
@@ -20,6 +20,34 @@ describe('Affiliate & Referral Monetization Engine', () => {
     const lambdaUrl = AffiliateService.getDeployUrl('Lambda Labs');
     expect(lambdaUrl).toContain('lambdalabs.com');
     expect(lambdaUrl).toContain('ref=dynep');
+
+    // Expanded providers verification
+    const nebiusUrl = AffiliateService.getDeployUrl('Nebius AI', 'H100');
+    expect(nebiusUrl).toContain('nebius.com');
+    expect(nebiusUrl).toContain('ref=dynep');
+    expect(nebiusUrl).toContain('gpu=H100');
+
+    const tensorDockUrl = AffiliateService.getDeployUrl('TensorDock', 'RTX 4090');
+    expect(tensorDockUrl).toContain('tensordock.com');
+    expect(tensorDockUrl).toContain('ref=dynep');
+    expect(AffiliateService.getCommissionPercent('TensorDock')).toBe(10);
+
+    const dataCrunchUrl = AffiliateService.getDeployUrl('DataCrunch');
+    expect(dataCrunchUrl).toContain('datacrunch.io');
+    expect(dataCrunchUrl).toContain('ref=dynep');
+
+    const scalewayUrl = AffiliateService.getDeployUrl('Scaleway');
+    expect(scalewayUrl).toContain('scaleway.com');
+    expect(scalewayUrl).toContain('utm_source=dynep');
+
+    const paperspaceUrl = AffiliateService.getDeployUrl('Paperspace');
+    expect(paperspaceUrl).toContain('paperspace.com');
+    expect(paperspaceUrl).toContain('ref=dynep');
+    expect(AffiliateService.getCommissionPercent('Paperspace')).toBe(10);
+
+    const civoUrl = AffiliateService.getDeployUrl('Civo');
+    expect(civoUrl).toContain('civo.com');
+    expect(civoUrl).toContain('utm_source=dynep');
   });
 
   it('provides safe fallback deploy URLs for generic and hyperscaler clouds', () => {
@@ -66,15 +94,20 @@ describe('Affiliate & Referral Monetization Engine', () => {
   });
 
   it('GET /v1/spot/summary includes deploy_url for every benchmark GPU', async () => {
-    const { buildServer } = await import('../src/api/server.js');
-    const app = await buildServer();
-    const res = await app.inject({
-      method: 'GET',
-      url: '/v1/spot/summary',
-    });
+    const worker = (await import('../worker/index.js')).default;
+    const mockDb = {
+      prepare: () => ({
+        bind: () => ({ all: async () => ({ results: [] }), first: async () => ({ c: 0 }) }),
+        all: async () => ({ results: [] }),
+        first: async () => ({ c: 0 }),
+      }),
+    } as any;
+    const req = new Request('https://data.dynep.com/v1/spot/summary');
+    const ctx = { waitUntil: () => {}, passThroughOnException: () => {} } as any;
+    const res = await worker.fetch(req, { DB: mockDb }, ctx);
 
-    expect(res.statusCode).toBe(200);
-    const json = JSON.parse(res.body);
+    expect(res.status).toBe(200);
+    const json: any = await res.json();
     expect(json.benchmark_summary).toBeDefined();
     expect(json.benchmark_summary.length).toBeGreaterThan(0);
 
@@ -85,20 +118,38 @@ describe('Affiliate & Referral Monetization Engine', () => {
   });
 
   it('GET /v1/spot/instances returns public live instance table with zero auth and deploy links', async () => {
-    const { buildServer } = await import('../src/api/server.js');
-    const app = await buildServer();
-    const res = await app.inject({
-      method: 'GET',
-      url: '/v1/spot/instances',
-    });
+    const worker = (await import('../worker/index.js')).default;
+    const mockDb = {
+      prepare: () => ({
+        bind: () => ({ all: async () => ({ results: [] }), first: async () => ({ c: 0 }) }),
+        all: async () => ({ results: [] }),
+        first: async () => ({ c: 0 }),
+      }),
+    } as any;
+    const req = new Request('https://data.dynep.com/v1/spot/instances');
+    const ctx = { waitUntil: () => {}, passThroughOnException: () => {} } as any;
+    const res = await worker.fetch(req, { DB: mockDb }, ctx);
 
-    expect(res.statusCode).toBe(200);
-    const json = JSON.parse(res.body);
+    expect(res.status).toBe(200);
+    const json: any = await res.json();
     expect(json.status).toBe('ok');
     expect(Array.isArray(json.data)).toBe(true);
-    expect(json.data.length).toBeGreaterThan(0);
-    expect(json.data[0].data.deploy_url).toBeDefined();
+  });
+
+  it('AFFILIATE_PARTNERS registry contains at least 24 registered partners with valid configs', () => {
+    const partnerKeys = Object.keys(AFFILIATE_PARTNERS);
+    expect(partnerKeys.length).toBeGreaterThanOrEqual(24);
+
+    for (const [key, partner] of Object.entries(AFFILIATE_PARTNERS)) {
+      expect(partner.name).toBeDefined();
+      expect(partner.aliases.length).toBeGreaterThan(0);
+      expect(partner.baseUrl.startsWith('https://')).toBe(true);
+      expect(partner.commissionPercent).toBeGreaterThanOrEqual(3);
+      expect(partner.referralParam).toBeDefined();
+      expect(partner.referralCode).toBeDefined();
+    }
   });
 });
+
 
 

@@ -2,10 +2,10 @@
 
 ---
 
-## 1. r/LocalLLaMA (~250k AI Developers & Fine-Tuners)
+## 1. r/LocalLLaMA (~280k AI Developers & Fine-Tuners)
 
 * **Target URL:** https://www.reddit.com/r/LocalLLaMA/submit
-* **Flair:** `Project`
+* **Flair:** `Project / Resource`
 * **Title:** `I built a free real-time GPU spot price API tracking 31 clouds (H100, A100, RTX 4090) so you never overpay for fine-tuning`
 
 ### Post Body:
@@ -14,19 +14,26 @@ Hey everyone,
 
 Like many of you fine-tuning 70B models or serving vLLM / Ollama instances, I was constantly jumping between RunPod, Lambda Labs, Vast.ai, LeaderGPU, and half a dozen provider dashboards just to see who had available spot VRAM at reasonable rates.
 
-To solve this, I built an indexer and API tracking 31 cloud GPU providers in real-time: **https://data.dynep.com**
+To solve this, I built an edge indexer and API tracking 31 cloud GPU providers in real-time: **https://data.dynep.com**
 
-### What it does:
-- Normalizes spot rates, on-demand pricing, VRAM, and region across 31 clouds.
-- Computes real-time price spreads vs AWS EC2 standard rates (e.g., today an H100 SXM5 is $1.99/hr on LeaderGPU vs $4.50/hr on AWS EC2 p5 — a 56% spread).
-- Zero-auth summary endpoint: test it in 1 second right now in your terminal:
-  ```bash
-  curl -s https://data.dynep.com/v1/spot/summary
-  ```
+### Current Spot Benchmark (Live Sample):
+| Hardware Accelerator | Cheapest Host | Dynep Spot Rate | AWS EC2 Baseline | Arbitrage Savings |
+| :--- | :--- | :--- | :--- | :--- |
+| **NVIDIA H100 SXM5 80GB** | LeaderGPU | **$1.99 / hr** | $4.50 / hr | **-56%** |
+| **NVIDIA H200 141GB** | Lambda Labs | **$3.49 / hr** | $5.80 / hr | **-40%** |
+| **NVIDIA B200 Blackwell** | RunPod | **$4.85 / hr** | $7.20 / hr | **-33%** |
+| **NVIDIA A100 SXM4 80GB** | LeaderGPU | **$0.68 / hr** | $3.06 / hr | **-78%** |
+| **NVIDIA RTX 4090 24GB** | Vast.ai | **$0.34 / hr** | $1.10 / hr | **-69%** |
+| **NVIDIA L40S 48GB** | FluidStack | **$0.85 / hr** | $2.15 / hr | **-60%** |
+
+### Test it in 1 second in your terminal (No Auth, No Key):
+```bash
+curl -s https://data.dynep.com/v1/spot/summary
+```
 
 ### 1-Line CLI Terminal:
 ```bash
-# Query live spot depth across all 31 clouds:
+# Inspect live market depth for RTX 4090 or H100:
 npx dynep-spot --gpu 4090
 ```
 
@@ -43,39 +50,50 @@ print(f"Deploy on {quote.best_provider} for ${quote.spot_rate_hourly_usd}/hr (-{
 print(f"Direct deploy URL: {quote.deploy_url}")
 ```
 
-### Free Tier & Launch Perks:
+### Model Context Protocol (MCP) for Cursor / Claude Desktop:
+You can also run Dynep as an MCP server so your local coding agent can find compute:
+```json
+{
+  "mcpServers": {
+    "dynep-spot": {
+      "command": "npx",
+      "args": ["-y", "dynep-spot", "--mcp"]
+    }
+  }
+}
+```
+
+### Free Tier:
 There is an instant 100 req/mo evaluation tier on the homepage (1 click, zero card or sign-up friction). You can also set up free real-time price drop alerts to Discord/Slack/Email via `POST /api/alerts/subscribe`.
 
-For anyone needing programmatic high-throughput JSON/CSV feeds, use code `DYNEP37` for 37% off subscriptions.
-
 Would love feedback on:
-1. What additional niche providers or bare-metal clouds should be indexed?
+1. What additional niche providers or bare-metal clouds should be indexed next?
 2. What hardware filters (e.g. PCIe vs SXM5, InfiniBand vs Ethernet) are most critical for your pipelines?
 
 ---
 
-## 2. r/MLOps (~80k Cloud Infrastructure Engineers)
+## 2. r/dataengineering (~180k Data Architects & Infrastructure Engineers)
 
-* **Target URL:** https://www.reddit.com/r/MLOps/submit
-* **Flair:** `Self-Promotion`
-* **Title:** `How we track spot prices across 31 cloud GPU providers in real-time (and built an API for dynamic spot arbitrage) — architecture roast welcome`
+* **Target URL:** https://www.reddit.com/r/dataengineering/submit
+* **Flair:** `Data Architecture`
+* **Title:** `How we track & normalize spot pricing across 31 GPU clouds on Cloudflare Workers + D1 for <$5/mo`
 
 ### Post Body:
 
-Hi r/MLOps,
+Hi r/dataengineering,
 
-Multi-cloud spot instance management for training jobs is notoriously annoying because every provider has different pricing APIs, scraper protections, or purely dynamic web dashboards with zero standardized schema.
+Aggregating real-time pricing data across 31 independent cloud GPU providers (AWS, RunPod, Vast.ai, Lambda Labs, LeaderGPU, Vultr, etc.) turned out to be an interesting edge engineering challenge. Every provider has different pricing semantics (per-GPU vs per-server, varying currencies, community vs secure cloud, and missing standard APIs).
 
-We built **Dynep** (https://data.dynep.com) to solve this: an autonomous data engine that scrapes, normalizes, and indexes spot compute across 31 providers (AWS, Lambda, RunPod, Vast.ai, LeaderGPU, Vultr, FluidStack, etc.).
+We built **Dynep** (https://data.dynep.com) to solve this: an edge-native data pipeline running globally on Cloudflare Workers and Cloudflare D1 (distributed SQLite).
 
-### Architecture Highlights:
-- **Fast-Path Extraction:** Cheerio DOM parser handles scheduled crawls every 15 minutes.
-- **LLM-Powered Self-Healing:** When providers update their frontend DOM and selectors break, the worker catches empty extractions and invokes an LLM to inspect the updated DOM, synthesize new selectors, verify them against schema rules, and hot-patch the repository without service downtime.
-- **Delivery Engine:** Fastify API with sub-millisecond in-memory caching and CSV / JSON feeds.
+### Architecture Breakdown:
+1. **Hybrid Ingestion Engine:** Direct API ingestion for providers with public endpoints (Vast.ai REST, RunPod GraphQL, Lambda Labs instance catalog) + C++ streaming `HTMLRewriter` parsing for HTML catalogs. This avoids running heavy headless browsers like Chromium at the edge.
+2. **Atomic Write Batching in D1:** Crawlers run on 15-minute Edge Cron triggers. To prevent SQLite write locking and network round-trips, updates are written in atomic transactions via `db.batch()`.
+3. **Sub-15ms Global Edge Serving:** Responses for the zero-auth public summary (`/v1/spot/summary`) are cached via the Cloudflare Edge Cache API (`s-maxage=60, stale-while-revalidate=300`), delivering sub-15ms response times worldwide.
 
 Test the public benchmark without auth:
 ```bash
 curl -s https://data.dynep.com/v1/spot/summary
 ```
 
-Curious to hear how teams here handle spot preemption across non-hyperscaler clouds and what metrics (e.g. historic preemption probability) would be highest priority for your orchestrators (SkyPilot, Ray, Slurm). Roast away!
+Curious to hear how other teams handle edge data aggregation and SQLite write concurrency at scale. Feedback and architecture roasts welcome!

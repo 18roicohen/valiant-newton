@@ -3,6 +3,7 @@
 [![PyPI Version](https://img.shields.io/pypi/v/dynep.svg)](https://pypi.org/project/dynep/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
 [![Endpoint](https://img.shields.io/badge/API-data.dynep.com-blue)](https://data.dynep.com)
+[![MCP Server](https://img.shields.io/badge/MCP-Cursor%20%7C%20Claude%20Desktop-emerald.svg)](https://modelcontextprotocol.io)
 
 The official Python client for **[Dynep](https://data.dynep.com)** — the autonomous real-time cloud GPU spot market indexer tracking 31 cloud providers (RunPod, Lambda Labs, Vast.ai, LeaderGPU, AWS, Vultr, FluidStack, and more).
 
@@ -39,6 +40,26 @@ if best_h100:
     print(f"\nCheapest H100: ${best_h100.spot_rate_hourly_usd}/hr via {best_h100.best_provider}")
     print(f"AWS equivalent: ${best_h100.aws_equivalent_rate_usd}/hr")
 ```
+
+---
+
+## 🤖 Model Context Protocol (MCP) for Cursor & Claude Desktop
+
+You can use Dynep directly inside your AI coding workflow without opening a browser. Add to your `claude_desktop_config.json` or `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "dynep-spot": {
+      "command": "npx",
+      "args": ["-y", "dynep-spot", "--mcp"]
+    }
+  }
+}
+```
+
+Now you can prompt your IDE:  
+> *"Where is the cheapest 8x H100 cluster available right now for this training script?"*
 
 ---
 

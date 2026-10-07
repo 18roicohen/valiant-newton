@@ -20,6 +20,8 @@ const URLS_TO_INDEX = [
   'https://data.dynep.com/gpu/rtx-4000-ada-spot-rates',
   'https://data.dynep.com/gpu/nvidia-a16-spot-rates',
   'https://data.dynep.com/gpu/rtx-5060-ti-spot-rates',
+  'https://data.dynep.com/compare/aws-vs-spot',
+  'https://data.dynep.com/.well-known/mcp.json',
 ];
 
 export async function pingSearchEngines() {

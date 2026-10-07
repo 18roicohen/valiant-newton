@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none">
+  <defs>
+    <!-- Background Substrate Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1322"/>
+      <stop offset="50%" stop-color="#050811"/>
+      <stop offset="100%" stop-color="#020408"/>
+    </linearGradient>
+
+    <!-- Outer Border Glow Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#10b981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.7"/>
+    </linearGradient>
+
+    <!-- Core Dynamic Delta / D Gradient -->
+    <linearGradient id="dynepCoreGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="45%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- Accent Neon Ray Gradient -->
+    <linearGradient id="neonRay" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <!-- Center Radial Glow -->
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#06b6d4" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Drop Shadow Filter for Die Core -->
+    <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Ambient Backdrop Glow -->
+  <rect x="10" y="10" width="100" height="100" rx="26" fill="url(#centerGlow)"/>
+
+  <!-- Outer Silicon Die Enclosure -->
+  <rect x="8" y="8" width="104" height="104" rx="24" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="1.8"/>
+
+  <!-- GPU Micro-Pins / Interconnect Traces (North, South, East, West) -->
+  <!-- Top Pins -->
+  <line x1="42" y1="8" x2="42" y2="15" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="50" y1="8" x2="50" y2="17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="60" y1="8" x2="60" y2="18" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="70" y1="8" x2="70" y2="17" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="78" y1="8" x2="78" y2="15" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Bottom Pins -->
+  <line x1="42" y1="112" x2="42" y2="105" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="50" y1="112" x2="50" y2="103" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="60" y1="112" x2="60" y2="102" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="70" y1="112" x2="70" y2="103" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="78" y1="112" x2="78" y2="105" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Left Pins -->
+  <line x1="8" y1="46" x2="16" y2="46" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="8" y1="60" x2="18" y2="60" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="8" y1="74" x2="16" y2="74" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Right Pins -->
+  <line x1="112" y1="46" x2="104" y2="46" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="112" y1="60" x2="102" y2="60" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="112" y1="74" x2="104" y2="74" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Inner Silicon Accelerator Core Frame -->
+  <rect x="22" y="22" width="76" height="76" rx="14" fill="#060b16" stroke="#1e293b" stroke-width="1.2"/>
+
+  <!-- Grid Interconnect Guide Dots (Cloud Provider Nodes) -->
+  <circle cx="32" cy="32" r="1.5" fill="#334155"/>
+  <circle cx="88" cy="32" r="1.5" fill="#334155"/>
+  <circle cx="32" cy="88" r="1.5" fill="#334155"/>
+  <circle cx="88" cy="88" r="1.5" fill="#334155"/>
+
+  <!-- THE DYNEP ICONIC MARK: Interwoven Dynamic Delta & Precision "D" -->
+  <!-- Main High-Velocity Geometric Delta Facet -->
+  <g filter="url(#glowFilter)">
+    <!-- Back Spine of the "D" with Micro-Bus Notch -->
+    <path d="M 37 32 
+             L 56 32 
+             C 74 32, 85 43, 85 60 
+             C 85 77, 74 88, 56 88 
+             L 37 88 
+             Z" 
+          fill="none" 
+          stroke="url(#dynepCoreGrad)" 
+          stroke-width="7" 
+          stroke-linejoin="round"
+          stroke-linecap="round"/>
+
+    <!-- Inner Forward-Slanted Arbitrage Delta Prism (Δ) -->
+    <path d="M 47 77
+             L 60 42
+             L 73 77
+             Z" 
+          fill="url(#dynepCoreGrad)" 
+          opacity="0.95"/>
+
+    <!-- Inner Core Cutout for Precision Negative Space -->
+    <path d="M 60 52
+             L 66 71
+             L 54 71
+             Z" 
+          fill="#060b16"/>
+
+    <!-- Electric Horizontal Arbitrage Cross-Vector -->
+    <line x1="33" y1="60" x2="87" y2="60" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
+    <circle cx="60" cy="60" r="3.2" fill="#ffffff" filter="drop-shadow(0 0 6px #34d399)"/>
+  </g>
+</svg>

@@ -26,6 +26,19 @@ npx dynep-spot --gpu 4090
 npx dynep-spot --gpu B200
 ```
 
+### Model Context Protocol (MCP) Server for Cursor & Claude Desktop
+Add to your `claude_desktop_config.json` or `.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "dynep-spot": {
+      "command": "npx",
+      "args": ["-y", "dynep-spot", "--mcp"]
+    }
+  }
+}
+```
+
 ### Output Raw JSON for Pipelines / Scripts
 ```bash
 npx dynep-spot --json | jq .

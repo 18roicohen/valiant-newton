@@ -1,0 +1,33 @@
+name = "dynep-daas"
+account_id = "41b06b03c2e6c5969528940208d46dc8"
+main = "worker/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+workers_dev = true
+routes = [
+  { pattern = "data.dynep.com/*", zone_id = "11859b8533d4f3952b3b65b1da8c6abf" }
+]
+
+assets = { directory = "./public", binding = "ASSETS" }
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dynep-db"
+database_id = "d918002f-72cf-43b0-8654-b67643c39562"
+
+
+[vars]
+NTFY_TOPIC_SPOT = "dynep_spot"
+NTFY_TOPIC_REVENUE = "dynep_revenue"
+NTFY_TOPIC_SYSTEM = "dynep_system"
+NTFY_TOPIC_DEV = "dynep_dev"
+POLAR_PRODUCT_STARTER = "5ef8f816-2cc7-4986-bf08-d2ca27a0d5be"
+POLAR_PRODUCT_PRO = "0c3b8529-67d6-4e7b-b4dc-bc28041cd0ab"
+POLAR_PRODUCT_ENTERPRISE = "0e09696f-4a48-40be-8f63-66b3e1518e47"
+RESEND_FROM_EMAIL = "Dynep Intelligence <keys@dynep.com>"
+ADMIN_API_KEY = "daas_admin_secret_key_2026"
+
+# Bound via wrangler secret put:
+# - POLAR_ACCESS_TOKEN
+# - RESEND_API_KEY

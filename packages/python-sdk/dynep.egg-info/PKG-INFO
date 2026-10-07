@@ -5,10 +5,10 @@ Summary: Official Python SDK for Dynep Real-Time Cloud GPU Spot Market Engine (D
 Home-page: https://data.dynep.com
 Author: Dynep Data Intelligence
 Author-email: Dynep Data Intelligence <keys@dynep.com>
+License-Expression: MIT
 Project-URL: Homepage, https://data.dynep.com
 Project-URL: Bug Tracker, https://github.com/18roicohen/valiant-newton/issues
 Classifier: Programming Language :: Python :: 3
-Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
 Classifier: Topic :: System :: Distributed Computing

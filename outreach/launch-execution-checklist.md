@@ -1,9 +1,35 @@
 # 🚀 Dynep Micro-DaaS Launch & Distribution Execution Checklist
 
-## 1. Package Publishing (Open-Source Distribution)
+## 1. Cloudflare Edge Production Deployment
+
+### A. Deploy Worker & Assets
+Deploy the Edge Worker, static frontend, and API routes to Cloudflare's global fleet:
+```bash
+cmd.exe /c "npx.cmd wrangler deploy"
+```
+
+### B. Upload Encrypted Production Secrets
+Secure private keys without committing them to Git:
+```bash
+cmd.exe /c "npx.cmd wrangler secret put RESEND_API_KEY"
+cmd.exe /c "npx.cmd wrangler secret put ADMIN_API_KEY"
+```
+
+### C. Verify D1 Schema & Edge Ingestion
+Execute migrations and trigger an initial crawler run:
+```bash
+cmd.exe /c "npx.cmd wrangler d1 execute dynep-db --file=worker/schema.sql"
+
+# Trigger immediate crawler run via authenticated edge endpoint:
+curl -X POST https://data.dynep.com/api/admin/scrape -H "Authorization: Bearer <ADMIN_API_KEY>"
+```
+
+---
+
+## 2. Package Publishing & Client Tooling
 
 ### A. Python SDK (`dynep`) to PyPI
-The wheel and source distribution are already built and verified in `packages/python-sdk/dist/`:
+The wheel and source distribution are built and verified in `packages/python-sdk/dist/`:
 - `packages/python-sdk/dist/dynep-0.1.0-py3-none-any.whl`
 - `packages/python-sdk/dist/dynep-0.1.0.tar.gz`
 
@@ -14,6 +40,7 @@ python -m pip install --upgrade twine
 twine upload dist/*
 # Provide your PyPI API Token (__token__ / pypi-...)
 ```
+
 *Verification:*
 ```bash
 pip install dynep
@@ -23,7 +50,7 @@ python -c "from dynep import DynepClient; print(DynepClient().get_cheapest_spot(
 ---
 
 ### B. Node.js / CLI (`dynep-spot`) to npm
-The package is pre-bundled and packaged in `packages/cli/`:
+The package is pre-bundled in `packages/cli/`:
 - `packages/cli/dynep-spot-1.0.0.tgz`
 
 **Publish Command:**
@@ -32,64 +59,46 @@ cd packages/cli
 npm login
 npm publish --access public
 ```
+
 *Verification:*
 ```bash
+# 1. Live market table query
 npx dynep-spot --gpu H100
+
+# 2. Claim free API key
 npx dynep-spot --claim dev-test@startup.ai
+
+# 3. Model Context Protocol (MCP) server for Cursor & Claude Desktop
+npx dynep-spot --mcp
 ```
-
----
-
-## 2. B2B Outreach Sniper Execution Trigger
-
-Run the automated B2B outreach engine to convert high-spend AI startups and fine-tuning labs:
-
-```bash
-# 1. Preview pitches & generate fresh API keys without emailing:
-npx tsx scripts/outreach-sniper.ts --dry-run --export-csv=outreach_leads.csv
-
-# 2. Live email dispatch via Resend API (keys@dynep.com):
-npx tsx scripts/outreach-sniper.ts --send
-```
-
-**Key Accounts Targeted:**
-1. **Nous Research** (`compute@nousresearch.com`): 8x H100 Hermes cluster training -> $14,457/mo savings
-2. **Unsloth AI** (`team@unsloth.ai`): Llama-3/Gemma-2 fine-tuning benchmark compute
-3. **OpenPipe** (`infra@openpipe.ai`): Model distillation pipelines -> $13,708/mo savings on A100s
-4. **Predibase** (`platform@predibase.com`): Multi-adapter LoRAX clusters
-5. **Phind AI** (`infra@phind.com`): Sub-second search & inference clusters
-6. **Luma AI** (`infra@lumalabs.ai`): Video generative diffusion clusters
-7. **Cursor / Anysphere** (`infra@anysphere.co`): Speculative decoding clusters
-8. **Modular** (`infra@modular.com`): Heterogeneous AI compiler benchmarks
-9. **Stanford CRFM** (`infra@crfm.stanford.edu`): Academic foundation model evaluations
-10. **Fine-Tuning Labs** (`finetuning-lead@opencompute-scale.dev`): RTX 4090 cluster arbitrage
 
 ---
 
 ## 3. Community Launch Triggers
 
 ### A. Show HN (Hacker News)
-- **File:** `outreach/show-hn.md`
+- **Reference File:** `outreach/show-hn.md`
 - **Submission URL:** https://news.ycombinator.com/submit
-- **Optimal Time:** Tuesday or Wednesday, 06:30 - 08:00 AM PT (13:30 - 15:00 UTC)
-- **Title:** `Show HN: Real-time GPU spot price and arbitrage API across 31 clouds`
+- **Optimal Time:** Tuesday or Wednesday, 06:30 - 08:30 AM US Eastern Time (10:30 - 12:30 UTC)
+- **Title:** `Show HN: DYNEP – Real-time spot pricing across 31 GPU clouds (curl endpoint, no auth)`
 - **URL:** `https://data.dynep.com`
-- **First Comment:** Paste immediate first comment from `outreach/show-hn.md` within 60 seconds.
+- **First Comment:** Paste immediate first comment from `outreach/show-hn.md` within 45 seconds of submitting.
 
-### B. Reddit r/LocalLLaMA (~250k AI Developers)
-- **File:** `outreach/reddit-campaigns.md`
+### B. Reddit r/LocalLLaMA (~280k AI Developers)
+- **Reference File:** `outreach/reddit-campaigns.md`
 - **Submission URL:** https://www.reddit.com/r/LocalLLaMA/submit
-- **Flair:** `Project`
+- **Flair:** `Project / Resource`
 - **Title:** `I built a free real-time GPU spot price API tracking 31 clouds (H100, A100, RTX 4090) so you never overpay for fine-tuning`
 - **Copy:** Copy verbatim from Section 1 in `outreach/reddit-campaigns.md`.
 
-### C. Reddit r/MLOps (~80k Cloud Infrastructure Engineers)
-- **Submission URL:** https://www.reddit.com/r/MLOps/submit
-- **Flair:** `Self-Promotion`
-- **Title:** `How we track spot prices across 31 cloud GPU providers in real-time (and built an API for dynamic spot arbitrage) — architecture roast welcome`
+### C. Reddit r/dataengineering (~180k Data Architects)
+- **Reference File:** `outreach/reddit-campaigns.md`
+- **Submission URL:** https://www.reddit.com/r/dataengineering/submit
+- **Flair:** `Data Architecture`
+- **Title:** `How we track & normalize spot pricing across 31 GPU clouds on Cloudflare Workers + D1 for <$5/mo`
 - **Copy:** Copy verbatim from Section 2 in `outreach/reddit-campaigns.md`.
 
-### D. High-Impact AI Discord Channels
+### D. AI Developer & Quant Discords
 Post in `#tools` / `#infrastructure` / `#gpu-compute` in:
 - **CUDA MODE Discord** (50k+ GPU engineers)
 - **Nous Research Discord**
@@ -98,20 +107,21 @@ Post in `#tools` / `#infrastructure` / `#gpu-compute` in:
 - **Latent Space Discord**
 
 *Pitch Hook:*
-> "Hey everyone, built an autonomous indexer tracking real-time GPU spot prices across 31 clouds (LeaderGPU, RunPod, Vast.ai, Lambda Labs, AWS). You can run `npx dynep-spot --gpu H100` or `curl -s https://data.dynep.com/v1/spot/summary` for sub-300ms rates without registration. Python SDK is also on PyPI: `pip install dynep`. Would love any feedback!"
+> "Hey everyone, built an edge-native indexer tracking real-time GPU spot rates across 31 clouds (LeaderGPU, RunPod, Vast.ai, Lambda Labs, AWS). You can run `npx dynep-spot --gpu H100` or `curl -s https://data.dynep.com/v1/spot/summary` for sub-50ms rates without registration. Python SDK is also on PyPI: `pip install dynep`. It also acts as an MCP server for Cursor via `npx dynep-spot --mcp`. Feedback welcome!"
 
 ---
 
 ## 4. Hardware Affiliate & Subscription Cash Flow Engines
 
-1. **Hardware Rental Commissions (3% - 10% Recurring):**
+1. **Hardware Rental Commissions (3% - 15% Recurring):**
    - Clickable "Deploy ↗" buttons live on https://data.dynep.com
    - Embedded referral links in automated GPU Spot Price Drop alert emails
    - Structured `deploy_url` columns in JSON and RFC 4180 CSV feeds
    - Arbitrage Cluster Calculator instant deployment links
-   - *Unit Economics:* One 8x H100 cluster rented on LeaderGPU earns ~$1,146/mo in recurring cash kickbacks.
+   - *Unit Economics:* One 8x H100 cluster rented on LeaderGPU or Vast.ai earns ~$573 to $1,146/mo in recurring cash kickbacks.
 
 2. **Polar.sh Subscriptions & Stripe Express Payouts:**
    - Starter ($29/mo), Pro ($99/mo), Enterprise ($299/mo)
-   - Active 37% coupon: `DYNEP37`
+   - Promotional coupon code: `DYNEP37`
+   - Automated subscriber upgrade webhooks: `POST /api/webhooks/polar`
    - Single opt-in instant free tier (100 req/mo): `POST /api/keys/free`
